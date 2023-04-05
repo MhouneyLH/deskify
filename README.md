@@ -10,7 +10,7 @@
 
 ## 📑 About the project
 
-An app to manage your desk, and your work. The project is related to a [desk project](https://github.com/MhouneyLH/esphome_custom_components) of mine and is getting developed in the module "mobile development" (4th semester) during my studies at the [DHGE](https://www.dhge.de/).
+An app to manage your desk, and your work. The project is related to a [desk project](https://github.com/MhouneyLH/esphome_custom_components) of mine and is getting developed in the module "mobile development" (`4th` semester) during my studies at the [DHGE](https://www.dhge.de/).
 
 <p align="right">(<a href="#readme_top">back to top</a>)</p>
 
