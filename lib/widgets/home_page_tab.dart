@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:deskify/model/desk.dart';
 import 'package:deskify/widgets/adjust_height_slider.dart';
+import 'package:deskify/widgets/simple_interaction_widget.dart';
 import 'package:flutter/material.dart';
 
 class HomePageTab extends StatefulWidget {
@@ -29,6 +32,31 @@ class _HomePageTabState extends State<HomePageTab> {
           Text("Height: ${_currentDesk.height} cm"),
           AdjustHeightSlider(
             onValueChanged: _updateCurrentDeskHeight,
+          ),
+          const SimpleInteractionWidget(
+            title: "Stand-Info",
+            icon: Icon(Icons.info),
+          ),
+          const SimpleInteractionWidget(
+            title: "Sit-Info",
+            icon: Icon(Icons.info),
+          ),
+          
+          const SimpleInteractionWidget(
+            title: "Move",
+            icon: Icon(Icons.move_up),
+          ),
+          const SimpleInteractionWidget(
+            title: "Preset1",
+            icon: Icon(Icons.input),
+          ),
+          const SimpleInteractionWidget(
+            title: "Preset2",
+            icon: Icon(Icons.input),
+          ),
+          const SimpleInteractionWidget(
+            title: "Preset3",
+            icon: Icon(Icons.input),
           ),
         ],
       ),
