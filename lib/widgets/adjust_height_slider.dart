@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 class AdjustHeightSlider extends StatefulWidget {
   final void Function(double) onValueChanged;
@@ -24,16 +25,18 @@ class _AdjustHeightSliderState extends State<AdjustHeightSlider> {
 
   @override
   Widget build(BuildContext context) {
-    return RotatedBox(
-      quarterTurns: 3,
-      child: Slider(
-        value: _currentSliderValue,
-        min: minimalHeight,
-        max: maximalHeight,
-        label: "$_currentSliderValue cm",
-        divisions: 10 * (maximalHeight - minimalHeight).toInt(),
-        onChanged: _updateSliderValue,
-      ),
+    return SfSlider.vertical(
+      value: _currentSliderValue,
+      onChanged: (value) => _updateSliderValue(value),
+      min: minimalHeight,
+      max: maximalHeight,
+      interval: 10,
+      showLabels: true,
+      showTicks: true,
+      enableTooltip: true,
+      tooltipTextFormatterCallback: (actualValue, formattedText) =>
+          "$_currentSliderValue cm",
+      labelFormatterCallback: (actualValue, formattedText) => "$actualValue cm",
     );
   }
 }
