@@ -1,3 +1,4 @@
+import 'package:deskify/model/desk.dart';
 import 'package:deskify/widgets/adjust_height_slider.dart';
 import 'package:flutter/material.dart';
 
@@ -9,11 +10,11 @@ class HomePageTab extends StatefulWidget {
 }
 
 class _HomePageTabState extends State<HomePageTab> {
-  double _currentDeskHeight = 72.0;
+  final Desk _currentDesk = Desk();
 
   void _updateCurrentDeskHeight(double value) {
     setState(() {
-      _currentDeskHeight = value;
+      _currentDesk.height = value;
     });
   }
 
@@ -24,7 +25,8 @@ class _HomePageTabState extends State<HomePageTab> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text("HomePageTab"),
-          Text("Height: $_currentDeskHeight"),
+          Text("${_currentDesk.name}"),
+          Text("Height: ${_currentDesk.height} cm"),
           AdjustHeightSlider(
             onValueChanged: _updateCurrentDeskHeight,
           ),

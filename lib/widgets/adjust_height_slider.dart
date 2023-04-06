@@ -30,7 +30,7 @@ class _AdjustHeightSliderState extends State<AdjustHeightSlider> {
         value: _currentSliderValue,
         min: minimalHeight,
         max: maximalHeight,
-        label: _currentSliderValue.toString(),
+        label: "$_currentSliderValue cm",
         divisions: 10 * (maximalHeight - minimalHeight).toInt(),
         onChanged: _updateSliderValue,
       ),
