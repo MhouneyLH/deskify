@@ -12,7 +12,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  double currentDeskHeight = 72.0;
   int selectedIndex = 0;
 
   @override
