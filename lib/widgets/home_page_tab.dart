@@ -1,7 +1,5 @@
-import 'dart:developer';
-
 import 'package:deskify/model/desk.dart';
-import 'package:deskify/widgets/adjust_height_slider.dart';
+import 'package:deskify/pages/move_widget_page.dart';
 import 'package:deskify/widgets/simple_interaction_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +11,7 @@ class HomePageTab extends StatefulWidget {
 }
 
 class _HomePageTabState extends State<HomePageTab> {
-  final Desk _currentDesk = Desk();
+  static final Desk _currentDesk = Desk();
 
   void _updateCurrentDeskHeight(double value) {
     setState(() {
@@ -30,9 +28,6 @@ class _HomePageTabState extends State<HomePageTab> {
           const Text("HomePageTab"),
           Text("${_currentDesk.name}"),
           Text("Height: ${_currentDesk.height} cm"),
-          AdjustHeightSlider(
-            onValueChanged: _updateCurrentDeskHeight,
-          ),
           const SimpleInteractionWidget(
             title: "Stand-Info",
             icon: Icon(Icons.info),
@@ -41,10 +36,19 @@ class _HomePageTabState extends State<HomePageTab> {
             title: "Sit-Info",
             icon: Icon(Icons.info),
           ),
-          
           const SimpleInteractionWidget(
             title: "Move",
             icon: Icon(Icons.move_up),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => MoveWidgetPage(
+                    desk: _currentDesk,
+                    onValueChanged: _updateCurrentDeskHeight),
+              ),
+            ),
+            child: const Text("Move"),
           ),
           const SimpleInteractionWidget(
             title: "Preset1",
