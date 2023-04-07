@@ -3,6 +3,7 @@ import 'package:deskify/pages/move_widget_page.dart';
 import 'package:deskify/widgets/generic/heading_widget.dart';
 import 'package:deskify/widgets/interaction_widgets/interaction_widgets_grid_view.dart';
 import 'package:deskify/widgets/interaction_widgets/simple_interaction_widget.dart';
+import 'package:deskify/widgets/test.dart';
 import 'package:flutter/material.dart';
 
 class HomePageTab extends StatefulWidget {
@@ -89,7 +90,11 @@ class _HomePageTabState extends State<HomePageTab> {
         children: [
           Heading(title: "${_currentDesk.name}"),
           Text("Height: ${_currentDesk.height} cm"),
-          const SizedBox(height: 150),
+          const SizedBox(
+            height: 150,
+            width: 150,
+            child: MyAnimatedWidget(),
+          ),
           _getInteractiveWidgetGroup(analyticInteractionWidgets!, "Analytics"),
           _getInteractiveWidgetGroup(presetInteractionWidgets!, "Presets"),
           _getInteractiveWidgetGroup(otherInteractionWidgets!, "Others"),
