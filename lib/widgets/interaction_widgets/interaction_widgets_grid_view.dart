@@ -1,12 +1,15 @@
-import 'package:deskify/widgets/simple_interaction_widget.dart';
+import 'package:deskify/widgets/interaction_widgets/simple_interaction_widget.dart';
 import 'package:flutter/material.dart';
 
 class InteractionWidgetGridView extends StatelessWidget {
   final List<SimpleInteractionWidget>? items;
   final double? outerDefinedSpacings;
 
-  const InteractionWidgetGridView(
-      {@required this.items, this.outerDefinedSpacings = 0.0, super.key});
+  const InteractionWidgetGridView({
+    @required this.items,
+    this.outerDefinedSpacings = 0.0,
+    super.key,
+  });
 
   final double itemWidth = 200.0;
   final double itemHeight = 50.0;

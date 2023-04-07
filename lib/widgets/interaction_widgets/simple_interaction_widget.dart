@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
-import 'dart:developer';
 
 class SimpleInteractionWidget extends StatelessWidget {
   final String? title;
   final Icon? icon;
   final double? width;
   final double? height;
+  final void Function()? onPressed;
 
   const SimpleInteractionWidget({
     @required this.title,
     this.icon = const Icon(Icons.abc),
     this.width = 200.0,
     this.height = 50.0,
+    this.onPressed,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () => log("test"),
+      onPressed: () => onPressed!(),
       style: ButtonStyle(
         fixedSize: MaterialStateProperty.all(Size(width!, height!)),
         shape: MaterialStateProperty.all(

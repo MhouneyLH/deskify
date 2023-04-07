@@ -1,7 +1,7 @@
 import 'package:deskify/main.dart';
-import 'package:deskify/widgets/add_device_tab.dart';
-import 'package:deskify/widgets/home_page_tab.dart';
-import 'package:deskify/widgets/settings_tab.dart';
+import 'package:deskify/widgets/tabs/add_device_tab.dart';
+import 'package:deskify/widgets/tabs/home_page_tab.dart';
+import 'package:deskify/widgets/tabs/settings_tab.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {

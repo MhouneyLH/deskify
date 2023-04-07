@@ -1,5 +1,5 @@
 import 'package:deskify/model/desk.dart';
-import 'package:deskify/widgets/adjust_height_slider.dart';
+import 'package:deskify/widgets/generic/adjust_height_slider.dart';
 import 'package:flutter/material.dart';
 
 class MoveWidgetPage extends StatefulWidget {
