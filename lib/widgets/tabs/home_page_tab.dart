@@ -1,7 +1,8 @@
 import 'package:deskify/model/desk.dart';
+import 'package:deskify/model/preset.dart';
 import 'package:deskify/pages/move_widget_page.dart';
+import 'package:deskify/pages/preset_widget_page.dart';
 import 'package:deskify/provider/desk_provider.dart';
-import 'package:deskify/widgets/generic/adjust_height_slider.dart';
 import 'package:deskify/widgets/generic/desk_animation.dart';
 import 'package:deskify/widgets/generic/heading_widget.dart';
 import 'package:deskify/widgets/interaction_widgets/interaction_widgets_grid_view.dart';
@@ -19,9 +20,13 @@ class HomePageTab extends StatefulWidget {
 class _HomePageTabState extends State<HomePageTab> {
   final double spacing = 10.0;
 
-  List<SimpleInteractionWidget>? analyticInteractionWidgets;
-  List<SimpleInteractionWidget>? presetInteractionWidgets;
-  List<SimpleInteractionWidget>? otherInteractionWidgets;
+  Future<dynamic> _navigateToWidgetPage(BuildContext context, Widget widget) {
+    return Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => widget,
+      ),
+    );
+  }
 
   Widget _getInteractiveWidgetGroup(
       List<SimpleInteractionWidget> items, String title) {
@@ -39,33 +44,6 @@ class _HomePageTabState extends State<HomePageTab> {
     );
   }
 
-  void _initInteractionWidgets() {
-    analyticInteractionWidgets = const [
-      SimpleInteractionWidget(
-          title: "Standing Information", icon: Icon(Icons.info)),
-      SimpleInteractionWidget(
-          title: "Sitting Information", icon: Icon(Icons.info)),
-    ];
-
-    presetInteractionWidgets = const [
-      SimpleInteractionWidget(title: "Preset 1", icon: Icon(Icons.input)),
-      SimpleInteractionWidget(title: "Preset 2", icon: Icon(Icons.input)),
-      SimpleInteractionWidget(title: "Preset 3", icon: Icon(Icons.input)),
-    ];
-
-    otherInteractionWidgets = [
-      SimpleInteractionWidget(
-        title: "Move",
-        icon: const Icon(Icons.input),
-        onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => const MoveWidgetPage(),
-          ),
-        ),
-      ),
-    ];
-  }
-
   Widget _buildDeskAnimation() {
     return const Center(
       child: DeskAnimation(
@@ -76,14 +54,38 @@ class _HomePageTabState extends State<HomePageTab> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _initInteractionWidgets();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final DeskProvider deskProvider = Provider.of<DeskProvider>(context);
+
+    List<SimpleInteractionWidget> analyticInteractionWidgets = const [
+      SimpleInteractionWidget(
+          title: "Standing Information", icon: Icon(Icons.info)),
+      SimpleInteractionWidget(
+          title: "Sitting Information", icon: Icon(Icons.info)),
+    ];
+
+    List<SimpleInteractionWidget> presetInteractionWidgets = [
+      for (Preset preset in deskProvider.presets)
+        SimpleInteractionWidget(
+          title: preset.title,
+          icon: preset.icon,
+          onPressed: () => _navigateToWidgetPage(
+            context,
+            PresetWidgetPage(preset: preset),
+          ),
+        ),
+    ];
+
+    List<SimpleInteractionWidget> otherInteractionWidgets = [
+      SimpleInteractionWidget(
+        title: "Move",
+        icon: const Icon(Icons.input),
+        onPressed: () => _navigateToWidgetPage(
+          context,
+          const MoveWidgetPage(),
+        ),
+      ),
+    ];
 
     return Padding(
       padding: const EdgeInsets.all(10.0),

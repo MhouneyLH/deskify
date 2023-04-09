@@ -34,12 +34,9 @@ class _MoveWidgetPageState extends State<MoveWidgetPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // const Text("MoveWidgetPage",
-          //     style: TextStyle(
-          //       fontSize: 20,
-          //     )),
-          // Text(deskProvider.name),
-          // Text("Height: ${deskProvider.height} cm"),
+          const Text("MoveWidgetPage"),
+          Text(deskProvider.name),
+          Text("Height: ${deskProvider.height} cm"),
           _buildDeskAnimation(),
           const Expanded(child: AdjustHeightSlider()),
           ElevatedButton(
