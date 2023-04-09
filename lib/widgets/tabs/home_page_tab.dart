@@ -67,18 +67,10 @@ class _HomePageTabState extends State<HomePageTab> {
   }
 
   Widget _buildDeskAnimation() {
-    const double width = 200;
-    const double height = Desk.maximumHeight;
-
     return const Center(
-      // @todo: idk, because of errors I had to pack this into a SizedBox
-      child: SizedBox(
-        width: width,
-        height: height,
-        child: DeskAnimation(
-          width: width,
-          height: height,
-        ),
+      child: DeskAnimation(
+        width: 200,
+        height: Desk.minimumHeight,
       ),
     );
   }
@@ -97,12 +89,11 @@ class _HomePageTabState extends State<HomePageTab> {
       padding: const EdgeInsets.all(10.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Heading(title: deskProvider.name),
           Text("Height: ${deskProvider.height} cm"),
           _buildDeskAnimation(),
-          const AdjustHeightSlider(),
           _getInteractiveWidgetGroup(analyticInteractionWidgets!, "Analytics"),
           _getInteractiveWidgetGroup(presetInteractionWidgets!, "Presets"),
           _getInteractiveWidgetGroup(otherInteractionWidgets!, "Others"),

@@ -60,21 +60,15 @@ class _DeskAnimationState extends State<DeskAnimation> {
   Widget build(BuildContext context) {
     deskProvider = Provider.of<DeskProvider>(context);
 
-    return Scaffold(
-      backgroundColor: Colors.red,
-      body: Container(
-        width: widget.width,
-        height: widget.height,
-        decoration: const BoxDecoration(
-          color: Colors.green,
-        ),
-        child: Stack(
-          children: [
-            _buildDesk(),
-            _buildFoot(true),
-            _buildFoot(false),
-          ],
-        ),
+    return SizedBox(
+      width: widget.width,
+      height: widget.height,
+      child: Stack(
+        children: [
+          _buildDesk(),
+          _buildFoot(true),
+          _buildFoot(false),
+        ],
       ),
     );
   }
