@@ -1,10 +1,11 @@
-import 'package:deskify/model/desk.dart';
 import 'package:deskify/pages/move_widget_page.dart';
+import 'package:deskify/provider/desk_provider.dart';
 import 'package:deskify/widgets/generic/heading_widget.dart';
 import 'package:deskify/widgets/interaction_widgets/interaction_widgets_grid_view.dart';
 import 'package:deskify/widgets/interaction_widgets/simple_interaction_widget.dart';
 import 'package:deskify/widgets/test.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePageTab extends StatefulWidget {
   const HomePageTab({super.key});
@@ -14,19 +15,11 @@ class HomePageTab extends StatefulWidget {
 }
 
 class _HomePageTabState extends State<HomePageTab> {
-  static final Desk _currentDesk = Desk();
-
   final double spacing = 10.0;
 
   List<SimpleInteractionWidget>? analyticInteractionWidgets;
   List<SimpleInteractionWidget>? presetInteractionWidgets;
   List<SimpleInteractionWidget>? otherInteractionWidgets;
-
-  void _updateCurrentDeskHeight(double value) {
-    setState(() {
-      _currentDesk.height = value;
-    });
-  }
 
   Widget _getInteractiveWidgetGroup(
       List<SimpleInteractionWidget> items, String title) {
@@ -64,14 +57,19 @@ class _HomePageTabState extends State<HomePageTab> {
         icon: const Icon(Icons.input),
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => MoveWidgetPage(
-              desk: _currentDesk,
-              onValueChanged: _updateCurrentDeskHeight,
-            ),
+            builder: (_) => const MoveWidgetPage(),
           ),
         ),
       ),
     ];
+  }
+
+  SizedBox _buildDeskAnimation() {
+    return const SizedBox(
+      height: 150,
+      width: 150,
+      child: MyAnimatedWidget(),
+    );
   }
 
   @override
@@ -82,19 +80,17 @@ class _HomePageTabState extends State<HomePageTab> {
 
   @override
   Widget build(BuildContext context) {
+    final DeskProvider deskProvider = Provider.of<DeskProvider>(context);
+
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Heading(title: "${_currentDesk.name}"),
-          Text("Height: ${_currentDesk.height} cm"),
-          const SizedBox(
-            height: 150,
-            width: 150,
-            child: MyAnimatedWidget(),
-          ),
+          Heading(title: "$deskProvider.name"),
+          Text("Height: ${deskProvider.height} cm"),
+          _buildDeskAnimation(),
           _getInteractiveWidgetGroup(analyticInteractionWidgets!, "Analytics"),
           _getInteractiveWidgetGroup(presetInteractionWidgets!, "Presets"),
           _getInteractiveWidgetGroup(otherInteractionWidgets!, "Others"),

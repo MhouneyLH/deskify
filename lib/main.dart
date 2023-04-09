@@ -1,4 +1,6 @@
+import 'package:deskify/provider/desk_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'pages/home_page.dart';
 
 void main() {
@@ -12,8 +14,11 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: HomePage(),
+    return ChangeNotifierProvider(
+      create: (_) => DeskProvider(),
+      child: const MaterialApp(
+        home: HomePage(),
+      ),
     );
   }
 }

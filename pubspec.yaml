@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   syncfusion_flutter_sliders: ^21.1.38
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:
