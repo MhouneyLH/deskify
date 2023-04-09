@@ -1,9 +1,11 @@
+import 'package:deskify/model/desk.dart';
 import 'package:deskify/pages/move_widget_page.dart';
 import 'package:deskify/provider/desk_provider.dart';
+import 'package:deskify/widgets/generic/adjust_height_slider.dart';
+import 'package:deskify/widgets/generic/desk_animation.dart';
 import 'package:deskify/widgets/generic/heading_widget.dart';
 import 'package:deskify/widgets/interaction_widgets/interaction_widgets_grid_view.dart';
 import 'package:deskify/widgets/interaction_widgets/simple_interaction_widget.dart';
-import 'package:deskify/widgets/test.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -64,11 +66,20 @@ class _HomePageTabState extends State<HomePageTab> {
     ];
   }
 
-  SizedBox _buildDeskAnimation() {
-    return const SizedBox(
-      height: 150,
-      width: 150,
-      child: MyAnimatedWidget(),
+  Widget _buildDeskAnimation() {
+    const double width = 200;
+    const double height = Desk.maximumHeight;
+
+    return const Center(
+      // @todo: idk, because of errors I had to pack this into a SizedBox
+      child: SizedBox(
+        width: width,
+        height: height,
+        child: DeskAnimation(
+          width: width,
+          height: height,
+        ),
+      ),
     );
   }
 
@@ -88,9 +99,10 @@ class _HomePageTabState extends State<HomePageTab> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Heading(title: "$deskProvider.name"),
+          Heading(title: deskProvider.name),
           Text("Height: ${deskProvider.height} cm"),
           _buildDeskAnimation(),
+          const AdjustHeightSlider(),
           _getInteractiveWidgetGroup(analyticInteractionWidgets!, "Analytics"),
           _getInteractiveWidgetGroup(presetInteractionWidgets!, "Presets"),
           _getInteractiveWidgetGroup(otherInteractionWidgets!, "Others"),

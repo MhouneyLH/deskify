@@ -45,7 +45,9 @@ class _HomePageState extends State<HomePage> {
               label: "Settings",
             ),
           ]),
-      body: tabs[selectedIndex],
+      body: SingleChildScrollView(
+        child: tabs[selectedIndex],
+      ),
     );
   }
 }
