@@ -31,19 +31,25 @@ class SimpleInteractionWidget extends StatelessWidget {
         padding: MaterialStateProperty.all(const EdgeInsets.all(10.0)),
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(
             icon!.icon,
             color: Colors.white,
           ),
           const SizedBox(width: 10.0),
-          Text(
-            title!,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 20.0,
+          Expanded(
+            child: Text(
+              title!,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20.0,
+              ),
+              textAlign: TextAlign.start,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-            textAlign: TextAlign.center,
           ),
         ],
       ),
