@@ -6,7 +6,7 @@ class Target {
 
   Target({
     required this.targetValue,
-    required this.actualValue,
+    this.actualValue = 0.0,
   });
 }
 
@@ -18,4 +18,12 @@ class Profile {
 
   Target? standingTarget;
   Target? sittingTarget;
+
+  Profile({
+    this.name,
+    this.email,
+    this.password,
+    this.standingTarget,
+    this.sittingTarget,
+  });
 }
