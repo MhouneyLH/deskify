@@ -20,42 +20,7 @@ class HomePageTab extends StatefulWidget {
 }
 
 class _HomePageTabState extends State<HomePageTab> {
-  final double spacing = 10.0;
   DeskProvider? deskProvider;
-
-  Future<dynamic> _navigateToWidgetPage(BuildContext context, Widget widget) {
-    return Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => widget,
-      ),
-    );
-  }
-
-  Widget _getInteractiveWidgetGroup(
-      List<SimpleInteractionWidget> items, String title) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Heading(title: title),
-        SizedBox(height: spacing),
-        InteractionWidgetGridView(
-          items: items,
-          outerDefinedSpacings: spacing,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDeskAnimation() {
-    return Center(
-      child: DeskAnimation(
-        width: 200,
-        height: Desk.minimumHeight,
-        deskHeight: deskProvider!.height,
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,9 +84,43 @@ class _HomePageTabState extends State<HomePageTab> {
         Text("${profileProvider.sittingTarget!.targetValue} h"),
         Text(profileProvider.id),
         _buildDeskAnimation(),
-        _getInteractiveWidgetGroup(analyticInteractionWidgets, "Analytics"),
-        _getInteractiveWidgetGroup(presetInteractionWidgets, "Presets"),
-        _getInteractiveWidgetGroup(otherInteractionWidgets, "Others"),
+        _buildInteractiveWidgetGroup(analyticInteractionWidgets, "Analytics"),
+        _buildInteractiveWidgetGroup(presetInteractionWidgets, "Presets"),
+        _buildInteractiveWidgetGroup(otherInteractionWidgets, "Others"),
+      ],
+    );
+  }
+
+  Future<dynamic> _navigateToWidgetPage(BuildContext context, Widget widget) {
+    return Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => widget,
+      ),
+    );
+  }
+
+  Widget _buildDeskAnimation() {
+    return Center(
+      child: DeskAnimation(
+        width: 200,
+        height: Desk.minimumHeight,
+        deskHeight: deskProvider!.height,
+      ),
+    );
+  }
+
+  Widget _buildInteractiveWidgetGroup(
+      List<SimpleInteractionWidget> items, String title) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Heading(title: title),
+        const SizedBox(height: 10.0),
+        InteractionWidgetGridView(
+          items: items,
+          outerDefinedSpacings: 10.0,
+        ),
       ],
     );
   }

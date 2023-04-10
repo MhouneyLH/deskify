@@ -12,56 +12,59 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int selectedIndex = 0;
+  int selectedTabIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    final tabs = [
+    final List<Widget> tabs = [
       const HomePageTab(),
       const AddDeviceTab(),
       const SettingsTab(),
+    ];
+
+    final List<BottomNavigationBarItem> navigationBarItems = [
+      const BottomNavigationBarItem(
+        icon: Icon(Icons.home),
+        label: "Home",
+      ),
+      const BottomNavigationBarItem(
+        icon: Icon(Icons.add),
+        label: "Add",
+      ),
+      const BottomNavigationBarItem(
+        icon: Icon(Icons.settings),
+        label: "Settings",
+      ),
     ];
 
     return Scaffold(
       appBar: AppBar(
         title: const Text(MainApp.title),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-          currentIndex: selectedIndex,
-          onTap: (index) => setState(
-                () {
-                  selectedIndex = index;
-                },
-              ),
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: "Home",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.add),
-              label: "Add",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: "Settings",
-            ),
-          ]),
-      floatingActionButton: selectedIndex == 0
+      floatingActionButton: _isHomePage()
           ? FloatingActionButton(
-              onPressed: () => setState(
-                () {
-                  selectedIndex = 2;
-                },
-              ),
+              onPressed: () => _updateSelectedTabIndex(2),
               child: const Icon(Icons.settings),
             )
           : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: selectedTabIndex,
+        onTap: (index) => _updateSelectedTabIndex(index),
+        items: navigationBarItems,
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(10.0),
-        child: tabs[selectedIndex],
+        child: tabs[selectedTabIndex],
       ),
     );
   }
+
+  void _updateSelectedTabIndex(int index) {
+    setState(
+      () => selectedTabIndex = index,
+    );
+  }
+
+  bool _isHomePage() => selectedTabIndex == 0;
 }

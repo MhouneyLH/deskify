@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class PresetWidgetPage extends StatefulWidget {
-  final Preset? preset;
+  final Preset preset;
 
   const PresetWidgetPage({
-    this.preset,
+    required this.preset,
     super.key,
   });
 
@@ -22,20 +22,10 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
   DeskProvider? deskProvider;
   Preset? providerPreset;
 
-  Widget _buildDeskAnimation() {
-    return Center(
-      child: DeskAnimation(
-        width: 200,
-        height: Desk.minimumHeight,
-        deskHeight: providerPreset!.targetHeight!,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     deskProvider = Provider.of<DeskProvider>(context);
-    providerPreset = deskProvider!.getPreset(widget.preset!.id);
+    providerPreset = deskProvider!.getPreset(widget.preset.id);
 
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -49,7 +39,7 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
           _buildDeskAnimation(),
           Expanded(
             child: AdjustHeightSlider(
-              displayedHeight: providerPreset!.targetHeight!,
+              displayedHeight: providerPreset!.targetHeight,
               onChanged: (value) => deskProvider!.setPresetHeight(
                 providerPreset!.id,
                 value,
@@ -61,6 +51,16 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
             child: const Text("Save"),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildDeskAnimation() {
+    return Center(
+      child: DeskAnimation(
+        width: 200,
+        height: Desk.minimumHeight,
+        deskHeight: providerPreset!.targetHeight,
       ),
     );
   }

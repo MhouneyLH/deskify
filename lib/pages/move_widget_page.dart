@@ -6,9 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MoveWidgetPage extends StatefulWidget {
-  const MoveWidgetPage({
-    super.key,
-  });
+  const MoveWidgetPage({super.key});
 
   @override
   State<MoveWidgetPage> createState() => _MoveWidgetPageState();
@@ -16,16 +14,6 @@ class MoveWidgetPage extends StatefulWidget {
 
 class _MoveWidgetPageState extends State<MoveWidgetPage> {
   DeskProvider? deskProvider;
-
-  Widget _buildDeskAnimation() {
-    return Center(
-      child: DeskAnimation(
-        width: 200,
-        height: Desk.maximumHeight,
-        deskHeight: deskProvider!.height,
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +40,16 @@ class _MoveWidgetPageState extends State<MoveWidgetPage> {
             child: const Text("Back"),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildDeskAnimation() {
+    return Center(
+      child: DeskAnimation(
+        width: 200,
+        height: Desk.maximumHeight,
+        deskHeight: deskProvider!.height,
       ),
     );
   }

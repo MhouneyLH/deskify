@@ -2,8 +2,8 @@ import 'package:deskify/model/desk.dart';
 import 'package:flutter/material.dart';
 
 class DeskAnimation extends StatefulWidget {
-  final double? width;
-  final double? height;
+  final double width;
+  final double height;
   final double deskHeight;
 
   const DeskAnimation({
@@ -18,42 +18,6 @@ class DeskAnimation extends StatefulWidget {
 }
 
 class _DeskAnimationState extends State<DeskAnimation> {
-  Widget _buildDesk() {
-    const double height = 10.0;
-
-    return Positioned(
-      left: 0,
-      right: 0,
-      bottom:
-          (widget.deskHeight / Desk.maximumHeight) * widget.height! - height,
-      child: Container(
-        height: height,
-        decoration: BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFoot(bool isLeftFoot) {
-    final double footMarginToBoundaries = widget.width! / 8;
-
-    return Positioned(
-      left: isLeftFoot ? footMarginToBoundaries : null,
-      right: isLeftFoot ? null : footMarginToBoundaries,
-      bottom: 0,
-      child: Container(
-        width: 10,
-        height: (widget.deskHeight / Desk.maximumHeight) * widget.height!,
-        decoration: BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -65,6 +29,42 @@ class _DeskAnimationState extends State<DeskAnimation> {
           _buildFoot(true),
           _buildFoot(false),
         ],
+      ),
+    );
+  }
+
+  Widget _buildDesk() {
+    const double deskDisplayHeight = 10.0;
+
+    return Positioned(
+      left: 0,
+      right: 0,
+      bottom: (widget.deskHeight / Desk.maximumHeight) * widget.height -
+          deskDisplayHeight,
+      child: Container(
+        height: deskDisplayHeight,
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFoot(bool isLeftFoot) {
+    final double footMarginToBoundaries = widget.width / 8;
+
+    return Positioned(
+      left: isLeftFoot ? footMarginToBoundaries : null,
+      right: isLeftFoot ? null : footMarginToBoundaries,
+      bottom: 0,
+      child: Container(
+        width: 10,
+        height: (widget.deskHeight / Desk.maximumHeight) * widget.height,
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(10.0),
+        ),
       ),
     );
   }

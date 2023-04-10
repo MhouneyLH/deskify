@@ -12,6 +12,41 @@ class SettingsTab extends StatefulWidget {
 class _SettingsTabState extends State<SettingsTab> {
   ProfileProvider? profileProvider;
 
+  @override
+  Widget build(BuildContext context) {
+    profileProvider = Provider.of<ProfileProvider>(context);
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          height: 100,
+          decoration: BoxDecoration(
+            color: Colors.blue[700],
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: _buildProfileSummary(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProfileSummary() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _buildProfileImage(),
+        const SizedBox(width: 10.0),
+        _buildProfileInformation(),
+      ],
+    );
+  }
+
   Widget _buildProfileImage() {
     const double size = 75.0;
 
@@ -27,19 +62,6 @@ class _SettingsTabState extends State<SettingsTab> {
         size: size * 0.75,
         color: Colors.white,
       ),
-    );
-  }
-
-  Text _buildInformationText(String text) {
-    return Text(
-      text,
-      style: const TextStyle(
-        color: Colors.white,
-        fontSize: 15.0,
-      ),
-      textAlign: TextAlign.start,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
     );
   }
 
@@ -66,38 +88,16 @@ class _SettingsTabState extends State<SettingsTab> {
     );
   }
 
-  Widget _buildProfileSummary() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _buildProfileImage(),
-        const SizedBox(width: 10.0),
-        _buildProfileInformation(),
-      ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    profileProvider = Provider.of<ProfileProvider>(context);
-
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Container(
-          height: 100,
-          decoration: BoxDecoration(
-            color: Colors.blue[700],
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: _buildProfileSummary(),
-          ),
-        ),
-      ],
+  Text _buildInformationText(String text) {
+    return Text(
+      text,
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 15.0,
+      ),
+      textAlign: TextAlign.start,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }

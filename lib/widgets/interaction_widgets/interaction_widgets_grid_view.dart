@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class InteractionWidgetGridView extends StatelessWidget {
   final List<SimpleInteractionWidget> items;
-  final double? outerDefinedSpacings;
+  final double outerDefinedSpacings;
 
   const InteractionWidgetGridView({
     required this.items,
@@ -16,18 +16,10 @@ class InteractionWidgetGridView extends StatelessWidget {
   final int itemsPerRow = 2;
   final double defaultSpacing = 10.0;
 
-  double _getGridViewHeight() {
-    final double gridHeight =
-        itemHeight * (items.length / itemsPerRow).ceil() +
-            defaultSpacing * ((items.length / itemsPerRow) - 1) +
-            outerDefinedSpacings!;
-    return gridHeight;
-  }
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: _getGridViewHeight(),
+      height: _getTotalGridViewHeightWithOuterDefinedSpacing(),
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: itemsPerRow,
@@ -46,5 +38,12 @@ class InteractionWidgetGridView extends StatelessWidget {
         },
       ),
     );
+  }
+
+  double _getTotalGridViewHeightWithOuterDefinedSpacing() {
+    final double gridHeight = itemHeight * (items.length / itemsPerRow).ceil() +
+        defaultSpacing * ((items.length / itemsPerRow) - 1) +
+        outerDefinedSpacings;
+    return gridHeight;
   }
 }
