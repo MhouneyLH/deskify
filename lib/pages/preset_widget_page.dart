@@ -44,7 +44,7 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(providerPreset!.id),
-          Text(providerPreset!.title!),
+          Text(providerPreset!.title),
           Text("Target-Height: ${providerPreset!.targetHeight} cm"),
           _buildDeskAnimation(),
           Expanded(

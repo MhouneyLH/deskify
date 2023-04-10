@@ -2,7 +2,7 @@ import 'package:deskify/widgets/interaction_widgets/simple_interaction_widget.da
 import 'package:flutter/material.dart';
 
 class InteractionWidgetGridView extends StatelessWidget {
-  final List<SimpleInteractionWidget>? items;
+  final List<SimpleInteractionWidget> items;
   final double? outerDefinedSpacings;
 
   const InteractionWidgetGridView({
@@ -18,8 +18,8 @@ class InteractionWidgetGridView extends StatelessWidget {
 
   double _getGridViewHeight() {
     final double gridHeight =
-        itemHeight * (items!.length / itemsPerRow).ceil() +
-            defaultSpacing * ((items!.length / itemsPerRow) - 1) +
+        itemHeight * (items.length / itemsPerRow).ceil() +
+            defaultSpacing * ((items.length / itemsPerRow) - 1) +
             outerDefinedSpacings!;
     return gridHeight;
   }
@@ -35,9 +35,9 @@ class InteractionWidgetGridView extends StatelessWidget {
           crossAxisSpacing: defaultSpacing,
           mainAxisExtent: itemHeight,
         ),
-        itemCount: items!.length,
+        itemCount: items.length,
         itemBuilder: (BuildContext context, int index) {
-          final SimpleInteractionWidget item = items![index];
+          final SimpleInteractionWidget item = items[index];
           return SizedBox(
             width: itemWidth,
             height: itemHeight,

@@ -1,5 +1,6 @@
 import 'package:deskify/model/desk.dart';
 import 'package:deskify/model/preset.dart';
+import 'package:deskify/pages/analytics_widget_page.dart';
 import 'package:deskify/pages/move_widget_page.dart';
 import 'package:deskify/pages/preset_widget_page.dart';
 import 'package:deskify/provider/desk_provider.dart';
@@ -59,11 +60,23 @@ class _HomePageTabState extends State<HomePageTab> {
   Widget build(BuildContext context) {
     deskProvider = Provider.of<DeskProvider>(context);
 
-    List<SimpleInteractionWidget> analyticInteractionWidgets = const [
+    List<SimpleInteractionWidget> analyticInteractionWidgets = [
       SimpleInteractionWidget(
-          title: "Standing Information", icon: Icon(Icons.info)),
+        title: "Standing Information",
+        icon: const Icon(Icons.info),
+        onPressed: () => _navigateToWidgetPage(
+          context,
+          const AnalyticsWidgetPage(),
+        ),
+      ),
       SimpleInteractionWidget(
-          title: "Sitting Information", icon: Icon(Icons.info)),
+        title: "Sitting Information",
+        icon: const Icon(Icons.info),
+        onPressed: () => _navigateToWidgetPage(
+          context,
+          const AnalyticsWidgetPage(),
+        ),
+      ),
     ];
 
     List<SimpleInteractionWidget> presetInteractionWidgets = [

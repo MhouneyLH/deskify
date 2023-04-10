@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 class Preset {
-  String id = const Uuid().v4();
-  String? title;
+  final String id = const Uuid().v4();
+  String title;
   double? targetHeight;
   Icon? icon;
 
   Preset({
-    this.title = "Preset 1",
+    required this.title,
     this.targetHeight = Desk.minimumHeight,
     this.icon = const Icon(Icons.abc),
   });
