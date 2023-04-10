@@ -1,8 +1,12 @@
+import 'dart:async';
 import 'package:deskify/main.dart';
+import 'package:deskify/provider/desk_provider.dart';
+import 'package:deskify/provider/profile_provider.dart';
 import 'package:deskify/widgets/tabs/add_device_tab.dart';
 import 'package:deskify/widgets/tabs/home_page_tab.dart';
 import 'package:deskify/widgets/tabs/settings_tab.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,6 +17,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int selectedTabIndex = 0;
+  DeskProvider? deskProvider;
+  ProfileProvider? profileProvider;
+  late Timer analyticSecondTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    analyticSecondTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _updateTest();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +36,9 @@ class _HomePageState extends State<HomePage> {
       const AddDeviceTab(),
       const SettingsTab(),
     ];
+
+    deskProvider = Provider.of<DeskProvider>(context);
+    profileProvider = Provider.of<ProfileProvider>(context);
 
     final List<BottomNavigationBarItem> navigationBarItems = [
       const BottomNavigationBarItem(
@@ -64,6 +82,12 @@ class _HomePageState extends State<HomePage> {
     setState(
       () => selectedTabIndex = index,
     );
+  }
+
+  void _updateTest() {
+    deskProvider!.height > 90.0
+        ? profileProvider!.addStandingTimeActual(1.0)
+        : profileProvider!.addSittingTimeActual(1.0);
   }
 
   bool _isHomePage() => selectedTabIndex == 0;

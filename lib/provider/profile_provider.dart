@@ -6,10 +6,10 @@ class ProfileProvider extends ChangeNotifier {
     name: "Deskified Test User",
     email: "lucas.mag.huehner@gmail.com",
     password: "123456",
-    standingTarget: Target(
+    standingTimeTarget: Target(
       targetValue: 4.0,
     ),
-    sittingTarget: Target(
+    sittingTimeTarget: Target(
       targetValue: 2.0,
     ),
   );
@@ -20,15 +20,15 @@ class ProfileProvider extends ChangeNotifier {
   String? get email => _profile.email;
   String? get password => _profile.password;
   Icon get image => _profile.image;
-  Target? get standingTarget => _profile.standingTarget;
-  Target? get sittingTarget => _profile.sittingTarget;
+  Target? get standingTimeTarget => _profile.standingTimeTarget;
+  Target? get sittingTimeTarget => _profile.sittingTimeTarget;
 
   set profile(Profile value) {
     _profile.name = value.name;
     _profile.email = value.email;
     _profile.password = value.password;
-    _profile.standingTarget = value.standingTarget;
-    _profile.sittingTarget = value.sittingTarget;
+    _profile.standingTimeTarget = value.standingTimeTarget;
+    _profile.sittingTimeTarget = value.sittingTimeTarget;
     notifyListeners();
   }
 
@@ -52,23 +52,33 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  set standingTarget(Target? value) {
-    _profile.standingTarget = value;
+  set standingTimeTarget(Target? value) {
+    _profile.standingTimeTarget = value;
     notifyListeners();
   }
 
-  set sittingTarget(Target? value) {
-    _profile.sittingTarget = value;
+  set sittingTimeTarget(Target? value) {
+    _profile.sittingTimeTarget = value;
     notifyListeners();
   }
 
-  void updateStandingTarget(double value) {
-    _profile.standingTarget!.targetValue = value;
+  void updateStandingTimeActual(double value) {
+    _profile.standingTimeTarget!.actualValue = value;
     notifyListeners();
   }
 
-  void updateSittingTarget(double value) {
-    _profile.sittingTarget!.targetValue = value;
+  void updateSittingTimeActual(double value) {
+    _profile.sittingTimeTarget!.actualValue = value;
+    notifyListeners();
+  }
+
+  void addStandingTimeActual(double value) {
+    _profile.standingTimeTarget!.actualValue += value;
+    notifyListeners();
+  }
+
+  void addSittingTimeActual(double value) {
+    _profile.sittingTimeTarget!.actualValue += value;
     notifyListeners();
   }
 }

@@ -21,12 +21,12 @@ class HomePageTab extends StatefulWidget {
 
 class _HomePageTabState extends State<HomePageTab> {
   DeskProvider? deskProvider;
+  ProfileProvider? profileProvider;
 
   @override
   Widget build(BuildContext context) {
     deskProvider = Provider.of<DeskProvider>(context);
-    final ProfileProvider profileProvider =
-        Provider.of<ProfileProvider>(context);
+    profileProvider = Provider.of<ProfileProvider>(context);
 
     final List<SimpleInteractionWidget> analyticInteractionWidgets = [
       SimpleInteractionWidget(
@@ -34,7 +34,9 @@ class _HomePageTabState extends State<HomePageTab> {
         icon: const Icon(Icons.info),
         onPressed: () => _navigateToWidgetPage(
           context,
-          const AnalyticsWidgetPage(),
+          const AnalyticsWidgetPage(
+            signalizationColor: Colors.green,
+          ),
         ),
       ),
       SimpleInteractionWidget(
@@ -42,7 +44,9 @@ class _HomePageTabState extends State<HomePageTab> {
         icon: const Icon(Icons.info),
         onPressed: () => _navigateToWidgetPage(
           context,
-          const AnalyticsWidgetPage(),
+          const AnalyticsWidgetPage(
+            signalizationColor: Colors.red,
+          ),
         ),
       ),
     ];
@@ -76,13 +80,15 @@ class _HomePageTabState extends State<HomePageTab> {
       children: [
         Heading(title: deskProvider!.name),
         Text("Height: ${deskProvider!.height} cm"),
-        Icon(profileProvider.image.icon),
-        Text(profileProvider.name!),
-        Text(profileProvider.email!),
-        Text(profileProvider.password!),
-        Text("${profileProvider.standingTarget!.targetValue} h"),
-        Text("${profileProvider.sittingTarget!.targetValue} h"),
-        Text(profileProvider.id),
+        Icon(profileProvider!.image.icon),
+        Text(profileProvider!.name!),
+        Text(profileProvider!.email!),
+        Text(profileProvider!.password!),
+        Text("${profileProvider!.standingTimeTarget!.targetValue} h"),
+        Text("${profileProvider!.standingTimeTarget!.actualValue} h"),
+        Text("${profileProvider!.sittingTimeTarget!.targetValue} h"),
+        Text("${profileProvider!.sittingTimeTarget!.actualValue} h"),
+        Text(profileProvider!.id),
         _buildDeskAnimation(),
         _buildInteractiveWidgetGroup(analyticInteractionWidgets, "Analytics"),
         _buildInteractiveWidgetGroup(presetInteractionWidgets, "Presets"),

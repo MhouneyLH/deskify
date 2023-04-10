@@ -18,15 +18,15 @@ class Profile {
   String? password;
   Icon image;
 
-  Target? standingTarget;
-  Target? sittingTarget;
+  Target? standingTimeTarget;
+  Target? sittingTimeTarget;
 
   Profile({
     this.name,
     this.email,
     this.password,
     this.image = const Icon(Icons.person),
-    this.standingTarget,
-    this.sittingTarget,
+    this.standingTimeTarget,
+    this.sittingTimeTarget,
   });
 }

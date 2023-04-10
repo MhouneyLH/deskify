@@ -2,7 +2,12 @@ import 'package:deskify/widgets/generic/progress_bar.dart';
 import 'package:flutter/material.dart';
 
 class AnalyticsWidgetPage extends StatefulWidget {
-  const AnalyticsWidgetPage({super.key});
+  final Color signalizationColor;
+
+  const AnalyticsWidgetPage({
+    required this.signalizationColor,
+    super.key,
+  });
 
   @override
   State<AnalyticsWidgetPage> createState() => _AnalyticsWidgetPageState();
@@ -17,10 +22,10 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const ProgressBar(
+          ProgressBar(
             height: 20.0,
             displayValue: 0.5,
-            displayColor: Colors.green,
+            displayColor: widget.signalizationColor,
           ),
           const SizedBox(height: 10.0),
           Center(
