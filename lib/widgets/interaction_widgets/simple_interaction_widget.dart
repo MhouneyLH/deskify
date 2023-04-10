@@ -8,7 +8,7 @@ class SimpleInteractionWidget extends StatelessWidget {
   final void Function()? onPressed;
 
   const SimpleInteractionWidget({
-    @required this.title,
+    required this.title,
     this.icon = const Icon(Icons.abc),
     this.width = 200.0,
     this.height = 50.0,

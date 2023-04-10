@@ -6,7 +6,7 @@ class InteractionWidgetGridView extends StatelessWidget {
   final double? outerDefinedSpacings;
 
   const InteractionWidgetGridView({
-    @required this.items,
+    required this.items,
     this.outerDefinedSpacings = 0.0,
     super.key,
   });

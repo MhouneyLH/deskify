@@ -1,7 +1,7 @@
 import 'package:deskify/model/desk.dart';
 import 'package:deskify/model/preset.dart';
 import 'package:deskify/provider/desk_provider.dart';
-import 'package:deskify/widgets/generic/adjust_preset_height_slider.dart';
+import 'package:deskify/widgets/generic/adjust_height_slider.dart';
 import 'package:deskify/widgets/generic/desk_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,19 +19,23 @@ class PresetWidgetPage extends StatefulWidget {
 }
 
 class _PresetWidgetPageState extends State<PresetWidgetPage> {
+  DeskProvider? deskProvider;
+  Preset? providerPreset;
+
   Widget _buildDeskAnimation() {
-    return const Center(
+    return Center(
       child: DeskAnimation(
         width: 200,
         height: Desk.minimumHeight,
+        deskHeight: providerPreset!.targetHeight!,
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final DeskProvider deskProvider = Provider.of<DeskProvider>(context);
-    final Preset providerPreset = deskProvider.getPreset(widget.preset!.id);
+    deskProvider = Provider.of<DeskProvider>(context);
+    providerPreset = deskProvider!.getPreset(widget.preset!.id);
 
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -39,13 +43,17 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(providerPreset.id),
-          Text(providerPreset.title!),
-          Text("Target-Height: ${providerPreset.targetHeight} cm"),
+          Text(providerPreset!.id),
+          Text(providerPreset!.title!),
+          Text("Target-Height: ${providerPreset!.targetHeight} cm"),
           _buildDeskAnimation(),
           Expanded(
-            child: AdjustPresetHeightSlider(
-              presetId: providerPreset.id,
+            child: AdjustHeightSlider(
+              displayedHeight: providerPreset!.targetHeight!,
+              onChanged: (value) => deskProvider!.setPresetHeight(
+                providerPreset!.id,
+                value,
+              ),
             ),
           ),
           ElevatedButton(

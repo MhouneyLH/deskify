@@ -1,15 +1,15 @@
 import 'package:deskify/model/desk.dart';
-import 'package:deskify/provider/desk_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class DeskAnimation extends StatefulWidget {
   final double? width;
   final double? height;
+  final double deskHeight;
 
   const DeskAnimation({
     this.width = 200.0,
     this.height = Desk.maximumHeight,
+    required this.deskHeight,
     super.key,
   });
 
@@ -18,8 +18,6 @@ class DeskAnimation extends StatefulWidget {
 }
 
 class _DeskAnimationState extends State<DeskAnimation> {
-  DeskProvider? deskProvider;
-
   Widget _buildDesk() {
     const double height = 10.0;
 
@@ -27,7 +25,7 @@ class _DeskAnimationState extends State<DeskAnimation> {
       left: 0,
       right: 0,
       bottom:
-          (deskProvider!.height / Desk.maximumHeight) * widget.height! - height,
+          (widget.deskHeight / Desk.maximumHeight) * widget.height! - height,
       child: Container(
         height: height,
         decoration: BoxDecoration(
@@ -47,7 +45,7 @@ class _DeskAnimationState extends State<DeskAnimation> {
       bottom: 0,
       child: Container(
         width: 10,
-        height: (deskProvider!.height / Desk.maximumHeight) * widget.height!,
+        height: (widget.deskHeight / Desk.maximumHeight) * widget.height!,
         decoration: BoxDecoration(
           color: Colors.black,
           borderRadius: BorderRadius.circular(10),
@@ -58,8 +56,6 @@ class _DeskAnimationState extends State<DeskAnimation> {
 
   @override
   Widget build(BuildContext context) {
-    deskProvider = Provider.of<DeskProvider>(context);
-
     return SizedBox(
       width: widget.width,
       height: widget.height,

@@ -19,6 +19,7 @@ class HomePageTab extends StatefulWidget {
 
 class _HomePageTabState extends State<HomePageTab> {
   final double spacing = 10.0;
+  DeskProvider? deskProvider;
 
   Future<dynamic> _navigateToWidgetPage(BuildContext context, Widget widget) {
     return Navigator.of(context).push(
@@ -45,17 +46,18 @@ class _HomePageTabState extends State<HomePageTab> {
   }
 
   Widget _buildDeskAnimation() {
-    return const Center(
+    return Center(
       child: DeskAnimation(
         width: 200,
         height: Desk.minimumHeight,
+        deskHeight: deskProvider!.height,
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final DeskProvider deskProvider = Provider.of<DeskProvider>(context);
+    deskProvider = Provider.of<DeskProvider>(context);
 
     List<SimpleInteractionWidget> analyticInteractionWidgets = const [
       SimpleInteractionWidget(
@@ -65,7 +67,7 @@ class _HomePageTabState extends State<HomePageTab> {
     ];
 
     List<SimpleInteractionWidget> presetInteractionWidgets = [
-      for (Preset preset in deskProvider.presets)
+      for (Preset preset in deskProvider!.presets)
         SimpleInteractionWidget(
           title: preset.title,
           icon: preset.icon,
@@ -93,8 +95,8 @@ class _HomePageTabState extends State<HomePageTab> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Heading(title: deskProvider.name),
-          Text("Height: ${deskProvider.height} cm"),
+          Heading(title: deskProvider!.name),
+          Text("Height: ${deskProvider!.height} cm"),
           _buildDeskAnimation(),
           _getInteractiveWidgetGroup(analyticInteractionWidgets, "Analytics"),
           _getInteractiveWidgetGroup(presetInteractionWidgets, "Presets"),

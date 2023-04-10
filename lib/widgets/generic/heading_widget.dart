@@ -5,7 +5,7 @@ class Heading extends StatelessWidget {
   final double? padding;
 
   const Heading({
-    @required this.title,
+    required this.title,
     this.padding = 0.0,
     super.key,
   });

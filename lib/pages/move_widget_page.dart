@@ -15,18 +15,21 @@ class MoveWidgetPage extends StatefulWidget {
 }
 
 class _MoveWidgetPageState extends State<MoveWidgetPage> {
+  DeskProvider? deskProvider;
+
   Widget _buildDeskAnimation() {
-    return const Center(
+    return Center(
       child: DeskAnimation(
         width: 200,
-        height: Desk.minimumHeight,
+        height: Desk.maximumHeight,
+        deskHeight: deskProvider!.height,
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final DeskProvider deskProvider = Provider.of<DeskProvider>(context);
+    deskProvider = Provider.of<DeskProvider>(context);
 
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -35,10 +38,15 @@ class _MoveWidgetPageState extends State<MoveWidgetPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Text("MoveWidgetPage"),
-          Text(deskProvider.name),
-          Text("Height: ${deskProvider.height} cm"),
+          Text(deskProvider!.name),
+          Text("Height: ${deskProvider!.height} cm"),
           _buildDeskAnimation(),
-          const Expanded(child: AdjustHeightSlider()),
+          Expanded(
+            child: AdjustHeightSlider(
+              displayedHeight: deskProvider!.height,
+              onChanged: (value) => deskProvider!.height = value,
+            ),
+          ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(),
             child: const Text("Back"),
