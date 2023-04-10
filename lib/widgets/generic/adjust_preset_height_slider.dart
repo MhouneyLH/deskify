@@ -1,25 +1,33 @@
 import 'package:deskify/model/desk.dart';
+import 'package:deskify/model/preset.dart';
 import 'package:deskify/provider/desk_provider.dart';
 import 'package:deskify/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
-class AdjustHeightSlider extends StatefulWidget {
-  const AdjustHeightSlider({super.key});
+class AdjustPresetHeightSlider extends StatefulWidget {
+  final String? presetId;
+
+  const AdjustPresetHeightSlider({
+    this.presetId,
+    super.key,
+  });
 
   @override
-  State<AdjustHeightSlider> createState() => _AdjustHeightSliderState();
+  State<AdjustPresetHeightSlider> createState() =>
+      _AdjustPresetHeightSliderState();
 }
 
-class _AdjustHeightSliderState extends State<AdjustHeightSlider> {
+class _AdjustPresetHeightSliderState extends State<AdjustPresetHeightSlider> {
   @override
   Widget build(BuildContext context) {
     final DeskProvider deskProvider = Provider.of<DeskProvider>(context);
+    final Preset preset = deskProvider.getPreset(widget.presetId!);
 
     return SfSlider.vertical(
-        value: deskProvider.height,
-        onChanged: (value) => deskProvider.height = value,
+        value: preset.targetHeight,
+        onChanged: (value) => deskProvider.setPresetHeight(preset.id, value),
         min: Desk.minimumHeight,
         max: Desk.maximumHeight,
         interval: 10,

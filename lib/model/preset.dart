@@ -1,10 +1,12 @@
 import 'package:deskify/model/desk.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class Preset {
-  final String? title;
-  final double? targetHeight;
-  final Icon? icon;
+  String id = const Uuid().v4();
+  String? title;
+  double? targetHeight;
+  Icon? icon;
 
   Preset({
     this.title = "Preset 1",

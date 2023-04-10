@@ -96,9 +96,9 @@ class _HomePageTabState extends State<HomePageTab> {
           Heading(title: deskProvider.name),
           Text("Height: ${deskProvider.height} cm"),
           _buildDeskAnimation(),
-          _getInteractiveWidgetGroup(analyticInteractionWidgets!, "Analytics"),
-          _getInteractiveWidgetGroup(presetInteractionWidgets!, "Presets"),
-          _getInteractiveWidgetGroup(otherInteractionWidgets!, "Others"),
+          _getInteractiveWidgetGroup(analyticInteractionWidgets, "Analytics"),
+          _getInteractiveWidgetGroup(presetInteractionWidgets, "Presets"),
+          _getInteractiveWidgetGroup(otherInteractionWidgets, "Others"),
         ],
       ),
     );

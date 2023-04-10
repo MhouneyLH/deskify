@@ -35,6 +35,8 @@ class DeskProvider with ChangeNotifier {
   double get height => _desk.height!;
   String get name => _desk.name!;
   List<Preset> get presets => _desk.presets!;
+  Preset getPreset(String id) =>
+      _desk.presets!.firstWhere((preset) => preset.id == id);
 
   set desk(Desk value) {
     _desk.height = Utils.roundDouble(value.height!, 1);
@@ -49,6 +51,17 @@ class DeskProvider with ChangeNotifier {
 
   set name(String value) {
     _desk.name = value;
+    notifyListeners();
+  }
+
+  set presets(List<Preset> value) {
+    _desk.presets = value;
+    notifyListeners();
+  }
+
+  void setPresetHeight(String id, double value) {
+    Preset preset = getPreset(id);
+    preset.targetHeight = Utils.roundDouble(value, 1);
     notifyListeners();
   }
 }
