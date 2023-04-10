@@ -28,9 +28,11 @@ class _HomePageState extends State<HomePage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: selectedIndex,
-          onTap: (index) => setState(() {
-                selectedIndex = index;
-              }),
+          onTap: (index) => setState(
+                () {
+                  selectedIndex = index;
+                },
+              ),
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
@@ -45,6 +47,17 @@ class _HomePageState extends State<HomePage> {
               label: "Settings",
             ),
           ]),
+      floatingActionButton: selectedIndex == 0
+          ? FloatingActionButton(
+              onPressed: () => setState(
+                () {
+                  selectedIndex = 2;
+                },
+              ),
+              child: const Icon(Icons.settings),
+            )
+          : null,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       body: SingleChildScrollView(
         child: tabs[selectedIndex],
       ),

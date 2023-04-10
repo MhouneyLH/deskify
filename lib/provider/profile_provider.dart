@@ -15,10 +15,11 @@ class ProfileProvider extends ChangeNotifier {
   );
 
   Profile get profile => _profile;
-  String? get id => _profile.id;
+  String get id => _profile.id;
   String? get name => _profile.name;
   String? get email => _profile.email;
   String? get password => _profile.password;
+  Icon get image => _profile.image;
   Target? get standingTarget => _profile.standingTarget;
   Target? get sittingTarget => _profile.sittingTarget;
 
@@ -43,6 +44,11 @@ class ProfileProvider extends ChangeNotifier {
 
   set password(String? value) {
     _profile.password = value;
+    notifyListeners();
+  }
+
+  set image(Icon value) {
+    _profile.image = value;
     notifyListeners();
   }
 

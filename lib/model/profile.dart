@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 class Target {
@@ -15,6 +16,7 @@ class Profile {
   String? name;
   String? email;
   String? password;
+  Icon image;
 
   Target? standingTarget;
   Target? sittingTarget;
@@ -23,6 +25,7 @@ class Profile {
     this.name,
     this.email,
     this.password,
+    this.image = const Icon(Icons.person),
     this.standingTarget,
     this.sittingTarget,
   });
