@@ -105,27 +105,24 @@ class _HomePageTabState extends State<HomePageTab> {
       ),
     ];
 
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Heading(title: deskProvider!.name),
-          Text("Height: ${deskProvider!.height} cm"),
-          Icon(profileProvider.image.icon),
-          Text(profileProvider.name!),
-          Text(profileProvider.email!),
-          Text(profileProvider.password!),
-          Text("${profileProvider.standingTarget!.targetValue} h"),
-          Text("${profileProvider.sittingTarget!.targetValue} h"),
-          Text(profileProvider.id),
-          _buildDeskAnimation(),
-          _getInteractiveWidgetGroup(analyticInteractionWidgets, "Analytics"),
-          _getInteractiveWidgetGroup(presetInteractionWidgets, "Presets"),
-          _getInteractiveWidgetGroup(otherInteractionWidgets, "Others"),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Heading(title: deskProvider!.name),
+        Text("Height: ${deskProvider!.height} cm"),
+        Icon(profileProvider.image.icon),
+        Text(profileProvider.name!),
+        Text(profileProvider.email!),
+        Text(profileProvider.password!),
+        Text("${profileProvider.standingTarget!.targetValue} h"),
+        Text("${profileProvider.sittingTarget!.targetValue} h"),
+        Text(profileProvider.id),
+        _buildDeskAnimation(),
+        _getInteractiveWidgetGroup(analyticInteractionWidgets, "Analytics"),
+        _getInteractiveWidgetGroup(presetInteractionWidgets, "Presets"),
+        _getInteractiveWidgetGroup(otherInteractionWidgets, "Others"),
+      ],
     );
   }
 }

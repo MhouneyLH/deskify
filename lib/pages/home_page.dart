@@ -59,6 +59,7 @@ class _HomePageState extends State<HomePage> {
           : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       body: SingleChildScrollView(
+        padding: const EdgeInsets.all(10.0),
         child: tabs[selectedIndex],
       ),
     );
