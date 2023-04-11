@@ -22,6 +22,8 @@ class ProfileProvider extends ChangeNotifier {
   Icon get image => _profile.image;
   Target? get standingTimeTarget => _profile.standingTimeTarget;
   Target? get sittingTimeTarget => _profile.sittingTimeTarget;
+  Map<int, Target>? get standingAnalytic => _profile.standingAnalytic;
+  Map<int, Target>? get sittingAnalytic => _profile.sittingAnalytic;
 
   set profile(Profile value) {
     _profile.name = value.name;
@@ -79,6 +81,21 @@ class ProfileProvider extends ChangeNotifier {
 
   void addSittingTimeActual(double value) {
     _profile.sittingTimeTarget!.actualValue += value;
+    notifyListeners();
+  }
+
+  // TODO: darüber nachdenken, dass ich einfach nur den Ansatz mit dem derzeitigen Tag nehme
+  // könnte immer DateTime.now() verwenden, um darauf zu mappen
+  // Bei Target-Values einfach immer das aktuellste mitspeichern
+  // nach jeder Woche clearen (Die Woche ist dann für mich einfach immer am Montag einer jeden neuen Woche vorbei)
+
+  void updateStandingAnalytic(int weekday, int value) {
+    _profile.standingAnalytic![weekday]!.actualValue = value.toDouble();
+    notifyListeners();
+  }
+
+  void updateSittistandingngAnalytic(int weekday, int value) {
+    _profile.sittingAnalytic![weekday]!.actualValue = value.toDouble();
     notifyListeners();
   }
 }

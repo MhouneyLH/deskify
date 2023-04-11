@@ -4,10 +4,10 @@ import 'package:deskify/widgets/generic/progress_bar.dart';
 import 'package:flutter/material.dart';
 
 class AnalyticsWidgetPage extends StatefulWidget {
-  Target target;
+  final Target target;
   final Color signalizationColor;
 
-  AnalyticsWidgetPage({
+  const AnalyticsWidgetPage({
     required this.target,
     this.signalizationColor = Colors.blue,
     super.key,
