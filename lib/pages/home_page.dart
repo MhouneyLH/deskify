@@ -16,6 +16,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final double standingBreakpointHeight = 90.0;
+
   int selectedTabIndex = 0;
   DeskProvider? deskProvider;
   ProfileProvider? profileProvider;
@@ -25,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     analyticSecondTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      _updateTest();
+      _updateAnalytics();
     });
   }
 
@@ -84,8 +86,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _updateTest() {
-    deskProvider!.height > 90.0
+  void _updateAnalytics() {
+    deskProvider!.height > standingBreakpointHeight
         ? profileProvider!.addStandingTimeActual(1.0)
         : profileProvider!.addSittingTimeActual(1.0);
   }
