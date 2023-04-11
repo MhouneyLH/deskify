@@ -34,7 +34,8 @@ class _HomePageTabState extends State<HomePageTab> {
         icon: const Icon(Icons.info),
         onPressed: () => _navigateToWidgetPage(
           context,
-          const AnalyticsWidgetPage(
+          AnalyticsWidgetPage(
+            target: profileProvider!.standingTimeTarget!,
             signalizationColor: Colors.green,
           ),
         ),
@@ -44,7 +45,8 @@ class _HomePageTabState extends State<HomePageTab> {
         icon: const Icon(Icons.info),
         onPressed: () => _navigateToWidgetPage(
           context,
-          const AnalyticsWidgetPage(
+          AnalyticsWidgetPage(
+            target: profileProvider!.sittingTimeTarget!,
             signalizationColor: Colors.red,
           ),
         ),

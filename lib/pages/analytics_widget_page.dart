@@ -1,11 +1,15 @@
+import 'package:deskify/model/profile.dart';
+import 'package:deskify/utils.dart';
 import 'package:deskify/widgets/generic/progress_bar.dart';
 import 'package:flutter/material.dart';
 
 class AnalyticsWidgetPage extends StatefulWidget {
+  Target target;
   final Color signalizationColor;
 
-  const AnalyticsWidgetPage({
-    required this.signalizationColor,
+  AnalyticsWidgetPage({
+    required this.target,
+    this.signalizationColor = Colors.blue,
     super.key,
   });
 
@@ -24,8 +28,17 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
         children: [
           ProgressBar(
             height: 20.0,
-            displayValue: 0.5,
+            displayValue: widget.target.actualValue /
+                Utils.hoursToSeconds(widget.target.targetValue),
             displayColor: widget.signalizationColor,
+          ),
+          Text(
+            "Actual: ${Utils.secondsToHours(widget.target.actualValue.toInt())} h",
+            style: const TextStyle(fontSize: 20.0),
+          ),
+          Text(
+            "Target: ${widget.target.targetValue} h",
+            style: const TextStyle(fontSize: 20.0),
           ),
           const SizedBox(height: 10.0),
           Center(
