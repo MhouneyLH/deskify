@@ -7,10 +7,10 @@ class ProfileProvider extends ChangeNotifier {
     email: "lucas.mag.huehner@gmail.com",
     password: "123456",
     standingTimeTarget: Target(
-      targetValue: 0.5,
+      targetValue: 30,
     ),
     sittingTimeTarget: Target(
-      targetValue: 0.3,
+      targetValue: 20,
     ),
   );
 

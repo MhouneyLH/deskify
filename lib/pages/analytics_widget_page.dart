@@ -29,15 +29,15 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
           ProgressBar(
             height: 20.0,
             displayValue: widget.target.actualValue /
-                Utils.hoursToSeconds(widget.target.targetValue),
+                Utils.minutesToSeconds(widget.target.targetValue),
             displayColor: widget.signalizationColor,
           ),
           Text(
-            "Actual: ${Utils.secondsToHours(widget.target.actualValue.toInt())} h",
+            "Actual: ${Utils.secondsToMinutes(widget.target.actualValue.toInt())} min",
             style: const TextStyle(fontSize: 20.0),
           ),
           Text(
-            "Target: ${widget.target.targetValue} h",
+            "Target: ${widget.target.targetValue} min",
             style: const TextStyle(fontSize: 20.0),
           ),
           const SizedBox(height: 10.0),

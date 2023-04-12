@@ -3,14 +3,11 @@ class Utils {
     return double.parse(value.toStringAsFixed(places));
   }
 
-  // TODO: am besten einfach von Sekunden zu Minuten und umgekehrt
-  static double secondsToHours(int seconds) {
-    final double result = roundDouble(seconds / (60 * 60), 2);
-    return result;
+  static double secondsToMinutes(int seconds) {
+    return roundDouble(seconds / 60, 2);
   }
 
-// TODO: am besten einfach von Sekunden zu Minuten und umgekehrt
-  static int hoursToSeconds(double hours) {
-    return (hours * (60 * 60)).round();
+  static int minutesToSeconds(double hours) {
+    return (hours * 60).round();
   }
 }
