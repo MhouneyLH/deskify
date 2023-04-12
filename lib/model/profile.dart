@@ -30,6 +30,7 @@ class Profile {
     DateTime.saturday: Target(targetValue: 0.0),
     DateTime.sunday: Target(targetValue: 0.0),
   };
+
   Map<int, Target>? sittingAnalytic = {
     DateTime.monday: Target(targetValue: 0.0),
     DateTime.tuesday: Target(targetValue: 0.0),
