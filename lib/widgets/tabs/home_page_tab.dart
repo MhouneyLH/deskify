@@ -35,7 +35,7 @@ class _HomePageTabState extends State<HomePageTab> {
         onPressed: () => _navigateToWidgetPage(
           context,
           AnalyticsWidgetPage(
-            target: profileProvider!.standingTimeTarget!,
+            targetWeekdayMap: profileProvider!.standingAnalytic!,
             signalizationColor: Colors.green,
           ),
         ),
@@ -46,7 +46,7 @@ class _HomePageTabState extends State<HomePageTab> {
         onPressed: () => _navigateToWidgetPage(
           context,
           AnalyticsWidgetPage(
-            target: profileProvider!.sittingTimeTarget!,
+            targetWeekdayMap: profileProvider!.sittingAnalytic!,
             signalizationColor: Colors.red,
           ),
         ),

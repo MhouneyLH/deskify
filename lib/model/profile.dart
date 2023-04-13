@@ -6,7 +6,7 @@ class Target {
   double actualValue;
 
   Target({
-    required this.targetValue,
+    this.targetValue = 0.0,
     this.actualValue = 0.0,
   });
 }
@@ -17,9 +17,6 @@ class Profile {
   String? email;
   String? password;
   Icon image;
-
-  Target? standingTimeTarget;
-  Target? sittingTimeTarget;
 
   Map<int, Target>? standingAnalytic = {
     DateTime.monday: Target(targetValue: 0.0),
@@ -46,8 +43,6 @@ class Profile {
     this.email,
     this.password,
     this.image = const Icon(Icons.person),
-    this.standingTimeTarget,
-    this.sittingTimeTarget,
     this.standingAnalytic,
     this.sittingAnalytic,
   });

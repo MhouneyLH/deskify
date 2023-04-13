@@ -1,14 +1,16 @@
 import 'package:deskify/model/profile.dart';
+import 'package:deskify/provider/profile_provider.dart';
 import 'package:deskify/utils.dart';
 import 'package:deskify/widgets/generic/progress_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AnalyticsWidgetPage extends StatefulWidget {
-  final Target target;
+  final Map<int, Target> targetWeekdayMap;
   final Color signalizationColor;
 
   const AnalyticsWidgetPage({
-    required this.target,
+    required this.targetWeekdayMap,
     this.signalizationColor = Colors.blue,
     super.key,
   });
@@ -20,6 +22,12 @@ class AnalyticsWidgetPage extends StatefulWidget {
 class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
   @override
   Widget build(BuildContext context) {
+    final int weekdayAsInt = DateTime.now().weekday;
+    final Target target = widget.targetWeekdayMap[weekdayAsInt]!;
+    // TODO: Need this here to keep the build up to date
+    final ProfileProvider profileProvider =
+        Provider.of<ProfileProvider>(context);
+
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(
@@ -28,16 +36,16 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
         children: [
           ProgressBar(
             height: 20.0,
-            displayValue: widget.target.actualValue /
-                Utils.minutesToSeconds(widget.target.targetValue),
+            displayValue:
+                target.actualValue / Utils.minutesToSeconds(target.targetValue),
             displayColor: widget.signalizationColor,
           ),
           Text(
-            "Actual: ${Utils.secondsToMinutes(widget.target.actualValue.toInt())} min",
+            "Target today: ${target.targetValue} min",
             style: const TextStyle(fontSize: 20.0),
           ),
           Text(
-            "Target: ${widget.target.targetValue} min",
+            "Actual today: ${Utils.secondsToMinutes(target.actualValue.toInt())} min",
             style: const TextStyle(fontSize: 20.0),
           ),
           const SizedBox(height: 10.0),

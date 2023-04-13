@@ -88,8 +88,8 @@ class _HomePageState extends State<HomePage> {
 
   void _updateAnalytics() {
     deskProvider!.height > standingBreakpointHeight
-        ? profileProvider!.addStandingTimeActual(1.0)
-        : profileProvider!.addSittingTimeActual(1.0);
+        ? profileProvider!.incrementStandingAnalytic(DateTime.now().weekday, 1)
+        : profileProvider!.incrementSittingAnalytic(DateTime.now().weekday, 1);
   }
 
   bool _isHomePage() => selectedTabIndex == 0;
