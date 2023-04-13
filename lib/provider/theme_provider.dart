@@ -22,10 +22,15 @@ class ThemeProvider extends ChangeNotifier {
   );
 
   ThemeData? _themeData;
-  ThemeData get themeData => _themeData ?? _darkTheme;
+  ThemeData get themeData => _themeData ?? _lightTheme;
 
-  set themeData(ThemeData value) {
-    _themeData = value;
+  void setDarkTheme() {
+    _themeData = _darkTheme;
+    notifyListeners();
+  }
+
+  void setLightTheme() {
+    _themeData = _lightTheme;
     notifyListeners();
   }
 }

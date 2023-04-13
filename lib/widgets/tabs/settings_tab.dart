@@ -1,4 +1,5 @@
 import 'package:deskify/provider/profile_provider.dart';
+import 'package:deskify/provider/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,10 +12,13 @@ class SettingsTab extends StatefulWidget {
 
 class _SettingsTabState extends State<SettingsTab> {
   ProfileProvider? profileProvider;
+  ThemeProvider? themeProvider;
+  bool _darkThemeSwitchValue = false;
 
   @override
   Widget build(BuildContext context) {
     profileProvider = Provider.of<ProfileProvider>(context);
+    themeProvider = Provider.of<ThemeProvider>(context);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -23,13 +27,19 @@ class _SettingsTabState extends State<SettingsTab> {
         Container(
           height: 100,
           decoration: BoxDecoration(
-            // TODO: color: Colors.blue[700],
+            color: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: _buildProfileSummary(),
           ),
+        ),
+        Row(
+          children: [
+            const Text("Darktheme:"),
+            _buildThemeSwitch(),
+          ],
         ),
       ],
     );
@@ -54,7 +64,8 @@ class _SettingsTabState extends State<SettingsTab> {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
+        color: Theme.of(context)
+            .primaryColor, // TOOD: change to primarySwatch and use themeProvider everywhere
         borderRadius: BorderRadius.circular(size),
       ),
       child: Icon(
@@ -97,5 +108,18 @@ class _SettingsTabState extends State<SettingsTab> {
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
     );
+  }
+
+  Widget _buildThemeSwitch() {
+    return Switch(
+        value: _darkThemeSwitchValue,
+        onChanged: (bool value) => {
+              setState(() {
+                _darkThemeSwitchValue = value;
+                _darkThemeSwitchValue
+                    ? themeProvider!.setDarkTheme()
+                    : themeProvider!.setLightTheme();
+              })
+            });
   }
 }
