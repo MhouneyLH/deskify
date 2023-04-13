@@ -1,5 +1,6 @@
 import 'package:deskify/provider/desk_provider.dart';
 import 'package:deskify/provider/profile_provider.dart';
+import 'package:deskify/provider/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'pages/home_page.dart';
@@ -19,9 +20,14 @@ class MainApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => DeskProvider()),
         ChangeNotifierProvider(create: (_) => ProfileProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
       ],
-      child: const MaterialApp(
-        home: HomePage(),
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, _) => MaterialApp(
+          title: MainApp.title,
+          theme: themeProvider.themeData,
+          home: const HomePage(),
+        ),
       ),
     );
   }

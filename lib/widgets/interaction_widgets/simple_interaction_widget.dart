@@ -27,7 +27,7 @@ class SimpleInteractionWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(15.0),
           ),
         ),
-        backgroundColor: MaterialStateProperty.all(Colors.blue),
+        // TODO: backgroundColor: MaterialStateProperty.all(Colors.blue),
         padding: MaterialStateProperty.all(const EdgeInsets.all(10.0)),
       ),
       child: Row(
@@ -45,7 +45,6 @@ class SimpleInteractionWidget extends StatelessWidget {
   Widget _buildIcon() {
     return Icon(
       icon.icon,
-      color: Colors.white,
     );
   }
 
@@ -53,7 +52,6 @@ class SimpleInteractionWidget extends StatelessWidget {
     return Text(
       title,
       style: const TextStyle(
-        color: Colors.white,
         fontSize: 20.0,
       ),
       textAlign: TextAlign.start,

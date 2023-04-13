@@ -84,15 +84,11 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
               showTitles: true,
               getTitlesWidget: (value, meta) => Text(
                 "${value.toInt()}",
-                style: const TextStyle(
-                  color: Colors.black,
-                ),
               ),
             ),
             axisNameWidget: const Text(
               "min",
               style: TextStyle(
-                color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -112,10 +108,7 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
             sideTitles: SideTitles(
               showTitles: true,
               getTitlesWidget: (value, meta) => Text(
-                _getWeekdayByInt(value.toInt()),
-                style: const TextStyle(
-                  color: Colors.black,
-                ),
+                Utils.intToShortWeekday(value.toInt()),
               ),
             ),
           ),
@@ -128,26 +121,5 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
         ),
       ),
     );
-  }
-
-  String _getWeekdayByInt(int dayAsInt) {
-    switch (dayAsInt) {
-      case 1:
-        return "Mon";
-      case 2:
-        return "Tue";
-      case 3:
-        return "Wed";
-      case 4:
-        return "Thu";
-      case 5:
-        return "Fri";
-      case 6:
-        return "Sat";
-      case 7:
-        return "Sun";
-      default:
-        return "Mon";
-    }
   }
 }

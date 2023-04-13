@@ -15,7 +15,6 @@ class Heading extends StatelessWidget {
       style: const TextStyle(
         fontSize: 28,
         fontWeight: FontWeight.bold,
-        color: Colors.black,
       ),
       textAlign: TextAlign.start,
       maxLines: 1,

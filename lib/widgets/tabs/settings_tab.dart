@@ -23,7 +23,7 @@ class _SettingsTabState extends State<SettingsTab> {
         Container(
           height: 100,
           decoration: BoxDecoration(
-            color: Colors.blue[700],
+            // TODO: color: Colors.blue[700],
             borderRadius: BorderRadius.circular(10),
           ),
           child: Padding(
@@ -54,13 +54,13 @@ class _SettingsTabState extends State<SettingsTab> {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: Colors.grey,
+        color: Theme.of(context).primaryColor,
         borderRadius: BorderRadius.circular(size),
       ),
       child: Icon(
         profileProvider!.image.icon,
         size: size * 0.75,
-        color: Colors.white,
+        color: Theme.of(context).accentColor,
       ),
     );
   }
@@ -69,7 +69,6 @@ class _SettingsTabState extends State<SettingsTab> {
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.blue,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Padding(
@@ -92,7 +91,6 @@ class _SettingsTabState extends State<SettingsTab> {
     return Text(
       text,
       style: const TextStyle(
-        color: Colors.white,
         fontSize: 15.0,
       ),
       textAlign: TextAlign.start,

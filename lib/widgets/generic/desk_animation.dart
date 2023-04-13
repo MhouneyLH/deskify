@@ -44,7 +44,7 @@ class _DeskAnimationState extends State<DeskAnimation> {
       child: Container(
         height: deskDisplayHeight,
         decoration: BoxDecoration(
-          color: Colors.black,
+          color: Theme.of(context).accentColor,
           borderRadius: BorderRadius.circular(10),
         ),
       ),
@@ -62,7 +62,7 @@ class _DeskAnimationState extends State<DeskAnimation> {
         width: 10,
         height: (widget.deskHeight / Desk.maximumHeight) * widget.height,
         decoration: BoxDecoration(
-          color: Colors.black,
+          color: Theme.of(context).accentColor,
           borderRadius: BorderRadius.circular(10.0),
         ),
       ),
