@@ -16,13 +16,13 @@ class ProfileProvider extends ChangeNotifier {
       DateTime.sunday: Target(targetValue: 30.0),
     },
     sittingAnalytic: {
-      DateTime.monday: Target(targetValue: 20.0),
-      DateTime.tuesday: Target(targetValue: 20.0),
-      DateTime.wednesday: Target(targetValue: 20.0),
-      DateTime.thursday: Target(targetValue: 20.0),
-      DateTime.friday: Target(targetValue: 20.0),
-      DateTime.saturday: Target(targetValue: 20.0),
-      DateTime.sunday: Target(targetValue: 20.0),
+      DateTime.monday: Target(targetValue: 7.0),
+      DateTime.tuesday: Target(targetValue: 2.0),
+      DateTime.wednesday: Target(targetValue: 2.5),
+      DateTime.thursday: Target(targetValue: 2.0),
+      DateTime.friday: Target(targetValue: 3.0),
+      DateTime.saturday: Target(targetValue: 1.0),
+      DateTime.sunday: Target(targetValue: 6.5),
     },
   );
 
