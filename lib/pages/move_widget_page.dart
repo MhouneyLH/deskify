@@ -35,10 +35,6 @@ class _MoveWidgetPageState extends State<MoveWidgetPage> {
               onChanged: (value) => deskProvider!.height = value,
             ),
           ),
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text("Back"),
-          ),
         ],
       ),
     );

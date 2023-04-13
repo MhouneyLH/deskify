@@ -31,11 +31,12 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
       padding: const EdgeInsets.all(10.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(providerPreset!.id),
-          Text(providerPreset!.title),
-          Text("Target-Height: ${providerPreset!.targetHeight} cm"),
+          Center(child: Text(providerPreset!.id)),
+          Center(child: Text(providerPreset!.title)),
+          Center(
+              child: Text("Target-Height: ${providerPreset!.targetHeight} cm")),
           _buildDeskAnimation(),
           Expanded(
             child: AdjustHeightSlider(

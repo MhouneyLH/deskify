@@ -1,19 +1,17 @@
+import 'package:deskify/main.dart';
 import 'package:deskify/model/desk.dart';
 import 'package:deskify/model/preset.dart';
-import 'package:deskify/model/profile.dart';
 import 'package:deskify/pages/analytics_widget_page.dart';
 import 'package:deskify/pages/move_widget_page.dart';
 import 'package:deskify/pages/preset_widget_page.dart';
 import 'package:deskify/provider/desk_provider.dart';
 import 'package:deskify/provider/profile_provider.dart';
-import 'package:deskify/utils.dart';
 import 'package:deskify/widgets/generic/desk_animation.dart';
 import 'package:deskify/widgets/generic/heading_widget.dart';
 import 'package:deskify/widgets/interaction_widgets/interaction_widgets_grid_view.dart';
 import 'package:deskify/widgets/interaction_widgets/simple_interaction_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fl_chart/fl_chart.dart';
 
 class HomePageTab extends StatefulWidget {
   const HomePageTab({super.key});
@@ -96,7 +94,12 @@ class _HomePageTabState extends State<HomePageTab> {
   Future<dynamic> _navigateToWidgetPage(BuildContext context, Widget widget) {
     return Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (_) => widget,
+        builder: (_) => Scaffold(
+          appBar: AppBar(
+            title: const Text(MainApp.title),
+          ),
+          body: widget,
+        ),
       ),
     );
   }

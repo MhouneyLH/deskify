@@ -46,13 +46,6 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
             height: 300.0,
             child: _buildBarChart(widget.targetWeekdayMap),
           ),
-          const SizedBox(height: 10.0),
-          Center(
-            child: ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text("Back"),
-            ),
-          ),
         ],
       ),
     );
