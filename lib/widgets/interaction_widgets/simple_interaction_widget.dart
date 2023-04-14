@@ -5,21 +5,23 @@ class SimpleInteractionWidget extends StatelessWidget {
   final Icon icon;
   final double width;
   final double height;
-  final void Function() onPressed;
+  final void Function() onPressedWholeWidget;
+  final void Function()? onPressedSettingsIcon;
 
   const SimpleInteractionWidget({
     required this.title,
     this.icon = const Icon(Icons.abc),
     this.width = 200.0,
     this.height = 50.0,
-    required this.onPressed,
+    required this.onPressedWholeWidget,
+    this.onPressedSettingsIcon,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () => onPressed(),
+      onPressed: () => onPressedWholeWidget(),
       style: ButtonStyle(
         fixedSize: MaterialStateProperty.all(Size(width, height)),
         shape: MaterialStateProperty.all(
@@ -38,6 +40,10 @@ class SimpleInteractionWidget extends StatelessWidget {
           _buildIcon(),
           const SizedBox(width: 10.0),
           _buildTitle(context),
+          const Expanded(child: SizedBox()),
+          onPressedSettingsIcon != null
+              ? _buildSettingsButton(context)
+              : const SizedBox(),
         ],
       ),
     );
@@ -56,6 +62,17 @@ class SimpleInteractionWidget extends StatelessWidget {
       textAlign: TextAlign.start,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
+    );
+  }
+
+  Widget _buildSettingsButton(context) {
+    return Ink(
+      decoration: const BoxDecoration(shape: BoxShape.circle),
+      child: InkWell(
+        onTap: () => onPressedSettingsIcon!(),
+        borderRadius: BorderRadius.circular(100.0),
+        child: const Icon(Icons.settings),
+      ),
     );
   }
 }

@@ -33,7 +33,7 @@ class _HomePageTabState extends State<HomePageTab> {
       SimpleInteractionWidget(
         title: "Standing Information",
         icon: const Icon(Icons.info),
-        onPressed: () => _navigateToWidgetPage(
+        onPressedWholeWidget: () => _navigateToWidgetPage(
           context,
           AnalyticsWidgetPage(
             targetWeekdayMap: profileProvider!.standingAnalytic!,
@@ -44,7 +44,7 @@ class _HomePageTabState extends State<HomePageTab> {
       SimpleInteractionWidget(
         title: "Sitting Information",
         icon: const Icon(Icons.info),
-        onPressed: () => _navigateToWidgetPage(
+        onPressedWholeWidget: () => _navigateToWidgetPage(
           context,
           AnalyticsWidgetPage(
             targetWeekdayMap: profileProvider!.sittingAnalytic!,
@@ -59,7 +59,9 @@ class _HomePageTabState extends State<HomePageTab> {
         SimpleInteractionWidget(
           title: preset.title,
           icon: preset.icon,
-          onPressed: () => _navigateToWidgetPage(
+          onPressedWholeWidget: () =>
+              deskProvider!.height = preset.targetHeight,
+          onPressedSettingsIcon: () => _navigateToWidgetPage(
             context,
             PresetWidgetPage(preset: preset),
           ),
@@ -70,7 +72,7 @@ class _HomePageTabState extends State<HomePageTab> {
       SimpleInteractionWidget(
         title: "Move",
         icon: const Icon(Icons.input),
-        onPressed: () => _navigateToWidgetPage(
+        onPressedWholeWidget: () => _navigateToWidgetPage(
           context,
           const MoveWidgetPage(),
         ),
