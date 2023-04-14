@@ -25,7 +25,8 @@ class MainApp extends StatelessWidget {
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, _) => MaterialApp(
           title: MainApp.title,
-          theme: themeProvider.themeData,
+          // theme: themeProvider.themeData,
+          darkTheme: themeProvider.themeData,
           home: const HomePage(),
         ),
       ),

@@ -60,18 +60,14 @@ class _SettingsTabState extends State<SettingsTab> {
   Widget _buildProfileImage() {
     const double size = 75.0;
 
-    return Container(
+    return SizedBox(
       width: size,
       height: size,
-      decoration: BoxDecoration(
-        color: Theme.of(context)
-            .primaryColor, // TOOD: change to primarySwatch and use themeProvider everywhere
-        borderRadius: BorderRadius.circular(size),
-      ),
-      child: Icon(
-        profileProvider!.image.icon,
-        size: size * 0.75,
-        color: Theme.of(context).accentColor,
+      child: Center(
+        child: Icon(
+          profileProvider!.image.icon,
+          size: size * 0.75,
+        ),
       ),
     );
   }
@@ -116,9 +112,10 @@ class _SettingsTabState extends State<SettingsTab> {
         onChanged: (bool value) => {
               setState(() {
                 _darkThemeSwitchValue = value;
-                _darkThemeSwitchValue
-                    ? themeProvider!.setDarkTheme()
-                    : themeProvider!.setLightTheme();
+                themeProvider!.setDarkTheme();
+                // _darkThemeSwitchValue
+                //     ? themeProvider!.setDarkTheme()
+                //     : themeProvider!.setLightTheme();
               })
             });
   }

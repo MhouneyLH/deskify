@@ -39,7 +39,6 @@ class _ProgressBarState extends State<ProgressBar> {
         child: LinearProgressIndicator(
           value: widget.displayValue,
           valueColor: AlwaysStoppedAnimation<Color>(widget.displayColor),
-          backgroundColor: Colors.grey[300],
         ),
       ),
     );

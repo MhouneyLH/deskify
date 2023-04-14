@@ -49,6 +49,11 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(
+                Theme.of(context).primaryColor,
+              ),
+            ),
             child: const Text("Save"),
           ),
         ],

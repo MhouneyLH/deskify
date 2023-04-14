@@ -64,12 +64,13 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
                     toY:
                         Utils.secondsToMinutes(entry.value.actualValue.toInt()),
                     width: 15.0,
+                    color: widget.signalizationColor,
                   ),
                   BarChartRodData(
                     fromY: 0.0,
                     toY: entry.value.targetValue,
                     width: 15.0,
-                    color: Colors.amber,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ],
                 showingTooltipIndicators: [0],
