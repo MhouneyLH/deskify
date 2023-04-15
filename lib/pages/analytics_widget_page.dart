@@ -25,6 +25,8 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
   Widget build(BuildContext context) {
     final int weekdayAsInt = DateTime.now().weekday;
     final Target target = widget.targetWeekdayMap[weekdayAsInt]!;
+    final double displayValue =
+        target.actualValue / Utils.minutesToSeconds(target.targetValue);
     // TODO: Need this here to keep the build up to date
     final ProfileProvider profileProvider =
         Provider.of<ProfileProvider>(context);
@@ -37,16 +39,27 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
         children: [
           ProgressBar(
             height: 20.0,
-            displayValue:
-                target.actualValue / Utils.minutesToSeconds(target.targetValue),
+            displayValue: displayValue,
             displayColor: widget.signalizationColor,
           ),
           const SizedBox(height: 10.0),
+          Center(child: _buildSemanticsLabel(displayValue * 100)),
+          const SizedBox(height: 30.0),
           SizedBox(
             height: 300.0,
             child: _buildBarChart(widget.targetWeekdayMap),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildSemanticsLabel(double value) {
+    return Text(
+      "${Utils.roundDouble(value, 1)}% completed",
+      style: const TextStyle(
+        fontSize: 20.0,
+        fontWeight: FontWeight.bold,
       ),
     );
   }

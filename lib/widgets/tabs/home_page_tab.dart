@@ -23,6 +23,7 @@ class HomePageTab extends StatefulWidget {
 class _HomePageTabState extends State<HomePageTab> {
   DeskProvider? deskProvider;
   ProfileProvider? profileProvider;
+  final int currentWeekdayAsInt = DateTime.now().weekday;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +34,9 @@ class _HomePageTabState extends State<HomePageTab> {
       SimpleInteractionWidget(
         title: "Standing Information",
         icon: const Icon(Icons.info),
+        extraInformationTarget:
+            profileProvider!.standingAnalytic![currentWeekdayAsInt],
+        targetInformationColor: Colors.green,
         onPressedWholeWidget: () => _navigateToWidgetPage(
           context,
           AnalyticsWidgetPage(
@@ -44,6 +48,9 @@ class _HomePageTabState extends State<HomePageTab> {
       SimpleInteractionWidget(
         title: "Sitting Information",
         icon: const Icon(Icons.info),
+        extraInformationTarget:
+            profileProvider!.sittingAnalytic![currentWeekdayAsInt],
+        targetInformationColor: Colors.red,
         onPressedWholeWidget: () => _navigateToWidgetPage(
           context,
           AnalyticsWidgetPage(

@@ -1,4 +1,3 @@
-import 'package:deskify/utils.dart';
 import 'package:flutter/material.dart';
 
 class ProgressBar extends StatefulWidget {
@@ -20,15 +19,7 @@ class ProgressBar extends StatefulWidget {
 class _ProgressBarState extends State<ProgressBar> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _buildProgressBar(),
-        const SizedBox(height: 10.0),
-        Center(child: _buildSemanticsLabel()),
-      ],
-    );
+    return _buildProgressBar();
   }
 
   Widget _buildProgressBar() {
@@ -44,13 +35,5 @@ class _ProgressBarState extends State<ProgressBar> {
     );
   }
 
-  Widget _buildSemanticsLabel() {
-    return Text(
-      "${Utils.roundDouble(widget.displayValue * 100, 1)}% completed",
-      style: const TextStyle(
-        fontSize: 20.0,
-        fontWeight: FontWeight.bold,
-      ),
-    );
-  }
+  
 }
