@@ -25,7 +25,6 @@ class _MoveWidgetPageState extends State<MoveWidgetPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Text("MoveWidgetPage"),
           Text(deskProvider!.name),
           Text("Height: ${deskProvider!.height} cm"),
           _buildDeskAnimation(),

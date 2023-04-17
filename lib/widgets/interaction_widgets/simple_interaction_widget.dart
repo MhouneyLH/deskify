@@ -1,6 +1,3 @@
-import 'package:deskify/model/profile.dart';
-import 'package:deskify/utils.dart';
-import 'package:deskify/widgets/generic/progress_bar.dart';
 import 'package:flutter/material.dart';
 
 class SimpleInteractionWidget extends StatelessWidget {
@@ -8,20 +5,18 @@ class SimpleInteractionWidget extends StatelessWidget {
   final Icon icon;
   final double width;
   final double height;
-  final Target? extraInformationTarget;
-  final Color targetInformationColor;
   final void Function() onPressedWholeWidget;
   final void Function()? onPressedSettingsIcon;
+  final Widget? extraInformationWidget;
 
   const SimpleInteractionWidget({
     required this.title,
     this.icon = const Icon(Icons.abc),
     this.width = 200.0,
     this.height = 50.0,
-    this.extraInformationTarget,
-    this.targetInformationColor = Colors.blue,
     required this.onPressedWholeWidget,
     this.onPressedSettingsIcon,
+    this.extraInformationWidget,
     super.key,
   });
 
@@ -57,10 +52,8 @@ class SimpleInteractionWidget extends StatelessWidget {
                   : const SizedBox(),
             ],
           ),
-          SizedBox(height: extraInformationTarget != null ? 5.0 : 0.0),
-          extraInformationTarget != null
-              ? _buildExtraInformation()
-              : const SizedBox(),
+          SizedBox(height: extraInformationWidget == null ? 0.0 : 5.0),
+          _buildExtraInformationWidget(),
         ],
       ),
     );
@@ -93,12 +86,9 @@ class SimpleInteractionWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildExtraInformation() {
-    return ProgressBar(
-      height: 10.0,
-      displayValue: extraInformationTarget!.actualValue /
-          Utils.minutesToSeconds(extraInformationTarget!.targetValue),
-      displayColor: targetInformationColor!,
-    );
+  Widget _buildExtraInformationWidget() {
+    return extraInformationWidget == null
+        ? const SizedBox()
+        : extraInformationWidget!;
   }
 }

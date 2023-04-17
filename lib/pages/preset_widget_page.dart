@@ -33,7 +33,6 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Center(child: Text(providerPreset!.id)),
           Center(child: Text(providerPreset!.title)),
           Center(
               child: Text("Target-Height: ${providerPreset!.targetHeight} cm")),
