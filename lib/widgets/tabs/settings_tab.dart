@@ -11,8 +11,8 @@ class SettingsTab extends StatefulWidget {
 }
 
 class _SettingsTabState extends State<SettingsTab> {
-  ProfileProvider? profileProvider;
-  ThemeProvider? themeProvider;
+  late ProfileProvider profileProvider;
+  late ThemeProvider themeProvider;
   bool _darkThemeSwitchValue = false;
 
   @override
@@ -24,36 +24,31 @@ class _SettingsTabState extends State<SettingsTab> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Container(
-          height: 100,
-          decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: _buildProfileSummary(),
-          ),
-        ),
-        Row(
-          children: [
-            const Text("Darktheme:"),
-            _buildThemeSwitch(),
-          ],
-        ),
+        _buildProfileSummary(),
+        _buildThemeSwitch(),
       ],
     );
   }
 
   Widget _buildProfileSummary() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _buildProfileImage(),
-        const SizedBox(width: 10.0),
-        _buildProfileInformation(),
-      ],
+    return Container(
+      height: 100,
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _buildProfileImage(),
+            const SizedBox(width: 10.0),
+            _buildProfileInformation(),
+          ],
+        ),
+      ),
     );
   }
 
@@ -65,7 +60,7 @@ class _SettingsTabState extends State<SettingsTab> {
       height: size,
       child: Center(
         child: Icon(
-          profileProvider!.image.icon,
+          profileProvider.image.icon,
           size: size * 0.75,
         ),
       ),
@@ -84,9 +79,9 @@ class _SettingsTabState extends State<SettingsTab> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _buildInformationText(profileProvider!.name!),
+              _buildInformationText(profileProvider.name),
               const SizedBox(height: 10.0),
-              _buildInformationText(profileProvider!.email!),
+              _buildInformationText(profileProvider.email),
             ],
           ),
         ),
@@ -107,16 +102,22 @@ class _SettingsTabState extends State<SettingsTab> {
   }
 
   Widget _buildThemeSwitch() {
-    return Switch(
-        value: _darkThemeSwitchValue,
-        onChanged: (bool value) => {
-              setState(() {
-                _darkThemeSwitchValue = value;
-                themeProvider!.setDarkTheme();
-                // _darkThemeSwitchValue
-                //     ? themeProvider!.setDarkTheme()
-                //     : themeProvider!.setLightTheme();
-              })
-            });
+    return Row(
+      children: [
+        const Text("Darktheme:"),
+        Switch(
+          value: _darkThemeSwitchValue,
+          onChanged: (bool value) => {
+            setState(() {
+              _darkThemeSwitchValue = value;
+              themeProvider.setDarkTheme();
+              // _darkThemeSwitchValue
+              //     ? themeProvider!.setDarkTheme()
+              //     : themeProvider!.setLightTheme();
+            })
+          },
+        ),
+      ],
+    );
   }
 }

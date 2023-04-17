@@ -18,31 +18,35 @@ class DeskAnimation extends StatefulWidget {
 }
 
 class _DeskAnimationState extends State<DeskAnimation> {
+  late double deskDisplayHeight;
+
   @override
   Widget build(BuildContext context) {
+    deskDisplayHeight =
+        (widget.deskHeight / Desk.maximumHeight) * widget.height;
+
     return SizedBox(
       width: widget.width,
       height: widget.height,
       child: Stack(
         children: [
           _buildDesk(),
-          _buildFoot(true),
-          _buildFoot(false),
+          _buildFoot(isLeftFoot: true),
+          _buildFoot(isLeftFoot: false),
         ],
       ),
     );
   }
 
   Widget _buildDesk() {
-    const double deskDisplayHeight = 10.0;
+    const double deskDisplayThickness = 10.0;
 
     return Positioned(
       left: 0,
       right: 0,
-      bottom: (widget.deskHeight / Desk.maximumHeight) * widget.height -
-          deskDisplayHeight,
+      bottom: deskDisplayHeight,
       child: Container(
-        height: deskDisplayHeight,
+        height: deskDisplayThickness,
         decoration: BoxDecoration(
           color: Theme.of(context).accentColor,
           borderRadius: BorderRadius.circular(10),
@@ -51,7 +55,7 @@ class _DeskAnimationState extends State<DeskAnimation> {
     );
   }
 
-  Widget _buildFoot(bool isLeftFoot) {
+  Widget _buildFoot({required bool isLeftFoot}) {
     final double footMarginToBoundaries = widget.width / 8;
 
     return Positioned(
@@ -60,7 +64,7 @@ class _DeskAnimationState extends State<DeskAnimation> {
       bottom: 0,
       child: Container(
         width: 10,
-        height: (widget.deskHeight / Desk.maximumHeight) * widget.height,
+        height: deskDisplayHeight,
         decoration: BoxDecoration(
           color: Theme.of(context).accentColor,
           borderRadius: BorderRadius.circular(10.0),

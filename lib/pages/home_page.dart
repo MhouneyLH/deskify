@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:deskify/main.dart';
+import 'package:deskify/model/desk.dart';
 import 'package:deskify/provider/desk_provider.dart';
 import 'package:deskify/provider/profile_provider.dart';
+import 'package:deskify/utils.dart';
 import 'package:deskify/widgets/tabs/add_device_tab.dart';
 import 'package:deskify/widgets/tabs/home_page_tab.dart';
 import 'package:deskify/widgets/tabs/settings_tab.dart';
@@ -16,31 +18,27 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final double standingBreakpointHeight = 90.0;
-
+  late DeskProvider deskProvider;
+  late ProfileProvider profileProvider;
+  late Timer analyticalTimer;
   int selectedTabIndex = 0;
-  DeskProvider? deskProvider;
-  ProfileProvider? profileProvider;
-  late Timer analyticSecondTimer;
 
   @override
   void initState() {
     super.initState();
-    analyticSecondTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      _updateAnalytics();
-    });
+    _startAnalyticalTimer();
   }
 
   @override
   Widget build(BuildContext context) {
+    deskProvider = Provider.of<DeskProvider>(context);
+    profileProvider = Provider.of<ProfileProvider>(context);
+
     final List<Widget> tabs = [
       const HomePageTab(),
       const AddDeviceTab(),
       const SettingsTab(),
     ];
-
-    deskProvider = Provider.of<DeskProvider>(context);
-    profileProvider = Provider.of<ProfileProvider>(context);
 
     final List<BottomNavigationBarItem> navigationBarItems = [
       const BottomNavigationBarItem(
@@ -61,12 +59,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text(MainApp.title),
       ),
-      floatingActionButton: _isHomePage()
-          ? FloatingActionButton(
-              onPressed: () => _updateSelectedTabIndex(2),
-              child: const Icon(Icons.settings),
-            )
-          : null,
+      floatingActionButton: _isHomePage() ? _buildFloatingActionButton() : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedTabIndex,
@@ -80,6 +73,12 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void _startAnalyticalTimer() {
+    analyticalTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _updateAnalytics();
+    });
+  }
+
   void _updateSelectedTabIndex(int index) {
     setState(
       () => selectedTabIndex = index,
@@ -87,10 +86,19 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _updateAnalytics() {
-    deskProvider!.height > standingBreakpointHeight
-        ? profileProvider!.incrementStandingAnalytic(DateTime.now().weekday, 1)
-        : profileProvider!.incrementSittingAnalytic(DateTime.now().weekday, 1);
+    deskProvider.height > Desk.standingBreakpointHeight
+        ? profileProvider.incrementStandingAnalytic(
+            Utils.getCurrentWeekdayAsInt(), 1)
+        : profileProvider.incrementSittingAnalytic(
+            Utils.getCurrentWeekdayAsInt(), 1);
   }
 
   bool _isHomePage() => selectedTabIndex == 0;
+
+  FloatingActionButton _buildFloatingActionButton() {
+    return FloatingActionButton(
+      onPressed: () => _updateSelectedTabIndex(2),
+      child: const Icon(Icons.settings),
+    );
+  }
 }

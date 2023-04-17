@@ -19,13 +19,13 @@ class PresetWidgetPage extends StatefulWidget {
 }
 
 class _PresetWidgetPageState extends State<PresetWidgetPage> {
-  DeskProvider? deskProvider;
-  Preset? providerPreset;
+  late DeskProvider deskProvider;
+  late Preset providerPreset;
 
   @override
   Widget build(BuildContext context) {
     deskProvider = Provider.of<DeskProvider>(context);
-    providerPreset = deskProvider!.getPreset(widget.preset.id);
+    providerPreset = deskProvider.getPreset(widget.preset.id);
 
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -33,28 +33,12 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Center(child: Text(providerPreset!.title)),
+          Center(child: Text(providerPreset.title)),
           Center(
-              child: Text("Target-Height: ${providerPreset!.targetHeight} cm")),
+              child: Text("Target-Height: ${providerPreset.targetHeight} cm")),
           _buildDeskAnimation(),
-          Expanded(
-            child: AdjustHeightSlider(
-              displayedHeight: providerPreset!.targetHeight,
-              onChanged: (value) => deskProvider!.setPresetHeight(
-                providerPreset!.id,
-                value,
-              ),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(),
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(
-                Theme.of(context).primaryColor,
-              ),
-            ),
-            child: const Text("Save"),
-          ),
+          _buildSliderWidget(),
+          _buildSaveButton(),
         ],
       ),
     );
@@ -65,8 +49,32 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
       child: DeskAnimation(
         width: 200,
         height: Desk.minimumHeight,
-        deskHeight: providerPreset!.targetHeight,
+        deskHeight: providerPreset.targetHeight,
       ),
+    );
+  }
+
+  Widget _buildSliderWidget() {
+    return Expanded(
+      child: AdjustHeightSlider(
+        displayedHeight: providerPreset.targetHeight,
+        onChanged: (value) => deskProvider.setPresetHeight(
+          providerPreset.id,
+          value,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSaveButton() {
+    return ElevatedButton(
+      onPressed: () => Navigator.of(context).pop(),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(
+          Theme.of(context).primaryColor,
+        ),
+      ),
+      child: const Text("Save"),
     );
   }
 }

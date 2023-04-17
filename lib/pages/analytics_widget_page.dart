@@ -1,4 +1,4 @@
-import 'package:deskify/model/profile.dart';
+import 'package:deskify/model/target.dart';
 import 'package:deskify/provider/profile_provider.dart';
 import 'package:deskify/utils.dart';
 import 'package:deskify/widgets/generic/progress_bar.dart';
@@ -23,13 +23,11 @@ class AnalyticsWidgetPage extends StatefulWidget {
 class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
   @override
   Widget build(BuildContext context) {
-    final int weekdayAsInt = DateTime.now().weekday;
-    final Target target = widget.targetWeekdayMap[weekdayAsInt]!;
-    final double displayValue =
-        target.actualValue / Utils.minutesToSeconds(target.targetValue);
-    // TODO: Need this here to keep the build up to date
     final ProfileProvider profileProvider =
         Provider.of<ProfileProvider>(context);
+    final Target target =
+        widget.targetWeekdayMap[Utils.getCurrentWeekdayAsInt()]!;
+    final double progressValue = profileProvider.getProgress(target);
 
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -39,11 +37,11 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
         children: [
           ProgressBar(
             height: 20.0,
-            displayValue: displayValue,
+            progressValue: progressValue,
             displayColor: widget.signalizationColor,
           ),
           const SizedBox(height: 10.0),
-          Center(child: _buildSemanticsLabel(displayValue * 100)),
+          Center(child: _buildSemanticsLabel(progressValue * 100)),
           const SizedBox(height: 30.0),
           SizedBox(
             height: 300.0,
@@ -56,7 +54,7 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
 
   Widget _buildSemanticsLabel(double value) {
     return Text(
-      "${Utils.roundDouble(value, 1)}% completed",
+      "${Utils.roundDouble(value, 2)}% completed",
       style: const TextStyle(
         fontSize: 20.0,
         fontWeight: FontWeight.bold,
@@ -69,63 +67,15 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
       BarChartData(
         barGroups: targetWeekdayMap.entries
             .map(
-              (MapEntry<int, Target> entry) => BarChartGroupData(
-                x: entry.key,
-                barRods: [
-                  BarChartRodData(
-                    fromY: 0.0,
-                    toY:
-                        Utils.secondsToMinutes(entry.value.actualValue.toInt()),
-                    width: 15.0,
-                    color: widget.signalizationColor,
-                  ),
-                  BarChartRodData(
-                    fromY: 0.0,
-                    toY: entry.value.targetValue,
-                    width: 15.0,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ],
-                showingTooltipIndicators: [0],
-              ),
+              (MapEntry<int, Target> entry) => _buildBarChartGroupData(entry),
             )
             .toList(),
         titlesData: FlTitlesData(
           show: true,
-          leftTitles: AxisTitles(
-            axisNameSize: 12,
-            sideTitles: SideTitles(
-              showTitles: true,
-              getTitlesWidget: (value, meta) => Text(
-                "${value.toInt()}",
-              ),
-            ),
-            axisNameWidget: const Text(
-              "min",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          topTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: false,
-            ),
-          ),
-          rightTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: false,
-            ),
-          ),
-          bottomTitles: AxisTitles(
-            axisNameSize: 12,
-            sideTitles: SideTitles(
-              showTitles: true,
-              getTitlesWidget: (value, meta) => Text(
-                Utils.intToShortWeekday(value.toInt()),
-              ),
-            ),
-          ),
+          leftTitles: _buildLeftTitles(),
+          topTitles: _buildEmptyTitles(),
+          rightTitles: _buildEmptyTitles(),
+          bottomTitles: _buildBottomTitles(),
         ),
         borderData: FlBorderData(show: false),
         barTouchData: BarTouchData(enabled: true),
@@ -133,6 +83,65 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
           // TODO: wtf does this do?
           checkToShowVerticalLine: (value) => value == 0,
         ),
+      ),
+    );
+  }
+
+  BarChartGroupData _buildBarChartGroupData(MapEntry<int, Target> entry) {
+    return BarChartGroupData(
+      x: entry.key,
+      barRods: [
+        BarChartRodData(
+          fromY: 0.0,
+          toY: Utils.secondsToMinutes(entry.value.actualValue.toInt()),
+          width: 15.0,
+          color: widget.signalizationColor,
+        ),
+        BarChartRodData(
+          fromY: 0.0,
+          toY: entry.value.targetValue,
+          width: 15.0,
+          color: Theme.of(context).primaryColor,
+        ),
+      ],
+      showingTooltipIndicators: [0],
+    );
+  }
+
+  AxisTitles _buildLeftTitles() {
+    return AxisTitles(
+      axisNameSize: 12,
+      sideTitles: SideTitles(
+        showTitles: true,
+        getTitlesWidget: (value, meta) => Text(
+          "${value.toInt()}",
+        ),
+      ),
+      axisNameWidget: const Text(
+        "min",
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  AxisTitles _buildBottomTitles() {
+    return AxisTitles(
+      axisNameSize: 12,
+      sideTitles: SideTitles(
+        showTitles: true,
+        getTitlesWidget: (value, meta) => Text(
+          Utils.intToShortWeekday(value.toInt()),
+        ),
+      ),
+    );
+  }
+
+  AxisTitles _buildEmptyTitles() {
+    return AxisTitles(
+      sideTitles: SideTitles(
+        showTitles: false,
       ),
     );
   }

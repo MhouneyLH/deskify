@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class ProgressBar extends StatefulWidget {
   final double height;
-  final double displayValue;
+  final double progressValue;
   final Color displayColor;
 
   const ProgressBar({
     required this.height,
-    required this.displayValue,
+    required this.progressValue,
     this.displayColor = Colors.white,
     super.key,
   });
@@ -28,12 +28,10 @@ class _ProgressBarState extends State<ProgressBar> {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
         child: LinearProgressIndicator(
-          value: widget.displayValue,
+          value: widget.progressValue,
           valueColor: AlwaysStoppedAnimation<Color>(widget.displayColor),
         ),
       ),
     );
   }
-
-  
 }

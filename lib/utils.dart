@@ -11,6 +11,10 @@ class Utils {
     return (hours * 60).round();
   }
 
+  static int getCurrentWeekdayAsInt() {
+    return DateTime.now().weekday;
+  }
+
   static String intToShortWeekday(int dayAsInt) {
     switch (dayAsInt) {
       case DateTime.monday:

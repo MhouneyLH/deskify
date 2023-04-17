@@ -1,7 +1,6 @@
 import 'package:deskify/main.dart';
 import 'package:deskify/model/desk.dart';
 import 'package:deskify/model/preset.dart';
-import 'package:deskify/model/profile.dart';
 import 'package:deskify/pages/analytics_widget_page.dart';
 import 'package:deskify/pages/move_widget_page.dart';
 import 'package:deskify/pages/preset_widget_page.dart';
@@ -25,22 +24,15 @@ class HomePageTab extends StatefulWidget {
 }
 
 class _HomePageTabState extends State<HomePageTab> {
-  DeskProvider? deskProvider;
-  ProfileProvider? profileProvider;
-  ThemeProvider? themeProvider;
-  final int currentWeekdayAsInt = DateTime.now().weekday;
-  Target? todaysStandingTarget;
-  Target? todaysSittingTarget;
+  late DeskProvider deskProvider;
+  late ProfileProvider profileProvider;
+  late ThemeProvider themeProvider;
 
   @override
   Widget build(BuildContext context) {
     deskProvider = Provider.of<DeskProvider>(context);
     profileProvider = Provider.of<ProfileProvider>(context);
     themeProvider = Provider.of<ThemeProvider>(context);
-    todaysStandingTarget =
-        profileProvider!.standingAnalytic![currentWeekdayAsInt];
-    todaysSittingTarget =
-        profileProvider!.sittingAnalytic![currentWeekdayAsInt];
 
     final List<SimpleInteractionWidget> analyticInteractionWidgets = [
       SimpleInteractionWidget(
@@ -48,15 +40,16 @@ class _HomePageTabState extends State<HomePageTab> {
         icon: const Icon(Icons.info),
         extraInformationWidget: ProgressBar(
           height: 10.0,
-          displayValue: todaysStandingTarget!.actualValue /
-              Utils.minutesToSeconds(todaysStandingTarget!.targetValue),
-          displayColor: themeProvider!.darkStandingColor,
+          progressValue: profileProvider.todaysStandingTarget.actualValue /
+              Utils.minutesToSeconds(
+                  profileProvider.todaysStandingTarget.targetValue),
+          displayColor: themeProvider.darkStandingColor,
         ),
         onPressedWholeWidget: () => _navigateToWidgetPage(
           context,
           AnalyticsWidgetPage(
-            targetWeekdayMap: profileProvider!.standingAnalytic!,
-            signalizationColor: themeProvider!.darkStandingColor,
+            targetWeekdayMap: profileProvider.standingAnalytic,
+            signalizationColor: themeProvider.darkStandingColor,
           ),
         ),
       ),
@@ -65,27 +58,27 @@ class _HomePageTabState extends State<HomePageTab> {
         icon: const Icon(Icons.info),
         extraInformationWidget: ProgressBar(
           height: 10.0,
-          displayValue: todaysSittingTarget!.actualValue /
-              Utils.minutesToSeconds(todaysSittingTarget!.targetValue),
-          displayColor: themeProvider!.darkSittingColor,
+          progressValue: profileProvider.todaysSittingTarget.actualValue /
+              Utils.minutesToSeconds(
+                  profileProvider.todaysSittingTarget.targetValue),
+          displayColor: themeProvider.darkSittingColor,
         ),
         onPressedWholeWidget: () => _navigateToWidgetPage(
           context,
           AnalyticsWidgetPage(
-            targetWeekdayMap: profileProvider!.sittingAnalytic!,
-            signalizationColor: themeProvider!.darkSittingColor,
+            targetWeekdayMap: profileProvider.sittingAnalytic,
+            signalizationColor: themeProvider.darkSittingColor,
           ),
         ),
       ),
     ];
 
     final List<SimpleInteractionWidget> presetInteractionWidgets = [
-      for (Preset preset in deskProvider!.presets)
+      for (Preset preset in deskProvider.presets)
         SimpleInteractionWidget(
           title: preset.title,
           icon: preset.icon,
-          onPressedWholeWidget: () =>
-              deskProvider!.height = preset.targetHeight,
+          onPressedWholeWidget: () => deskProvider.height = preset.targetHeight,
           onPressedSettingsIcon: () => _navigateToWidgetPage(
             context,
             PresetWidgetPage(preset: preset),
@@ -108,8 +101,8 @@ class _HomePageTabState extends State<HomePageTab> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Heading(title: deskProvider!.name),
-        Text("Height: ${deskProvider!.height} cm"),
+        Heading(title: deskProvider.name),
+        Text("Height: ${deskProvider.height} cm"),
         _buildDeskAnimation(),
         _buildInteractiveWidgetGroup(analyticInteractionWidgets, "Analytics"),
         _buildInteractiveWidgetGroup(presetInteractionWidgets, "Presets"),
@@ -136,7 +129,7 @@ class _HomePageTabState extends State<HomePageTab> {
       child: DeskAnimation(
         width: 200,
         height: Desk.minimumHeight,
-        deskHeight: deskProvider!.height,
+        deskHeight: deskProvider.height,
       ),
     );
   }
