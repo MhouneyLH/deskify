@@ -77,7 +77,10 @@ class DeskProvider with ChangeNotifier {
 
   void setHeight(String id, double value) {
     Desk desk = getDesk(id);
-    desk.height = Utils.roundDouble(value, 1);
+
+    double inboundHeight = Desk.getInboundHeight(value);
+    desk.height = Utils.roundDouble(inboundHeight, 1);
+
     notifyListeners();
   }
 

@@ -16,4 +16,14 @@ class Desk {
     this.height = minimumHeight,
     this.presets = const [],
   });
+
+  static double getInboundHeight(double height) {
+    if (height < minimumHeight) {
+      return minimumHeight;
+    }
+    if (height > maximumHeight) {
+      return maximumHeight;
+    }
+    return height;
+  }
 }
