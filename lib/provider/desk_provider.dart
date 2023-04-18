@@ -104,4 +104,13 @@ class DeskProvider with ChangeNotifier {
     preset.targetHeight = Utils.roundDouble(value, 1);
     notifyListeners();
   }
+
+  void addDesk({String? name, double? height, List<Preset>? presets}) {
+    _deskList.add(Desk(
+      name: name ?? "Deskified Desk",
+      height: height ?? Desk.minimumHeight,
+      presets: presets ?? [],
+    ));
+    notifyListeners();
+  }
 }
