@@ -58,14 +58,21 @@ class DeskProvider with ChangeNotifier {
       ],
     ),
   ];
+  int _currentlySelectedIndex = 1;
 
   List<Desk> get deskList => _deskList;
+  Desk get currentDesk => _deskList[_currentlySelectedIndex];
   Desk getDesk(String id) => _deskList.firstWhere((desk) => desk.id == id);
   double getHeight(String id) => getDesk(id).height!;
   String getName(String id) => getDesk(id).name!;
   List<Preset> getPresets(String id) => getDesk(id).presets!;
   Preset getPreset(String deskId, String presetId) =>
       getPresets(deskId).firstWhere((preset) => preset.id == presetId);
+
+  set currentlySelectedIndex(int value) {
+    _currentlySelectedIndex = value;
+    notifyListeners();
+  }
 
   void setDesk(Desk value) {
     _deskList.removeWhere((desk) => desk.id == value.id);

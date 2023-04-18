@@ -25,12 +25,14 @@ class HomePageTab extends StatefulWidget {
 
 class _HomePageTabState extends State<HomePageTab> {
   late DeskProvider deskProvider;
+  late Desk currentDesk;
   late ProfileProvider profileProvider;
   late ThemeProvider themeProvider;
 
   @override
   Widget build(BuildContext context) {
     deskProvider = Provider.of<DeskProvider>(context);
+    currentDesk = deskProvider.currentDesk;
     profileProvider = Provider.of<ProfileProvider>(context);
     themeProvider = Provider.of<ThemeProvider>(context);
 
@@ -74,11 +76,11 @@ class _HomePageTabState extends State<HomePageTab> {
     ];
 
     final List<SimpleInteractionWidget> presetInteractionWidgets = [
-      for (Preset preset in deskProvider.presets)
+      for (Preset preset in currentDesk.presets!)
         SimpleInteractionWidget(
           title: preset.title,
           icon: preset.icon,
-          onPressedWholeWidget: () => deskProvider.height = preset.targetHeight,
+          onPressedWholeWidget: () => currentDesk.height = preset.targetHeight,
           onPressedSettingsIcon: () => _navigateToWidgetPage(
             context,
             PresetWidgetPage(preset: preset),
@@ -101,8 +103,8 @@ class _HomePageTabState extends State<HomePageTab> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Heading(title: deskProvider.name),
-        Text("Height: ${deskProvider.height} cm"),
+        Heading(title: currentDesk.name!),
+        Text("Height: ${currentDesk.height} cm"),
         _buildDeskAnimation(),
         _buildInteractiveWidgetGroup(analyticInteractionWidgets, "Analytics"),
         _buildInteractiveWidgetGroup(presetInteractionWidgets, "Presets"),
@@ -129,7 +131,7 @@ class _HomePageTabState extends State<HomePageTab> {
       child: DeskAnimation(
         width: 200,
         height: Desk.minimumHeight,
-        deskHeight: deskProvider.height,
+        deskHeight: currentDesk.height!,
       ),
     );
   }

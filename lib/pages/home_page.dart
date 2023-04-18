@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _updateAnalytics() {
-    deskProvider.height > Desk.standingBreakpointHeight
+    deskProvider.currentDesk.height! > Desk.standingBreakpointHeight
         ? profileProvider.incrementStandingAnalytic(
             Utils.getCurrentWeekdayAsInt(), 1)
         : profileProvider.incrementSittingAnalytic(

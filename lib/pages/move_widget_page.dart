@@ -14,10 +14,12 @@ class MoveWidgetPage extends StatefulWidget {
 
 class _MoveWidgetPageState extends State<MoveWidgetPage> {
   late DeskProvider deskProvider;
+  late Desk currentDesk;
 
   @override
   Widget build(BuildContext context) {
     deskProvider = Provider.of<DeskProvider>(context);
+    currentDesk = deskProvider.currentDesk;
 
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -25,8 +27,8 @@ class _MoveWidgetPageState extends State<MoveWidgetPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(deskProvider.name),
-          Text("Height: ${deskProvider.height} cm"),
+          Text(currentDesk.name!),
+          Text("Height: ${currentDesk.height} cm"),
           _buildDeskAnimation(),
           _buildSliderWidget(),
         ],
@@ -39,7 +41,7 @@ class _MoveWidgetPageState extends State<MoveWidgetPage> {
       child: DeskAnimation(
         width: 200,
         height: Desk.maximumHeight,
-        deskHeight: deskProvider.height,
+        deskHeight: currentDesk.height!,
       ),
     );
   }
@@ -47,8 +49,9 @@ class _MoveWidgetPageState extends State<MoveWidgetPage> {
   Widget _buildSliderWidget() {
     return Expanded(
       child: AdjustHeightSlider(
-        displayedHeight: deskProvider.height,
-        onChanged: (value) => deskProvider.height = value,
+        displayedHeight: currentDesk.height!,
+        onChanged: (double value) =>
+            deskProvider.setHeight(currentDesk.id, value),
       ),
     );
   }

@@ -20,12 +20,14 @@ class PresetWidgetPage extends StatefulWidget {
 
 class _PresetWidgetPageState extends State<PresetWidgetPage> {
   late DeskProvider deskProvider;
+  late Desk currentDesk;
   late Preset providerPreset;
 
   @override
   Widget build(BuildContext context) {
     deskProvider = Provider.of<DeskProvider>(context);
-    providerPreset = deskProvider.getPreset(widget.preset.id);
+    currentDesk = deskProvider.currentDesk;
+    providerPreset = deskProvider.getPreset(currentDesk.id, widget.preset.id);
 
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -58,7 +60,8 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
     return Expanded(
       child: AdjustHeightSlider(
         displayedHeight: providerPreset.targetHeight,
-        onChanged: (value) => deskProvider.setPresetHeight(
+        onChanged: (double value) => deskProvider.setPresetTargetHeight(
+          currentDesk.id,
           providerPreset.id,
           value,
         ),
