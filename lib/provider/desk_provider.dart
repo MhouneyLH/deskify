@@ -4,63 +4,101 @@ import 'package:deskify/utils.dart';
 import 'package:flutter/material.dart';
 
 class DeskProvider with ChangeNotifier {
-  final _desk = Desk(
-    name: "Deskified Desk 1",
-    height: 72.0,
-    presets: [
-      Preset(
-        title: "Preset1",
-        targetHeight: 80.0,
-        icon: const Icon(Icons.input),
-      ),
-      Preset(
-        title: "Preset2",
-        targetHeight: 90.0,
-        icon: const Icon(Icons.input),
-      ),
-      Preset(
-        title: "Preset3",
-        targetHeight: 100.0,
-        icon: const Icon(Icons.input),
-      ),
-      Preset(
-        title: "Preset3",
-        targetHeight: 100.0,
-        icon: const Icon(Icons.input),
-      ),
-    ],
-  );
+  final List<Desk> _deskList = [
+    Desk(
+      name: "Deskified Desk 1",
+      height: 72.0,
+      presets: [
+        Preset(
+          title: "Preset1",
+          targetHeight: 80.0,
+          icon: const Icon(Icons.input),
+        ),
+        Preset(
+          title: "Preset2",
+          targetHeight: 90.0,
+          icon: const Icon(Icons.input),
+        ),
+        Preset(
+          title: "Preset3",
+          targetHeight: 100.0,
+          icon: const Icon(Icons.input),
+        ),
+        Preset(
+          title: "Preset3",
+          targetHeight: 100.0,
+          icon: const Icon(Icons.input),
+        ),
+      ],
+    ),
+    Desk(
+      name: "Deskified Desk 2",
+      height: 119.0,
+      presets: [
+        Preset(
+          title: "Preset122",
+          targetHeight: 80.0,
+          icon: const Icon(Icons.input),
+        ),
+        Preset(
+          title: "Preset222",
+          targetHeight: 90.0,
+          icon: const Icon(Icons.input),
+        ),
+        Preset(
+          title: "Preset322",
+          targetHeight: 100.0,
+          icon: const Icon(Icons.input),
+        ),
+        Preset(
+          title: "Preset322",
+          targetHeight: 100.0,
+          icon: const Icon(Icons.input),
+        ),
+      ],
+    ),
+  ];
 
-  Desk get desk => _desk;
-  double get height => _desk.height!;
-  String get name => _desk.name!;
-  List<Preset> get presets => _desk.presets!;
-  Preset getPreset(String id) =>
-      _desk.presets!.firstWhere((preset) => preset.id == id);
+  List<Desk> get deskList => _deskList;
+  Desk getDesk(String id) => _deskList.firstWhere((desk) => desk.id == id);
+  double getHeight(String id) => getDesk(id).height!;
+  String getName(String id) => getDesk(id).name!;
+  List<Preset> getPresets(String id) => getDesk(id).presets!;
+  Preset getPreset(String deskId, String presetId) =>
+      getPresets(deskId).firstWhere((preset) => preset.id == presetId);
 
-  set desk(Desk value) {
-    _desk.height = Utils.roundDouble(value.height!, 1);
-    _desk.name = value.name;
+  void setDesk(Desk value) {
+    _deskList.removeWhere((desk) => desk.id == value.id);
+    _deskList.add(value);
     notifyListeners();
   }
 
-  set height(double value) {
-    _desk.height = Utils.roundDouble(value, 1);
+  void setHeight(String id, double value) {
+    Desk desk = getDesk(id);
+    desk.height = Utils.roundDouble(value, 1);
     notifyListeners();
   }
 
-  set name(String value) {
-    _desk.name = value;
+  void setName(String id, String value) {
+    Desk desk = getDesk(id);
+    desk.name = value;
     notifyListeners();
   }
 
-  set presets(List<Preset> value) {
-    _desk.presets = value;
+  void setPresets(String id, List<Preset> value) {
+    Desk desk = getDesk(id);
+    desk.presets = value;
     notifyListeners();
   }
 
-  void setPresetHeight(String id, double value) {
-    Preset preset = getPreset(id);
+  void setPresetTitle(String deskId, String presetId, String value) {
+    Preset preset = getPreset(deskId, presetId);
+    preset.title = value;
+    notifyListeners();
+  }
+
+  void setPresetTargetHeight(String deskId, String presetId, double value) {
+    Preset preset = getPreset(deskId, presetId);
     preset.targetHeight = Utils.roundDouble(value, 1);
     notifyListeners();
   }
