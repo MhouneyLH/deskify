@@ -130,7 +130,6 @@ class _HomePageTabState extends State<HomePageTab> {
     return Center(
       child: DeskAnimation(
         width: 200,
-        height: Desk.minimumHeight,
         deskHeight: currentDesk.height!,
       ),
     );

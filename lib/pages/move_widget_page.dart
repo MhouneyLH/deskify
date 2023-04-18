@@ -40,7 +40,6 @@ class _MoveWidgetPageState extends State<MoveWidgetPage> {
     return Center(
       child: DeskAnimation(
         width: 200,
-        height: Desk.maximumHeight,
         deskHeight: currentDesk.height!,
       ),
     );

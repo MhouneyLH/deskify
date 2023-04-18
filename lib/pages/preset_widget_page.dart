@@ -50,7 +50,6 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
     return Center(
       child: DeskAnimation(
         width: 200,
-        height: Desk.minimumHeight,
         deskHeight: providerPreset.targetHeight,
       ),
     );
