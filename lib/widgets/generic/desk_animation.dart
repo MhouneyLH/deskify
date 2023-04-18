@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 
 class DeskAnimation extends StatefulWidget {
   final double width;
-  final double height;
   final double deskHeight;
 
   const DeskAnimation({
     this.width = 200.0,
-    this.height = Desk.maximumHeight,
     required this.deskHeight,
     super.key,
   });
@@ -19,15 +17,16 @@ class DeskAnimation extends StatefulWidget {
 
 class _DeskAnimationState extends State<DeskAnimation> {
   late double deskDisplayHeight;
+  final double deskDisplayThickness = 10.0;
 
   @override
   Widget build(BuildContext context) {
     deskDisplayHeight =
-        (widget.deskHeight / Desk.maximumHeight) * widget.height;
+        (widget.deskHeight / Desk.maximumHeight) * Desk.maximumHeight;
 
     return SizedBox(
       width: widget.width,
-      height: widget.height,
+      height: Desk.maximumHeight + deskDisplayThickness,
       child: Stack(
         children: [
           _buildDesk(),
@@ -39,8 +38,6 @@ class _DeskAnimationState extends State<DeskAnimation> {
   }
 
   Widget _buildDesk() {
-    const double deskDisplayThickness = 10.0;
-
     return Positioned(
       left: 0,
       right: 0,
