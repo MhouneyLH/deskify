@@ -235,6 +235,6 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
   void resetTab() {
     resetGeneralInput();
     resetPresetInput();
-    presetList.clear();
+    presetList = List<Preset>.empty(growable: true);
   }
 }

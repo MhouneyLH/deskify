@@ -41,15 +41,16 @@ class Utils {
   static void showSnackbar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-          content: Text(
-            message,
-            style:
-                TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
-          ),
-          backgroundColor: Theme.of(context).primaryColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          )),
+        backgroundColor: Theme.of(context).primaryColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        showCloseIcon: true,
+        content: Text(
+          message,
+          style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
+        ),
+      ),
     );
   }
 }
