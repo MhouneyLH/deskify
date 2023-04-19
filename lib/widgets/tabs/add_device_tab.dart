@@ -128,10 +128,7 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
         const SizedBox(height: 10.0),
         _buildDeskAnimation(double.parse(presetTargetHeightController.text)),
         _buildHeightSlider(presetTargetHeightController),
-        _buildAddPresetButton(
-          title: presetTitleController.text,
-          targetHeight: double.parse(presetTargetHeightController.text),
-        ),
+        _buildAddPresetButton(),
       ],
     );
   }
@@ -141,18 +138,48 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: presetList
-          .map((preset) => Text("${preset.title}: ${preset.targetHeight}"))
+          .map(
+            (Preset preset) => Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 10.0),
+                _buildAddedPresetDelegate(preset),
+              ],
+            ),
+          )
           .toList(),
     );
   }
 
-  Widget _buildAddPresetButton(
-      {required String title, double targetHeight = Desk.minimumHeight}) {
+  Widget _buildAddedPresetDelegate(Preset preset) {
+    return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.0),
+          color: Theme.of(context).primaryColor,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(preset.title),
+              Text("Target height: ${preset.targetHeight} cm"),
+            ],
+          ),
+        ));
+  }
+
+  Widget _buildAddPresetButton() {
     return ElevatedButton(
       onPressed: () => setState(
         () {
           presetList.add(
-            Preset(title: title, targetHeight: targetHeight),
+            Preset(
+              title: presetTitleController.text,
+              targetHeight: double.parse(presetTargetHeightController.text),
+            ),
           );
         },
       ),
