@@ -77,7 +77,10 @@ class DeskProvider with ChangeNotifier {
 
   void setHeight(String id, double value) {
     Desk desk = getDesk(id);
-    desk.height = Utils.roundDouble(value, 1);
+
+    double inboundHeight = Desk.getInboundHeight(value);
+    desk.height = Utils.roundDouble(inboundHeight, 1);
+
     notifyListeners();
   }
 
@@ -102,6 +105,15 @@ class DeskProvider with ChangeNotifier {
   void setPresetTargetHeight(String deskId, String presetId, double value) {
     Preset preset = getPreset(deskId, presetId);
     preset.targetHeight = Utils.roundDouble(value, 1);
+    notifyListeners();
+  }
+
+  void addDesk({String? name, double? height, List<Preset>? presets}) {
+    _deskList.add(Desk(
+      name: name ?? "Deskified Desk",
+      height: height ?? Desk.minimumHeight,
+      presets: presets ?? [],
+    ));
     notifyListeners();
   }
 }

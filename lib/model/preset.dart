@@ -11,6 +11,6 @@ class Preset {
   Preset({
     required this.title,
     this.targetHeight = Desk.minimumHeight,
-    this.icon = const Icon(Icons.abc),
+    this.icon = const Icon(Icons.input),
   });
 }
