@@ -58,6 +58,7 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
   Widget _buildSliderWidget() {
     return Expanded(
       child: AdjustHeightSlider(
+        width: 150.0,
         displayedHeight: providerPreset.targetHeight,
         onChanged: (double value) => deskProvider.setPresetTargetHeight(
           currentDesk.id,

@@ -99,12 +99,16 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
   }
 
   Widget _buildHeightSlider(TextEditingController controller) {
-    return AdjustHeightSlider(
-      displayedHeight: double.parse(controller.text),
-      onChanged: (double value) => setState(
-        () {
-          controller.text = Utils.roundDouble(value, 1).toString();
-        },
+    return Align(
+      alignment: Alignment.center,
+      child: AdjustHeightSlider(
+        width: 150.0,
+        displayedHeight: double.parse(controller.text),
+        onChanged: (double value) => setState(
+          () {
+            controller.text = Utils.roundDouble(value, 1).toString();
+          },
+        ),
       ),
     );
   }
@@ -186,16 +190,14 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
               targetHeight: double.parse(presetTargetHeightController.text),
             ),
           );
+          Utils.showSnackbar(
+              context, "Preset '${presetTitleController.text}' added");
+
           resetPresetInput();
         },
       ),
       child: const Text("Add Preset"),
     );
-  }
-
-  void resetPresetInput() {
-    presetTitleController.clear();
-    presetTargetHeightController.text = Desk.minimumHeight.toString();
   }
 
   Widget _buildAddDeviceButton() {
@@ -220,10 +222,19 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
     );
   }
 
-  void resetTab() {
+  void resetGeneralInput() {
     deskNameController.clear();
     deskHeightController.text = Desk.minimumHeight.toString();
+  }
+
+  void resetPresetInput() {
+    presetTitleController.clear();
+    presetTargetHeightController.text = Desk.minimumHeight.toString();
+  }
+
+  void resetTab() {
+    resetGeneralInput();
     resetPresetInput();
-    presetList = [];
+    presetList.clear();
   }
 }

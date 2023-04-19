@@ -48,6 +48,7 @@ class _MoveWidgetPageState extends State<MoveWidgetPage> {
   Widget _buildSliderWidget() {
     return Expanded(
       child: AdjustHeightSlider(
+        width: 150.0,
         displayedHeight: currentDesk.height!,
         onChanged: (double value) =>
             deskProvider.setHeight(currentDesk.id, value),
