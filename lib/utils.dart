@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Utils {
   static double roundDouble(double value, int places) {
     return double.parse(value.toStringAsFixed(places));
@@ -34,5 +36,20 @@ class Utils {
       default:
         return "Unknown";
     }
+  }
+
+  static void showSnackbar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+          content: Text(
+            message,
+            style:
+                TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
+          ),
+          backgroundColor: Theme.of(context).primaryColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          )),
+    );
   }
 }

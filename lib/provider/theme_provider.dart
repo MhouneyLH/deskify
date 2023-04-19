@@ -8,6 +8,9 @@ class ThemeProvider extends ChangeNotifier {
     brightness: Brightness.dark,
     primarySwatch: Colors.blue,
     accentColor: Colors.brown,
+    colorScheme: const ColorScheme.dark(
+      inversePrimary: Colors.white,
+    ),
   );
 
   // final ThemeData _lightTheme = ThemeData(

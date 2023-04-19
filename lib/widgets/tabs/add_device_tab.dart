@@ -175,28 +175,55 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
     return ElevatedButton(
       onPressed: () => setState(
         () {
+          if (presetTitleController.text.isEmpty) {
+            Utils.showSnackbar(context, "Please enter a title for the preset");
+            return;
+          }
+
           presetList.add(
             Preset(
               title: presetTitleController.text,
               targetHeight: double.parse(presetTargetHeightController.text),
             ),
           );
+          resetPresetInput();
         },
       ),
       child: const Text("Add Preset"),
     );
   }
 
+  void resetPresetInput() {
+    presetTitleController.clear();
+    presetTargetHeightController.text = Desk.minimumHeight.toString();
+  }
+
   Widget _buildAddDeviceButton() {
     return ElevatedButton(
       onPressed: () {
+        if (deskNameController.text.isEmpty) {
+          Utils.showSnackbar(context, "Please enter a name for the device");
+          return;
+        }
+
         deskProvider.addDesk(
           name: deskNameController.text,
           height: double.parse(deskHeightController.text),
           presets: presetList,
         );
+        Utils.showSnackbar(
+            context, "Device '${deskNameController.text}' added");
+
+        resetTab();
       },
       child: const Text("Add Device"),
     );
+  }
+
+  void resetTab() {
+    deskNameController.clear();
+    deskHeightController.text = Desk.minimumHeight.toString();
+    resetPresetInput();
+    presetList = [];
   }
 }
