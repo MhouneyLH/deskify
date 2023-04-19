@@ -5,6 +5,7 @@ import 'package:deskify/utils.dart';
 import 'package:deskify/widgets/generic/adjust_height_slider.dart';
 import 'package:deskify/widgets/generic/desk_animation.dart';
 import 'package:deskify/widgets/generic/heading_widget.dart';
+import 'package:deskify/widgets/generic/numeric_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -70,14 +71,10 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
 
   Widget _buildHeightDisplayingInteractiveTextField(
       {required TextEditingController controller, required String labelText}) {
-    return TextField(
+    return NumericTextfield(
       controller: controller,
-      keyboardType: const TextInputType.numberWithOptions(
-        decimal: true,
-        signed: false,
-      ),
-      decoration: InputDecoration(labelText: labelText),
-      onSubmitted: (value) => setState(
+      title: labelText,
+      onSubmitted: (String value) => setState(
         () {
           if (double.tryParse(value) == null) {
             controller.text = Desk.minimumHeight.toString();
