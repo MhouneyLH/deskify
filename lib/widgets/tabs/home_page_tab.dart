@@ -99,21 +99,18 @@ class _HomePageTabState extends State<HomePageTab> {
       ),
     ];
 
-    // TODO: see later, if that is really working
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Heading(title: currentDesk.name!),
-          Text("Height: ${currentDesk.height} cm"),
-          const SizedBox(height: 10.0),
-          _buildDeskAnimation(),
-          _buildInteractiveWidgetGroup(analyticInteractionWidgets, "Analytics"),
-          _buildInteractiveWidgetGroup(presetInteractionWidgets, "Presets"),
-          _buildInteractiveWidgetGroup(otherInteractionWidgets, "Others"),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Heading(title: currentDesk.name!),
+        Text("Height: ${currentDesk.height} cm"),
+        const SizedBox(height: 10.0),
+        _buildDeskAnimation(),
+        _buildInteractiveWidgetGroup(analyticInteractionWidgets, "Analytics"),
+        _buildInteractiveWidgetGroup(presetInteractionWidgets, "Presets"),
+        _buildInteractiveWidgetGroup(otherInteractionWidgets, "Others"),
+      ],
     );
   }
 

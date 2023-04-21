@@ -21,6 +21,8 @@ class InteractionWidgetGridView extends StatelessWidget {
     return SizedBox(
       height: _getTotalGridViewHeightWithOuterDefinedSpacing(),
       child: GridView.builder(
+        // otherwise I just scroll within the GridView
+        physics: const NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: itemsPerRow,
           mainAxisSpacing: defaultSpacing,
