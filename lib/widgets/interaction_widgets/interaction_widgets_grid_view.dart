@@ -1,7 +1,8 @@
 import 'package:deskify/widgets/interaction_widgets/simple_interaction_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:reorderable_grid/reorderable_grid.dart';
 
-class InteractionWidgetGridView extends StatelessWidget {
+class InteractionWidgetGridView extends StatefulWidget {
   final List<SimpleInteractionWidget> items;
   final double outerDefinedSpacings;
 
@@ -11,6 +12,12 @@ class InteractionWidgetGridView extends StatelessWidget {
     super.key,
   });
 
+  @override
+  State<InteractionWidgetGridView> createState() =>
+      _InteractionWidgetGridViewState();
+}
+
+class _InteractionWidgetGridViewState extends State<InteractionWidgetGridView> {
   final double itemWidth = 200.0;
   final double itemHeight = 50.0;
   final int itemsPerRow = 2;
@@ -20,8 +27,7 @@ class InteractionWidgetGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: _getTotalGridViewHeightWithOuterDefinedSpacing(),
-      child: GridView.builder(
-        // otherwise I just scroll within the GridView
+      child: ReorderableGridView(
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: itemsPerRow,
@@ -29,23 +35,38 @@ class InteractionWidgetGridView extends StatelessWidget {
           crossAxisSpacing: defaultSpacing,
           mainAxisExtent: itemHeight,
         ),
-        itemCount: items.length,
-        itemBuilder: (BuildContext context, int index) {
-          final SimpleInteractionWidget item = items[index];
-          return SizedBox(
-            width: itemWidth,
-            height: itemHeight,
-            child: item,
-          );
-        },
+        children: widget.items
+            .map(
+              (item) => Container(
+                key: ValueKey(item),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                clipBehavior: Clip.none,
+                width: itemWidth,
+                height: itemHeight,
+                child: item,
+              ),
+            )
+            .toList(),
+        onReorder: (int oldIndex, int newIndex) =>
+            _onReorder(oldIndex, newIndex),
       ),
     );
   }
 
   double _getTotalGridViewHeightWithOuterDefinedSpacing() {
-    final double gridHeight = itemHeight * (items.length / itemsPerRow).ceil() +
-        defaultSpacing * ((items.length / itemsPerRow) - 1) +
-        outerDefinedSpacings;
+    final double gridHeight =
+        itemHeight * (widget.items.length / itemsPerRow).ceil() +
+            defaultSpacing * ((widget.items.length / itemsPerRow) - 1) +
+            widget.outerDefinedSpacings;
     return gridHeight;
+  }
+
+  void _onReorder(int oldIndex, int newIndex) {
+    setState(() {
+      final SimpleInteractionWidget item = widget.items.removeAt(oldIndex);
+      widget.items.insert(newIndex, item);
+    });
   }
 }

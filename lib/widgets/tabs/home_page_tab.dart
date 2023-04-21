@@ -28,6 +28,9 @@ class _HomePageTabState extends State<HomePageTab> {
   late Desk currentDesk;
   late ProfileProvider profileProvider;
   late ThemeProvider themeProvider;
+  late List<SimpleInteractionWidget> analyticalInteractionWidgets;
+  late List<SimpleInteractionWidget> presetInteractionWidgets;
+  late List<SimpleInteractionWidget> otherInteractionWidgets;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +39,7 @@ class _HomePageTabState extends State<HomePageTab> {
     profileProvider = Provider.of<ProfileProvider>(context);
     themeProvider = Provider.of<ThemeProvider>(context);
 
-    final List<SimpleInteractionWidget> analyticInteractionWidgets = [
+    analyticalInteractionWidgets = [
       SimpleInteractionWidget(
         title: "Standing Information",
         icon: const Icon(Icons.info),
@@ -75,7 +78,7 @@ class _HomePageTabState extends State<HomePageTab> {
       ),
     ];
 
-    final List<SimpleInteractionWidget> presetInteractionWidgets = [
+    presetInteractionWidgets = [
       for (Preset preset in currentDesk.presets!)
         SimpleInteractionWidget(
           title: preset.title,
@@ -88,7 +91,7 @@ class _HomePageTabState extends State<HomePageTab> {
         ),
     ];
 
-    final List<SimpleInteractionWidget> otherInteractionWidgets = [
+    otherInteractionWidgets = [
       SimpleInteractionWidget(
         title: "Move",
         icon: const Icon(Icons.input),
@@ -107,7 +110,7 @@ class _HomePageTabState extends State<HomePageTab> {
         Text("Height: ${currentDesk.height} cm"),
         const SizedBox(height: 10.0),
         _buildDeskAnimation(),
-        _buildInteractiveWidgetGroup(analyticInteractionWidgets, "Analytics"),
+        _buildInteractiveWidgetGroup(analyticalInteractionWidgets, "Analytics"),
         _buildInteractiveWidgetGroup(presetInteractionWidgets, "Presets"),
         _buildInteractiveWidgetGroup(otherInteractionWidgets, "Others"),
       ],
