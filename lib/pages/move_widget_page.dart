@@ -29,6 +29,7 @@ class _MoveWidgetPageState extends State<MoveWidgetPage> {
         children: [
           Text(currentDesk.name!),
           Text("Height: ${currentDesk.height} cm"),
+          const SizedBox(height: 10.0),
           _buildDeskAnimation(),
           _buildSliderWidget(),
         ],

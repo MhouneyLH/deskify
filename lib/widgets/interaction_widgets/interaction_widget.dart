@@ -79,7 +79,7 @@ class InteractionWidget extends StatelessWidget {
     return IconButton(
       icon: const Icon(Icons.settings),
       splashRadius: 20.0,
-      onPressed: () => onPressedSettingsIcon!(),
+      onPressed: onPressedSettingsIcon!,
     );
   }
 

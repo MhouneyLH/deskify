@@ -1,4 +1,3 @@
-import 'package:deskify/main.dart';
 import 'package:deskify/model/desk.dart';
 import 'package:deskify/model/preset.dart';
 import 'package:deskify/pages/analytics_widget_page.dart';
@@ -71,9 +70,10 @@ class _HomePageTabState extends State<HomePageTab> {
                   profileProvider.todaysStandingTarget.targetValue),
           displayColor: themeProvider.darkStandingColor,
         ),
-        onPressedWholeWidget: () => _navigateToWidgetPage(
-          context,
-          AnalyticsWidgetPage(
+        onPressedWholeWidget: () => Utils.navigateToWidgetPage(
+          context: context,
+          title: "Standing Information",
+          child: AnalyticsWidgetPage(
             targetWeekdayMap: profileProvider.standingAnalytic,
             signalizationColor: themeProvider.darkStandingColor,
           ),
@@ -89,9 +89,10 @@ class _HomePageTabState extends State<HomePageTab> {
                   profileProvider.todaysSittingTarget.targetValue),
           displayColor: themeProvider.darkSittingColor,
         ),
-        onPressedWholeWidget: () => _navigateToWidgetPage(
-          context,
-          AnalyticsWidgetPage(
+        onPressedWholeWidget: () => Utils.navigateToWidgetPage(
+          context: context,
+          title: "Sitting Information",
+          child: AnalyticsWidgetPage(
             targetWeekdayMap: profileProvider.sittingAnalytic,
             signalizationColor: themeProvider.darkSittingColor,
           ),
@@ -105,9 +106,10 @@ class _HomePageTabState extends State<HomePageTab> {
           title: preset.title,
           icon: preset.icon,
           onPressedWholeWidget: () => currentDesk.height = preset.targetHeight,
-          onPressedSettingsIcon: () => _navigateToWidgetPage(
-            context,
-            PresetWidgetPage(preset: preset),
+          onPressedSettingsIcon: () => Utils.navigateToWidgetPage(
+            context: context,
+            title: preset.title,
+            child: PresetWidgetPage(preset: preset),
           ),
         ),
     ];
@@ -116,9 +118,10 @@ class _HomePageTabState extends State<HomePageTab> {
       InteractionWidget(
         title: "Move",
         icon: const Icon(Icons.input),
-        onPressedWholeWidget: () => _navigateToWidgetPage(
-          context,
-          const MoveWidgetPage(),
+        onPressedWholeWidget: () => Utils.navigateToWidgetPage(
+          context: context,
+          title: "Moving",
+          child: const MoveWidgetPage(),
         ),
       ),
     ];
@@ -170,19 +173,6 @@ class _HomePageTabState extends State<HomePageTab> {
           child: const Text('Save'),
         ),
       ],
-    );
-  }
-
-  Future<dynamic> _navigateToWidgetPage(BuildContext context, Widget widget) {
-    return Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => Scaffold(
-          appBar: AppBar(
-            title: const Text(MainApp.title),
-          ),
-          body: widget,
-        ),
-      ),
     );
   }
 

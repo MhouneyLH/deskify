@@ -1,3 +1,4 @@
+import 'package:deskify/main.dart';
 import 'package:flutter/material.dart';
 
 class Utils {
@@ -36,6 +37,22 @@ class Utils {
       default:
         return "Unknown";
     }
+  }
+
+  static Future<dynamic> navigateToWidgetPage(
+      {required BuildContext context,
+      required Widget child,
+      String title = MainApp.title}) {
+    return Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => Scaffold(
+          appBar: AppBar(
+            title: Text(title),
+          ),
+          body: child,
+        ),
+      ),
+    );
   }
 
   static void showSnackbar(BuildContext context, String message) {
