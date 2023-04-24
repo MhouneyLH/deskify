@@ -24,14 +24,19 @@ class HomePageTab extends StatefulWidget {
 }
 
 class _HomePageTabState extends State<HomePageTab> {
+  bool _isInitialized = false;
+
   late DeskProvider deskProvider;
-  late Desk currentDesk;
   late ProfileProvider profileProvider;
   late ThemeProvider themeProvider;
-  List<InteractionWidget>? analyticalInteractionWidgets;
-  List<InteractionWidget>? presetInteractionWidgets;
-  List<InteractionWidget>? otherInteractionWidgets;
-  bool _isInitialized = false;
+
+  late List<InteractionWidget> analyticalInteractionWidgets;
+  late List<InteractionWidget> presetInteractionWidgets;
+  late List<InteractionWidget> otherInteractionWidgets;
+
+  late final Desk currentDesk = deskProvider.currentDesk;
+  late final TextEditingController deskNameController =
+      TextEditingController(text: currentDesk.name);
 
   @override
   void didChangeDependencies() {
@@ -50,7 +55,6 @@ class _HomePageTabState extends State<HomePageTab> {
 
   void _initProvider() {
     deskProvider = Provider.of<DeskProvider>(context);
-    currentDesk = deskProvider.currentDesk;
     profileProvider = Provider.of<ProfileProvider>(context);
     themeProvider = Provider.of<ThemeProvider>(context);
   }
@@ -126,14 +130,45 @@ class _HomePageTabState extends State<HomePageTab> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Heading(title: currentDesk.name!),
+        Heading(
+          title: currentDesk.name!,
+          onTapped: () => showDialog(
+            context: context,
+            builder: (_) => _buildHeadingAlertDialog(),
+          ),
+        ),
+        const SizedBox(width: 10.0),
         Text("Height: ${currentDesk.height} cm"),
         const SizedBox(height: 10.0),
         _buildDeskAnimation(),
-        _buildInteractiveWidgetGroup(
-            analyticalInteractionWidgets!, "Analytics"),
-        _buildInteractiveWidgetGroup(presetInteractionWidgets!, "Presets"),
-        _buildInteractiveWidgetGroup(otherInteractionWidgets!, "Others"),
+        _buildInteractiveWidgetGroup(analyticalInteractionWidgets, "Analytics"),
+        _buildInteractiveWidgetGroup(presetInteractionWidgets, "Presets"),
+        _buildInteractiveWidgetGroup(otherInteractionWidgets, "Others"),
+      ],
+    );
+  }
+
+  Widget _buildHeadingAlertDialog() {
+    return AlertDialog(
+      title: const Text('Edit desk name'),
+      content: TextField(controller: deskNameController),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            deskNameController.text = currentDesk.name!;
+          },
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () {
+            setState(() {
+              currentDesk.name = deskNameController.text;
+            });
+            Navigator.of(context).pop();
+          },
+          child: const Text('Save'),
+        ),
       ],
     );
   }

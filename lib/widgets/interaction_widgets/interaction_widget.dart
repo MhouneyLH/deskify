@@ -76,13 +76,10 @@ class InteractionWidget extends StatelessWidget {
   }
 
   Widget _buildSettingsButton(context) {
-    return Ink(
-      decoration: const BoxDecoration(shape: BoxShape.circle),
-      child: InkWell(
-        onTap: () => onPressedSettingsIcon!(),
-        borderRadius: BorderRadius.circular(100.0),
-        child: const Icon(Icons.settings),
-      ),
+    return IconButton(
+      icon: const Icon(Icons.settings),
+      splashRadius: 20.0,
+      onPressed: () => onPressedSettingsIcon!(),
     );
   }
 
