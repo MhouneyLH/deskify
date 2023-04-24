@@ -1,9 +1,9 @@
-import 'package:deskify/widgets/interaction_widgets/simple_interaction_widget.dart';
+import 'package:deskify/widgets/interaction_widgets/interaction_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:reorderable_grid/reorderable_grid.dart';
 
 class InteractionWidgetGridView extends StatefulWidget {
-  final List<SimpleInteractionWidget> items;
+  final List<InteractionWidget> items;
   final double outerDefinedSpacings;
 
   const InteractionWidgetGridView({
@@ -36,18 +36,7 @@ class _InteractionWidgetGridViewState extends State<InteractionWidgetGridView> {
           mainAxisExtent: itemHeight,
         ),
         children: widget.items
-            .map(
-              (item) => Container(
-                key: ValueKey(item),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                clipBehavior: Clip.none,
-                width: itemWidth,
-                height: itemHeight,
-                child: item,
-              ),
-            )
+            .map((InteractionWidget item) => _buildGridViewItem(item))
             .toList(),
         onReorder: (int oldIndex, int newIndex) =>
             _onReorder(oldIndex, newIndex),
@@ -63,9 +52,14 @@ class _InteractionWidgetGridViewState extends State<InteractionWidgetGridView> {
     return gridHeight;
   }
 
+  Widget _buildGridViewItem(InteractionWidget item) {
+    return SizedBox(
+        key: ValueKey(item), width: itemWidth, height: itemHeight, child: item);
+  }
+
   void _onReorder(int oldIndex, int newIndex) {
     setState(() {
-      final SimpleInteractionWidget item = widget.items.removeAt(oldIndex);
+      final InteractionWidget item = widget.items.removeAt(oldIndex);
       widget.items.insert(newIndex, item);
     });
   }

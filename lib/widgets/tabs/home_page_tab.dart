@@ -12,7 +12,7 @@ import 'package:deskify/widgets/generic/desk_animation.dart';
 import 'package:deskify/widgets/generic/heading_widget.dart';
 import 'package:deskify/widgets/generic/progress_bar.dart';
 import 'package:deskify/widgets/interaction_widgets/interaction_widgets_grid_view.dart';
-import 'package:deskify/widgets/interaction_widgets/simple_interaction_widget.dart';
+import 'package:deskify/widgets/interaction_widgets/interaction_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,19 +28,36 @@ class _HomePageTabState extends State<HomePageTab> {
   late Desk currentDesk;
   late ProfileProvider profileProvider;
   late ThemeProvider themeProvider;
-  late List<SimpleInteractionWidget> analyticalInteractionWidgets;
-  late List<SimpleInteractionWidget> presetInteractionWidgets;
-  late List<SimpleInteractionWidget> otherInteractionWidgets;
+  List<InteractionWidget>? analyticalInteractionWidgets;
+  List<InteractionWidget>? presetInteractionWidgets;
+  List<InteractionWidget>? otherInteractionWidgets;
+  bool _isInitialized = false;
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    if (!_isInitialized) {
+      _init();
+      _isInitialized = true;
+    }
+    super.didChangeDependencies();
+  }
+
+  void _init() {
+    _initProvider();
+    _initWidgets();
+    setState(() {}); // Trigger a rebuild to update the UI
+  }
+
+  void _initProvider() {
     deskProvider = Provider.of<DeskProvider>(context);
     currentDesk = deskProvider.currentDesk;
     profileProvider = Provider.of<ProfileProvider>(context);
     themeProvider = Provider.of<ThemeProvider>(context);
+  }
 
+  void _initWidgets() {
     analyticalInteractionWidgets = [
-      SimpleInteractionWidget(
+      InteractionWidget(
         title: "Standing Information",
         icon: const Icon(Icons.info),
         extraInformationWidget: ProgressBar(
@@ -58,7 +75,7 @@ class _HomePageTabState extends State<HomePageTab> {
           ),
         ),
       ),
-      SimpleInteractionWidget(
+      InteractionWidget(
         title: "Sitting Information",
         icon: const Icon(Icons.info),
         extraInformationWidget: ProgressBar(
@@ -80,7 +97,7 @@ class _HomePageTabState extends State<HomePageTab> {
 
     presetInteractionWidgets = [
       for (Preset preset in currentDesk.presets!)
-        SimpleInteractionWidget(
+        InteractionWidget(
           title: preset.title,
           icon: preset.icon,
           onPressedWholeWidget: () => currentDesk.height = preset.targetHeight,
@@ -92,7 +109,7 @@ class _HomePageTabState extends State<HomePageTab> {
     ];
 
     otherInteractionWidgets = [
-      SimpleInteractionWidget(
+      InteractionWidget(
         title: "Move",
         icon: const Icon(Icons.input),
         onPressedWholeWidget: () => _navigateToWidgetPage(
@@ -101,7 +118,10 @@ class _HomePageTabState extends State<HomePageTab> {
         ),
       ),
     ];
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,9 +130,10 @@ class _HomePageTabState extends State<HomePageTab> {
         Text("Height: ${currentDesk.height} cm"),
         const SizedBox(height: 10.0),
         _buildDeskAnimation(),
-        _buildInteractiveWidgetGroup(analyticalInteractionWidgets, "Analytics"),
-        _buildInteractiveWidgetGroup(presetInteractionWidgets, "Presets"),
-        _buildInteractiveWidgetGroup(otherInteractionWidgets, "Others"),
+        _buildInteractiveWidgetGroup(
+            analyticalInteractionWidgets!, "Analytics"),
+        _buildInteractiveWidgetGroup(presetInteractionWidgets!, "Presets"),
+        _buildInteractiveWidgetGroup(otherInteractionWidgets!, "Others"),
       ],
     );
   }
@@ -140,7 +161,7 @@ class _HomePageTabState extends State<HomePageTab> {
   }
 
   Widget _buildInteractiveWidgetGroup(
-      List<SimpleInteractionWidget> items, String title) {
+      List<InteractionWidget> items, String title) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,

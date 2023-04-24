@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SimpleInteractionWidget extends StatelessWidget {
+class InteractionWidget extends StatelessWidget {
   final String title;
   final Icon icon;
   final double width;
@@ -9,7 +9,7 @@ class SimpleInteractionWidget extends StatelessWidget {
   final void Function()? onPressedSettingsIcon;
   final Widget? extraInformationWidget;
 
-  const SimpleInteractionWidget({
+  const InteractionWidget({
     required this.title,
     this.icon = const Icon(Icons.abc),
     this.width = 200.0,
