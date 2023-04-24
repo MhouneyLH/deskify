@@ -33,9 +33,10 @@ class _HomePageTabState extends State<HomePageTab> {
   late List<InteractionWidget> presetInteractionWidgets;
   late List<InteractionWidget> otherInteractionWidgets;
 
-  late final Desk currentDesk = deskProvider.currentDesk;
-  late final TextEditingController deskNameController =
-      TextEditingController(text: currentDesk.name);
+  late Desk currentDesk;
+  late TextEditingController deskNameController;
+  // late double _test = profileProvider.todaysStandingTarget.actualValue /
+  //     Utils.minutesToSeconds(profileProvider.todaysStandingTarget.targetValue);
 
   @override
   void didChangeDependencies() {
@@ -43,13 +44,30 @@ class _HomePageTabState extends State<HomePageTab> {
       _init();
       _isInitialized = true;
     }
+
+    for (InteractionWidget item in analyticalInteractionWidgets) {
+      item = InteractionWidget(
+        title: item.title,
+        onPressedWholeWidget: item.onPressedWholeWidget,
+        icon: item.icon,
+        extraInformationWidget: ProgressBar(
+          height: 10.0,
+          target: profileProvider.todaysStandingTarget,
+          displayColor: themeProvider.darkStandingColor,
+        ),
+      );
+    }
+
+    // setState(() {});
+
     super.didChangeDependencies();
   }
 
   void _init() {
     _initProvider();
+    currentDesk = deskProvider.currentDesk;
+    deskNameController = TextEditingController(text: currentDesk.name);
     _initWidgets();
-    setState(() {}); // Trigger a rebuild to update the UI
   }
 
   void _initProvider() {
@@ -65,9 +83,7 @@ class _HomePageTabState extends State<HomePageTab> {
         icon: const Icon(Icons.info),
         extraInformationWidget: ProgressBar(
           height: 10.0,
-          progressValue: profileProvider.todaysStandingTarget.actualValue /
-              Utils.minutesToSeconds(
-                  profileProvider.todaysStandingTarget.targetValue),
+          target: profileProvider.todaysStandingTarget,
           displayColor: themeProvider.darkStandingColor,
         ),
         onPressedWholeWidget: () => Utils.navigateToWidgetPage(
@@ -84,9 +100,7 @@ class _HomePageTabState extends State<HomePageTab> {
         icon: const Icon(Icons.info),
         extraInformationWidget: ProgressBar(
           height: 10.0,
-          progressValue: profileProvider.todaysSittingTarget.actualValue /
-              Utils.minutesToSeconds(
-                  profileProvider.todaysSittingTarget.targetValue),
+          target: profileProvider.todaysSittingTarget,
           displayColor: themeProvider.darkSittingColor,
         ),
         onPressedWholeWidget: () => Utils.navigateToWidgetPage(

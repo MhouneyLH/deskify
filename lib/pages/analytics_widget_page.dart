@@ -21,13 +21,15 @@ class AnalyticsWidgetPage extends StatefulWidget {
 }
 
 class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
+  late ProfileProvider profileProvider;
+  late Target target;
+  late double progressValue;
+
   @override
   Widget build(BuildContext context) {
-    final ProfileProvider profileProvider =
-        Provider.of<ProfileProvider>(context);
-    final Target target =
-        widget.targetWeekdayMap[Utils.getCurrentWeekdayAsInt()]!;
-    final double progressValue = profileProvider.getProgress(target);
+    profileProvider = Provider.of<ProfileProvider>(context);
+    target = widget.targetWeekdayMap[Utils.getCurrentWeekdayAsInt()]!;
+    progressValue = profileProvider.getProgress(target);
 
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -37,12 +39,12 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
         children: [
           ProgressBar(
             height: 20.0,
-            progressValue: progressValue,
+            target: target,
             displayColor: widget.signalizationColor,
           ),
           const SizedBox(height: 10.0),
           Center(child: _buildSemanticsLabel(progressValue * 100)),
-          const SizedBox(height: 30.0),
+          const SizedBox(height: 60.0),
           SizedBox(
             height: 300.0,
             child: _buildBarChart(widget.targetWeekdayMap),
@@ -53,12 +55,25 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
   }
 
   Widget _buildSemanticsLabel(double value) {
-    return Text(
-      "${Utils.roundDouble(value, 2)}% completed",
-      style: const TextStyle(
-        fontSize: 20.0,
-        fontWeight: FontWeight.bold,
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          "${Utils.roundDouble(value, 1)}% completed",
+          style: const TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          "${Utils.secondsToMinutes(target.actualValue.toInt())} / ${target.targetValue} min",
+          style: const TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
     );
   }
 
