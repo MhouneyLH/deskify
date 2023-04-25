@@ -2,6 +2,7 @@ import 'package:deskify/model/target.dart';
 import 'package:deskify/provider/profile_provider.dart';
 import 'package:deskify/utils.dart';
 import 'package:deskify/widgets/generic/progress_bar.dart';
+import 'package:deskify/widgets/generic/single_value_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -54,6 +55,9 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
     );
   }
 
+  late TextEditingController targetValueController =
+      TextEditingController(text: target.targetValue.toString());
+
   Widget _buildSemanticsLabel() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -66,11 +70,25 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        Text(
-          "${Utils.roundDouble(Utils.secondsToMinutes(target.actualValue.toInt()), 1)} / ${target.targetValue} min",
-          style: const TextStyle(
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
+        GestureDetector(
+          onTap: () => showDialog(
+            context: context,
+            builder: (_) => SingleValueAlertDialog(
+              title: "Set Target",
+              controller: targetValueController,
+              isNumericInput: true,
+              onSave: () =>
+                  target.targetValue = double.parse(targetValueController.text),
+              onCancel: () =>
+                  targetValueController.text = target.targetValue.toString(),
+            ),
+          ),
+          child: Text(
+            "${Utils.roundDouble(Utils.secondsToMinutes(target.actualValue.toInt()), 1)} / ${target.targetValue} min",
+            style: const TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ],
