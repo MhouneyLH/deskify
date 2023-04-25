@@ -43,7 +43,7 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
             displayColor: widget.signalizationColor,
           ),
           const SizedBox(height: 10.0),
-          Center(child: _buildSemanticsLabel(progressValue * 100)),
+          Center(child: _buildSemanticsLabel()),
           const SizedBox(height: 60.0),
           SizedBox(
             height: 300.0,
@@ -54,20 +54,20 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
     );
   }
 
-  Widget _buildSemanticsLabel(double value) {
+  Widget _buildSemanticsLabel() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "${Utils.roundDouble(value, 1)}% completed",
+          "${Utils.roundDouble(profileProvider.getProgress(target) * 100, 1)}% completed",
           style: const TextStyle(
             fontSize: 20.0,
             fontWeight: FontWeight.bold,
           ),
         ),
         Text(
-          "${Utils.secondsToMinutes(target.actualValue.toInt())} / ${target.targetValue} min",
+          "${Utils.roundDouble(Utils.secondsToMinutes(target.actualValue.toInt()), 1)} / ${target.targetValue} min",
           style: const TextStyle(
             fontSize: 20.0,
             fontWeight: FontWeight.bold,

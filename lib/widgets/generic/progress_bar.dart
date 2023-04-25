@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
-
 import 'package:deskify/model/target.dart';
 import 'package:deskify/utils.dart';
 import 'package:flutter/material.dart';

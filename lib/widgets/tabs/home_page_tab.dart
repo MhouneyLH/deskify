@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:deskify/model/desk.dart';
 import 'package:deskify/model/preset.dart';
 import 'package:deskify/pages/analytics_widget_page.dart';
@@ -29,116 +32,89 @@ class _HomePageTabState extends State<HomePageTab> {
   late ProfileProvider profileProvider;
   late ThemeProvider themeProvider;
 
-  late List<InteractionWidget> analyticalInteractionWidgets;
-  late List<InteractionWidget> presetInteractionWidgets;
-  late List<InteractionWidget> otherInteractionWidgets;
+  late List<InteractionWidget> analyticalInteractionWidgets = [
+    InteractionWidget(
+      title: "Standing Information",
+      icon: const Icon(Icons.info),
+      extraInformationWidget: ProgressBar(
+        height: 10.0,
+        target: profileProvider.todaysStandingTarget,
+        displayColor: themeProvider.darkStandingColor,
+      ),
+      onPressedWholeWidget: () => Utils.navigateToWidgetPage(
+        context: context,
+        title: "Standing Information",
+        child: AnalyticsWidgetPage(
+          targetWeekdayMap: profileProvider.standingAnalytic,
+          signalizationColor: themeProvider.darkStandingColor,
+        ),
+      ),
+    ),
+    InteractionWidget(
+      title: "Sitting Information",
+      icon: const Icon(Icons.info),
+      extraInformationWidget: ProgressBar(
+        height: 10.0,
+        target: profileProvider.todaysSittingTarget,
+        displayColor: themeProvider.darkSittingColor,
+      ),
+      onPressedWholeWidget: () => Utils.navigateToWidgetPage(
+        context: context,
+        title: "Sitting Information",
+        child: AnalyticsWidgetPage(
+          targetWeekdayMap: profileProvider.sittingAnalytic,
+          signalizationColor: themeProvider.darkSittingColor,
+        ),
+      ),
+    ),
+  ];
+  late List<InteractionWidget> presetInteractionWidgets =
+      updatedPresetInteractionWidgets;
 
-  late Desk currentDesk;
-  late TextEditingController deskNameController;
-  // late double _test = profileProvider.todaysStandingTarget.actualValue /
-  //     Utils.minutesToSeconds(profileProvider.todaysStandingTarget.targetValue);
+  List<InteractionWidget> get updatedPresetInteractionWidgets => [
+        for (Preset preset in deskProvider.currentDesk.presets!)
+          InteractionWidget(
+            title: preset.title,
+            icon: preset.icon,
+            onPressedWholeWidget: () =>
+                deskProvider.currentDesk.height = preset.targetHeight,
+            onPressedSettingsIcon: () => Utils.navigateToWidgetPage(
+              context: context,
+              title: preset.title,
+              child: PresetWidgetPage(preset: preset),
+            ),
+          ),
+      ];
+
+  late List<InteractionWidget> otherInteractionWidgets = [
+    InteractionWidget(
+      title: "Move",
+      icon: const Icon(Icons.input),
+      onPressedWholeWidget: () => Utils.navigateToWidgetPage(
+        context: context,
+        title: "Moving",
+        child: const MoveWidgetPage(),
+      ),
+    ),
+  ];
+
+  late final TextEditingController deskNameController =
+      TextEditingController(text: deskProvider.currentDesk.name);
 
   @override
   void didChangeDependencies() {
     if (!_isInitialized) {
-      _init();
+      _initProvider();
       _isInitialized = true;
     }
 
-    for (InteractionWidget item in analyticalInteractionWidgets) {
-      item = InteractionWidget(
-        title: item.title,
-        onPressedWholeWidget: item.onPressedWholeWidget,
-        icon: item.icon,
-        extraInformationWidget: ProgressBar(
-          height: 10.0,
-          target: profileProvider.todaysStandingTarget,
-          displayColor: themeProvider.darkStandingColor,
-        ),
-      );
-    }
-
-    // setState(() {});
-
     super.didChangeDependencies();
-  }
-
-  void _init() {
-    _initProvider();
-    currentDesk = deskProvider.currentDesk;
-    deskNameController = TextEditingController(text: currentDesk.name);
-    _initWidgets();
   }
 
   void _initProvider() {
     deskProvider = Provider.of<DeskProvider>(context);
     profileProvider = Provider.of<ProfileProvider>(context);
     themeProvider = Provider.of<ThemeProvider>(context);
-  }
-
-  void _initWidgets() {
-    analyticalInteractionWidgets = [
-      InteractionWidget(
-        title: "Standing Information",
-        icon: const Icon(Icons.info),
-        extraInformationWidget: ProgressBar(
-          height: 10.0,
-          target: profileProvider.todaysStandingTarget,
-          displayColor: themeProvider.darkStandingColor,
-        ),
-        onPressedWholeWidget: () => Utils.navigateToWidgetPage(
-          context: context,
-          title: "Standing Information",
-          child: AnalyticsWidgetPage(
-            targetWeekdayMap: profileProvider.standingAnalytic,
-            signalizationColor: themeProvider.darkStandingColor,
-          ),
-        ),
-      ),
-      InteractionWidget(
-        title: "Sitting Information",
-        icon: const Icon(Icons.info),
-        extraInformationWidget: ProgressBar(
-          height: 10.0,
-          target: profileProvider.todaysSittingTarget,
-          displayColor: themeProvider.darkSittingColor,
-        ),
-        onPressedWholeWidget: () => Utils.navigateToWidgetPage(
-          context: context,
-          title: "Sitting Information",
-          child: AnalyticsWidgetPage(
-            targetWeekdayMap: profileProvider.sittingAnalytic,
-            signalizationColor: themeProvider.darkSittingColor,
-          ),
-        ),
-      ),
-    ];
-
-    presetInteractionWidgets = [
-      for (Preset preset in currentDesk.presets!)
-        InteractionWidget(
-          title: preset.title,
-          icon: preset.icon,
-          onPressedWholeWidget: () => currentDesk.height = preset.targetHeight,
-          onPressedSettingsIcon: () => Utils.navigateToWidgetPage(
-            context: context,
-            title: preset.title,
-            child: PresetWidgetPage(preset: preset),
-          ),
-        ),
-    ];
-
-    otherInteractionWidgets = [
-      InteractionWidget(
-        title: "Move",
-        icon: const Icon(Icons.input),
-        onPressedWholeWidget: () => Utils.navigateToWidgetPage(
-          context: context,
-          title: "Moving",
-          child: const MoveWidgetPage(),
-        ),
-      ),
-    ];
   }
 
   @override
@@ -148,16 +124,16 @@ class _HomePageTabState extends State<HomePageTab> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Heading(
-          title: currentDesk.name!,
+          title: deskProvider.currentDesk.name!,
           onTapped: () => showDialog(
             context: context,
             builder: (_) => _buildHeadingAlertDialog(),
           ),
         ),
         const SizedBox(width: 10.0),
-        Text("Height: ${currentDesk.height} cm"),
+        Text("Height: ${deskProvider.currentDesk.height} cm"),
         const SizedBox(height: 10.0),
-        _buildDeskAnimation(),
+        _buildCarouselDeskAnimation(),
         _buildInteractiveWidgetGroup(analyticalInteractionWidgets, "Analytics"),
         _buildInteractiveWidgetGroup(presetInteractionWidgets, "Presets"),
         _buildInteractiveWidgetGroup(otherInteractionWidgets, "Others"),
@@ -173,14 +149,14 @@ class _HomePageTabState extends State<HomePageTab> {
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
-            deskNameController.text = currentDesk.name!;
+            deskNameController.text = deskProvider.currentDesk.name!;
           },
           child: const Text('Cancel'),
         ),
         TextButton(
           onPressed: () {
             setState(() {
-              currentDesk.name = deskNameController.text;
+              deskProvider.currentDesk.name = deskNameController.text;
             });
             Navigator.of(context).pop();
           },
@@ -190,11 +166,33 @@ class _HomePageTabState extends State<HomePageTab> {
     );
   }
 
-  Widget _buildDeskAnimation() {
+  CarouselController buttonCarouselController = CarouselController();
+
+  Widget _buildCarouselDeskAnimation() {
+    return CarouselSlider(
+      carouselController: buttonCarouselController,
+      options: CarouselOptions(
+        height: 200.0,
+        enableInfiniteScroll: false,
+        initialPage: deskProvider.currentlySelectedIndex,
+        onPageChanged: (index, _) => _updateDesk(index),
+      ),
+      items: [
+        for (Desk desk in deskProvider.deskList) _buildDeskAnimation(desk),
+      ],
+    );
+  }
+
+  void _updateDesk(int index) {
+    deskProvider.currentlySelectedIndex = index;
+    presetInteractionWidgets = updatedPresetInteractionWidgets;
+  }
+
+  Widget _buildDeskAnimation(Desk desk) {
     return Center(
       child: DeskAnimation(
         width: 200,
-        deskHeight: currentDesk.height!,
+        deskHeight: desk.height!,
       ),
     );
   }
