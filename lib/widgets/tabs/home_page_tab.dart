@@ -32,6 +32,7 @@ class _HomePageTabState extends State<HomePageTab> {
   late ThemeProvider themeProvider;
 
   late TextEditingController deskNameController = updatedDeskNameController;
+  final CarouselController buttonCarouselController = CarouselController();
 
   late List<InteractionWidget> analyticalInteractionWidgets = [
     InteractionWidget(
@@ -149,9 +150,16 @@ class _HomePageTabState extends State<HomePageTab> {
     );
   }
 
-  CarouselController buttonCarouselController = CarouselController();
-
   Widget _buildCarouselDeskAnimation() {
+    return Column(
+      children: [
+        _buildCarousel(),
+        _buildIndicatorBar(),
+      ],
+    );
+  }
+
+  Widget _buildCarousel() {
     return CarouselSlider(
       carouselController: buttonCarouselController,
       options: CarouselOptions(
@@ -178,6 +186,28 @@ class _HomePageTabState extends State<HomePageTab> {
         width: 200,
         deskHeight: desk.height!,
       ),
+    );
+  }
+
+  Widget _buildIndicatorBar() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: deskProvider.deskList.asMap().entries.map((entry) {
+        return GestureDetector(
+          onTap: () => buttonCarouselController.animateToPage(entry.key),
+          child: Container(
+            width: 10.0,
+            height: 10.0,
+            margin: const EdgeInsets.all(5.0),
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: (Theme.of(context).accentColor).withOpacity(
+                    deskProvider.currentlySelectedIndex == entry.key
+                        ? 0.9
+                        : 0.3)),
+          ),
+        );
+      }).toList(),
     );
   }
 
