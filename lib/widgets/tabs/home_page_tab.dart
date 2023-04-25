@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:deskify/model/desk.dart';
 import 'package:deskify/model/preset.dart';
@@ -13,6 +11,7 @@ import 'package:deskify/utils.dart';
 import 'package:deskify/widgets/generic/desk_animation.dart';
 import 'package:deskify/widgets/generic/heading_widget.dart';
 import 'package:deskify/widgets/generic/progress_bar.dart';
+import 'package:deskify/widgets/generic/single_value_alert_dialog.dart';
 import 'package:deskify/widgets/interaction_widgets/interaction_widgets_grid_view.dart';
 import 'package:deskify/widgets/interaction_widgets/interaction_widget.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +30,8 @@ class _HomePageTabState extends State<HomePageTab> {
   late DeskProvider deskProvider;
   late ProfileProvider profileProvider;
   late ThemeProvider themeProvider;
+
+  late TextEditingController deskNameController = updatedDeskNameController;
 
   late List<InteractionWidget> analyticalInteractionWidgets = [
     InteractionWidget(
@@ -70,6 +71,21 @@ class _HomePageTabState extends State<HomePageTab> {
   ];
   late List<InteractionWidget> presetInteractionWidgets =
       updatedPresetInteractionWidgets;
+  late List<InteractionWidget> otherInteractionWidgets = [
+    InteractionWidget(
+      title: "Move",
+      icon: const Icon(Icons.input),
+      onPressedWholeWidget: () => Utils.navigateToWidgetPage(
+        context: context,
+        title: "Moving",
+        child: const MoveWidgetPage(),
+      ),
+    ),
+  ];
+
+  TextEditingController get updatedDeskNameController => TextEditingController(
+        text: deskProvider.currentDesk.name,
+      );
 
   List<InteractionWidget> get updatedPresetInteractionWidgets => [
         for (Preset preset in deskProvider.currentDesk.presets!)
@@ -85,21 +101,6 @@ class _HomePageTabState extends State<HomePageTab> {
             ),
           ),
       ];
-
-  late List<InteractionWidget> otherInteractionWidgets = [
-    InteractionWidget(
-      title: "Move",
-      icon: const Icon(Icons.input),
-      onPressedWholeWidget: () => Utils.navigateToWidgetPage(
-        context: context,
-        title: "Moving",
-        child: const MoveWidgetPage(),
-      ),
-    ),
-  ];
-
-  late final TextEditingController deskNameController =
-      TextEditingController(text: deskProvider.currentDesk.name);
 
   @override
   void didChangeDependencies() {
@@ -127,7 +128,14 @@ class _HomePageTabState extends State<HomePageTab> {
           title: deskProvider.currentDesk.name!,
           onTapped: () => showDialog(
             context: context,
-            builder: (_) => _buildHeadingAlertDialog(),
+            builder: (_) => SingleValueAlertDialog(
+              title: 'Edit desk name',
+              controller: deskNameController,
+              onSave: () =>
+                  deskProvider.currentDesk.name = deskNameController.text,
+              onCancel: () =>
+                  deskNameController.text = deskProvider.currentDesk.name!,
+            ),
           ),
         ),
         const SizedBox(width: 10.0),
@@ -137,31 +145,6 @@ class _HomePageTabState extends State<HomePageTab> {
         _buildInteractiveWidgetGroup(analyticalInteractionWidgets, "Analytics"),
         _buildInteractiveWidgetGroup(presetInteractionWidgets, "Presets"),
         _buildInteractiveWidgetGroup(otherInteractionWidgets, "Others"),
-      ],
-    );
-  }
-
-  Widget _buildHeadingAlertDialog() {
-    return AlertDialog(
-      title: const Text('Edit desk name'),
-      content: TextField(controller: deskNameController),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-            deskNameController.text = deskProvider.currentDesk.name!;
-          },
-          child: const Text('Cancel'),
-        ),
-        TextButton(
-          onPressed: () {
-            setState(() {
-              deskProvider.currentDesk.name = deskNameController.text;
-            });
-            Navigator.of(context).pop();
-          },
-          child: const Text('Save'),
-        ),
       ],
     );
   }
@@ -186,6 +169,7 @@ class _HomePageTabState extends State<HomePageTab> {
   void _updateDesk(int index) {
     deskProvider.currentlySelectedIndex = index;
     presetInteractionWidgets = updatedPresetInteractionWidgets;
+    deskNameController = updatedDeskNameController;
   }
 
   Widget _buildDeskAnimation(Desk desk) {
