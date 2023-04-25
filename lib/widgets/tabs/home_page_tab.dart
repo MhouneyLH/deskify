@@ -36,7 +36,7 @@ class _HomePageTabState extends State<HomePageTab> {
 
   late List<InteractionWidget> analyticalInteractionWidgets = [
     InteractionWidget(
-      title: "Standing Information",
+      title: "Standing",
       icon: const Icon(Icons.info),
       extraInformationWidget: ProgressBar(
         height: 10.0,
@@ -45,7 +45,7 @@ class _HomePageTabState extends State<HomePageTab> {
       ),
       onPressedWholeWidget: () => Utils.navigateToWidgetPage(
         context: context,
-        title: "Standing Information",
+        title: "Standing",
         child: AnalyticsWidgetPage(
           targetWeekdayMap: profileProvider.standingAnalytic,
           signalizationColor: themeProvider.darkStandingColor,
@@ -53,7 +53,7 @@ class _HomePageTabState extends State<HomePageTab> {
       ),
     ),
     InteractionWidget(
-      title: "Sitting Information",
+      title: "Sitting",
       icon: const Icon(Icons.info),
       extraInformationWidget: ProgressBar(
         height: 10.0,
@@ -62,7 +62,7 @@ class _HomePageTabState extends State<HomePageTab> {
       ),
       onPressedWholeWidget: () => Utils.navigateToWidgetPage(
         context: context,
-        title: "Sitting Information",
+        title: "Sitting",
         child: AnalyticsWidgetPage(
           targetWeekdayMap: profileProvider.sittingAnalytic,
           signalizationColor: themeProvider.darkSittingColor,
@@ -98,7 +98,11 @@ class _HomePageTabState extends State<HomePageTab> {
             onPressedSettingsIcon: () => Utils.navigateToWidgetPage(
               context: context,
               title: preset.title,
-              child: PresetWidgetPage(preset: preset),
+              child: PresetWidgetPage(
+                preset: preset,
+                onAboutToPop: () =>
+                    presetInteractionWidgets = updatedPresetInteractionWidgets,
+              ),
             ),
           ),
       ];
