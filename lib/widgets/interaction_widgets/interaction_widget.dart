@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SimpleInteractionWidget extends StatelessWidget {
+class InteractionWidget extends StatefulWidget {
   final String title;
   final Icon icon;
   final double width;
@@ -9,7 +9,7 @@ class SimpleInteractionWidget extends StatelessWidget {
   final void Function()? onPressedSettingsIcon;
   final Widget? extraInformationWidget;
 
-  const SimpleInteractionWidget({
+  const InteractionWidget({
     required this.title,
     this.icon = const Icon(Icons.abc),
     this.width = 200.0,
@@ -21,11 +21,17 @@ class SimpleInteractionWidget extends StatelessWidget {
   });
 
   @override
+  State<InteractionWidget> createState() => _InteractionWidgetState();
+}
+
+class _InteractionWidgetState extends State<InteractionWidget> {
+  @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () => onPressedWholeWidget(),
+      key: UniqueKey(),
+      onPressed: () => widget.onPressedWholeWidget(),
       style: ButtonStyle(
-        fixedSize: MaterialStateProperty.all(Size(width, height)),
+        fixedSize: MaterialStateProperty.all(Size(widget.width, widget.height)),
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
@@ -47,12 +53,12 @@ class SimpleInteractionWidget extends StatelessWidget {
               const SizedBox(width: 10.0),
               _buildTitle(context),
               const Expanded(child: SizedBox()),
-              onPressedSettingsIcon != null
+              widget.onPressedSettingsIcon != null
                   ? _buildSettingsButton(context)
                   : const SizedBox(),
             ],
           ),
-          SizedBox(height: extraInformationWidget == null ? 0.0 : 5.0),
+          SizedBox(height: widget.extraInformationWidget == null ? 0.0 : 5.0),
           _buildExtraInformationWidget(),
         ],
       ),
@@ -61,13 +67,13 @@ class SimpleInteractionWidget extends StatelessWidget {
 
   Widget _buildIcon() {
     return Icon(
-      icon.icon,
+      widget.icon.icon,
     );
   }
 
   Widget _buildTitle(context) {
     return Text(
-      title,
+      widget.title,
       style: Theme.of(context).textTheme.labelLarge,
       textAlign: TextAlign.start,
       maxLines: 1,
@@ -76,19 +82,16 @@ class SimpleInteractionWidget extends StatelessWidget {
   }
 
   Widget _buildSettingsButton(context) {
-    return Ink(
-      decoration: const BoxDecoration(shape: BoxShape.circle),
-      child: InkWell(
-        onTap: () => onPressedSettingsIcon!(),
-        borderRadius: BorderRadius.circular(100.0),
-        child: const Icon(Icons.settings),
-      ),
+    return IconButton(
+      icon: const Icon(Icons.settings),
+      splashRadius: 20.0,
+      onPressed: widget.onPressedSettingsIcon!,
     );
   }
 
   Widget _buildExtraInformationWidget() {
-    return extraInformationWidget == null
+    return widget.extraInformationWidget == null
         ? const SizedBox()
-        : extraInformationWidget!;
+        : widget.extraInformationWidget!;
   }
 }

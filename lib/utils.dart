@@ -1,3 +1,4 @@
+import 'package:deskify/main.dart';
 import 'package:flutter/material.dart';
 
 class Utils {
@@ -38,18 +39,35 @@ class Utils {
     }
   }
 
+  static Future<dynamic> navigateToWidgetPage(
+      {required BuildContext context,
+      required Widget child,
+      String title = MainApp.title}) {
+    return Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => Scaffold(
+          appBar: AppBar(
+            title: Text(title),
+          ),
+          body: child,
+        ),
+      ),
+    );
+  }
+
   static void showSnackbar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-          content: Text(
-            message,
-            style:
-                TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
-          ),
-          backgroundColor: Theme.of(context).primaryColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          )),
+        backgroundColor: Theme.of(context).primaryColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        showCloseIcon: true,
+        content: Text(
+          message,
+          style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
+        ),
+      ),
     );
   }
 }

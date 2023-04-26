@@ -29,6 +29,31 @@ class DeskProvider with ChangeNotifier {
           targetHeight: 100.0,
           icon: const Icon(Icons.input),
         ),
+        Preset(
+          title: "Preset3",
+          targetHeight: 100.0,
+          icon: const Icon(Icons.input),
+        ),
+        Preset(
+          title: "Preset3",
+          targetHeight: 100.0,
+          icon: const Icon(Icons.input),
+        ),
+        Preset(
+          title: "Preset3",
+          targetHeight: 100.0,
+          icon: const Icon(Icons.input),
+        ),
+        Preset(
+          title: "Preset3",
+          targetHeight: 100.0,
+          icon: const Icon(Icons.input),
+        ),
+        Preset(
+          title: "Preset3",
+          targetHeight: 100.0,
+          icon: const Icon(Icons.input),
+        ),
       ],
     ),
     Desk(

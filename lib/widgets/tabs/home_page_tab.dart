@@ -1,4 +1,4 @@
-import 'package:deskify/main.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:deskify/model/desk.dart';
 import 'package:deskify/model/preset.dart';
 import 'package:deskify/pages/analytics_widget_page.dart';
@@ -11,8 +11,9 @@ import 'package:deskify/utils.dart';
 import 'package:deskify/widgets/generic/desk_animation.dart';
 import 'package:deskify/widgets/generic/heading_widget.dart';
 import 'package:deskify/widgets/generic/progress_bar.dart';
+import 'package:deskify/widgets/generic/single_value_alert_dialog.dart';
 import 'package:deskify/widgets/interaction_widgets/interaction_widgets_grid_view.dart';
-import 'package:deskify/widgets/interaction_widgets/simple_interaction_widget.dart';
+import 'package:deskify/widgets/interaction_widgets/interaction_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,119 +25,198 @@ class HomePageTab extends StatefulWidget {
 }
 
 class _HomePageTabState extends State<HomePageTab> {
+  bool _isInitialized = false;
+
   late DeskProvider deskProvider;
-  late Desk currentDesk;
   late ProfileProvider profileProvider;
   late ThemeProvider themeProvider;
 
+  late TextEditingController deskNameController = updatedDeskNameController;
+  final CarouselController buttonCarouselController = CarouselController();
+
+  late List<InteractionWidget> analyticalInteractionWidgets = [
+    InteractionWidget(
+      title: "Standing",
+      icon: const Icon(Icons.info),
+      extraInformationWidget: ProgressBar(
+        height: 10.0,
+        target: profileProvider.todaysStandingTarget,
+        displayColor: themeProvider.darkStandingColor,
+      ),
+      onPressedWholeWidget: () => Utils.navigateToWidgetPage(
+        context: context,
+        title: "Standing",
+        child: AnalyticsWidgetPage(
+          targetWeekdayMap: profileProvider.standingAnalytic,
+          signalizationColor: themeProvider.darkStandingColor,
+        ),
+      ),
+    ),
+    InteractionWidget(
+      title: "Sitting",
+      icon: const Icon(Icons.info),
+      extraInformationWidget: ProgressBar(
+        height: 10.0,
+        target: profileProvider.todaysSittingTarget,
+        displayColor: themeProvider.darkSittingColor,
+      ),
+      onPressedWholeWidget: () => Utils.navigateToWidgetPage(
+        context: context,
+        title: "Sitting",
+        child: AnalyticsWidgetPage(
+          targetWeekdayMap: profileProvider.sittingAnalytic,
+          signalizationColor: themeProvider.darkSittingColor,
+        ),
+      ),
+    ),
+  ];
+  late List<InteractionWidget> presetInteractionWidgets =
+      updatedPresetInteractionWidgets;
+  late List<InteractionWidget> otherInteractionWidgets = [
+    InteractionWidget(
+      title: "Move",
+      icon: const Icon(Icons.input),
+      onPressedWholeWidget: () => Utils.navigateToWidgetPage(
+        context: context,
+        title: "Moving",
+        child: const MoveWidgetPage(),
+      ),
+    ),
+  ];
+
+  TextEditingController get updatedDeskNameController => TextEditingController(
+        text: deskProvider.currentDesk.name,
+      );
+
+  List<InteractionWidget> get updatedPresetInteractionWidgets => [
+        for (Preset preset in deskProvider.currentDesk.presets!)
+          InteractionWidget(
+            title: preset.title,
+            icon: preset.icon,
+            onPressedWholeWidget: () =>
+                deskProvider.currentDesk.height = preset.targetHeight,
+            onPressedSettingsIcon: () => Utils.navigateToWidgetPage(
+              context: context,
+              title: preset.title,
+              child: PresetWidgetPage(
+                preset: preset,
+                onAboutToPop: () =>
+                    presetInteractionWidgets = updatedPresetInteractionWidgets,
+              ),
+            ),
+          ),
+      ];
+
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    if (!_isInitialized) {
+      _initProvider();
+      _isInitialized = true;
+    }
+
+    super.didChangeDependencies();
+  }
+
+  void _initProvider() {
     deskProvider = Provider.of<DeskProvider>(context);
-    currentDesk = deskProvider.currentDesk;
     profileProvider = Provider.of<ProfileProvider>(context);
     themeProvider = Provider.of<ThemeProvider>(context);
+  }
 
-    final List<SimpleInteractionWidget> analyticInteractionWidgets = [
-      SimpleInteractionWidget(
-        title: "Standing Information",
-        icon: const Icon(Icons.info),
-        extraInformationWidget: ProgressBar(
-          height: 10.0,
-          progressValue: profileProvider.todaysStandingTarget.actualValue /
-              Utils.minutesToSeconds(
-                  profileProvider.todaysStandingTarget.targetValue),
-          displayColor: themeProvider.darkStandingColor,
-        ),
-        onPressedWholeWidget: () => _navigateToWidgetPage(
-          context,
-          AnalyticsWidgetPage(
-            targetWeekdayMap: profileProvider.standingAnalytic,
-            signalizationColor: themeProvider.darkStandingColor,
-          ),
-        ),
-      ),
-      SimpleInteractionWidget(
-        title: "Sitting Information",
-        icon: const Icon(Icons.info),
-        extraInformationWidget: ProgressBar(
-          height: 10.0,
-          progressValue: profileProvider.todaysSittingTarget.actualValue /
-              Utils.minutesToSeconds(
-                  profileProvider.todaysSittingTarget.targetValue),
-          displayColor: themeProvider.darkSittingColor,
-        ),
-        onPressedWholeWidget: () => _navigateToWidgetPage(
-          context,
-          AnalyticsWidgetPage(
-            targetWeekdayMap: profileProvider.sittingAnalytic,
-            signalizationColor: themeProvider.darkSittingColor,
-          ),
-        ),
-      ),
-    ];
-
-    final List<SimpleInteractionWidget> presetInteractionWidgets = [
-      for (Preset preset in currentDesk.presets!)
-        SimpleInteractionWidget(
-          title: preset.title,
-          icon: preset.icon,
-          onPressedWholeWidget: () => currentDesk.height = preset.targetHeight,
-          onPressedSettingsIcon: () => _navigateToWidgetPage(
-            context,
-            PresetWidgetPage(preset: preset),
-          ),
-        ),
-    ];
-
-    final List<SimpleInteractionWidget> otherInteractionWidgets = [
-      SimpleInteractionWidget(
-        title: "Move",
-        icon: const Icon(Icons.input),
-        onPressedWholeWidget: () => _navigateToWidgetPage(
-          context,
-          const MoveWidgetPage(),
-        ),
-      ),
-    ];
-
+  @override
+  Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Heading(title: currentDesk.name!),
-        Text("Height: ${currentDesk.height} cm"),
-        _buildDeskAnimation(),
-        _buildInteractiveWidgetGroup(analyticInteractionWidgets, "Analytics"),
+        Heading(
+          title: deskProvider.currentDesk.name!,
+          onTapped: () => showDialog(
+            context: context,
+            builder: (_) => SingleValueAlertDialog(
+              title: 'Edit desk name',
+              controller: deskNameController,
+              onSave: () =>
+                  deskProvider.currentDesk.name = deskNameController.text,
+              onCancel: () =>
+                  deskNameController.text = deskProvider.currentDesk.name!,
+            ),
+          ),
+        ),
+        const SizedBox(width: 10.0),
+        Text("Height: ${deskProvider.currentDesk.height} cm"),
+        const SizedBox(height: 10.0),
+        _buildCarouselDeskAnimation(),
+        _buildInteractiveWidgetGroup(analyticalInteractionWidgets, "Analytics"),
         _buildInteractiveWidgetGroup(presetInteractionWidgets, "Presets"),
         _buildInteractiveWidgetGroup(otherInteractionWidgets, "Others"),
       ],
     );
   }
 
-  Future<dynamic> _navigateToWidgetPage(BuildContext context, Widget widget) {
-    return Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => Scaffold(
-          appBar: AppBar(
-            title: const Text(MainApp.title),
-          ),
-          body: widget,
-        ),
+  Widget _buildCarouselDeskAnimation() {
+    return Column(
+      children: [
+        _buildCarousel(),
+        _buildIndicatorBar(),
+      ],
+    );
+  }
+
+  Widget _buildCarousel() {
+    return CarouselSlider(
+      carouselController: buttonCarouselController,
+      options: CarouselOptions(
+        height: 200.0,
+        enableInfiniteScroll: false,
+        initialPage: deskProvider.currentlySelectedIndex,
+        onPageChanged: (index, _) => _updateDesk(index),
+      ),
+      items: [
+        for (Desk desk in deskProvider.deskList) _buildDeskAnimation(desk),
+      ],
+    );
+  }
+
+  void _updateDesk(int index) {
+    deskProvider.currentlySelectedIndex = index;
+    presetInteractionWidgets = updatedPresetInteractionWidgets;
+    deskNameController = updatedDeskNameController;
+  }
+
+  Widget _buildDeskAnimation(Desk desk) {
+    return Center(
+      child: DeskAnimation(
+        width: 200,
+        deskHeight: desk.height!,
       ),
     );
   }
 
-  Widget _buildDeskAnimation() {
-    return Center(
-      child: DeskAnimation(
-        width: 200,
-        deskHeight: currentDesk.height!,
-      ),
+  Widget _buildIndicatorBar() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: deskProvider.deskList.asMap().entries.map((entry) {
+        return GestureDetector(
+          onTap: () => buttonCarouselController.animateToPage(entry.key),
+          child: Container(
+            width: 10.0,
+            height: 10.0,
+            margin: const EdgeInsets.all(5.0),
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: (Theme.of(context).accentColor).withOpacity(
+                    deskProvider.currentlySelectedIndex == entry.key
+                        ? 0.9
+                        : 0.3)),
+          ),
+        );
+      }).toList(),
     );
   }
 
   Widget _buildInteractiveWidgetGroup(
-      List<SimpleInteractionWidget> items, String title) {
+      List<InteractionWidget> items, String title) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,

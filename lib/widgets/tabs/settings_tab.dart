@@ -29,7 +29,6 @@ class _SettingsTabState extends State<SettingsTab> {
       children: [
         _buildProfileSummary(),
         _buildThemeSwitch(),
-        _buildDeskSelector(),
       ],
     );
   }
@@ -120,27 +119,6 @@ class _SettingsTabState extends State<SettingsTab> {
               //     : themeProvider!.setLightTheme();
             })
           },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDeskSelector() {
-    return Row(
-      children: [
-        const Text("Current Desk: "),
-        DropdownButton<int>(
-          value: deskProvider.currentlySelectedIndex,
-          onChanged: (int? newValue) =>
-              deskProvider.currentlySelectedIndex = newValue!,
-          items: List.generate(
-            deskProvider.deskList.length,
-            (index) => DropdownMenuItem(
-              value: index,
-              child:
-                  Text(deskProvider.getName(deskProvider.deskList[index].id)),
-            ),
-          ),
         ),
       ],
     );
