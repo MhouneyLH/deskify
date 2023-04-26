@@ -138,21 +138,13 @@ class _HomePageTabState extends State<HomePageTab> {
         _buildInteractiveWidgetGroup(
           items: analyticalInteractionWidgets,
           title: "Analytics",
-          nextToHeadingWidgets: [
-            IconButton(
-              icon: const Icon(Icons.add),
-              splashRadius: 20.0,
-              onPressed: () => Utils.navigateToWidgetPage(
-                context: context,
-                title: "Add Preset",
-                child: const AddPresetPage(),
-              ),
-            ),
-          ],
         ),
         _buildInteractiveWidgetGroup(
           items: presetInteractionWidgets,
           title: "Presets",
+          nextToHeadingWidgets: [
+            _buildAddPresetButton(),
+          ],
         ),
         _buildInteractiveWidgetGroup(
           items: otherInteractionWidgets,
@@ -255,7 +247,7 @@ class _HomePageTabState extends State<HomePageTab> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Heading(title: title),
-            const SizedBox(width: 10.0),
+            const SizedBox(width: 5.0),
             if (nextToHeadingWidgets != null) ...nextToHeadingWidgets,
           ],
         ),
@@ -265,6 +257,21 @@ class _HomePageTabState extends State<HomePageTab> {
           outerDefinedSpacings: 10.0,
         ),
       ],
+    );
+  }
+
+  Widget _buildAddPresetButton() {
+    return IconButton(
+      icon: const Icon(Icons.add),
+      splashRadius: 20.0,
+      onPressed: () => Utils.navigateToWidgetPage(
+        context: context,
+        title: "Add Preset",
+        child: AddPresetPage(
+          onAboutToPop: () =>
+              presetInteractionWidgets = updatedPresetInteractionWidgets,
+        ),
+      ),
     );
   }
 }

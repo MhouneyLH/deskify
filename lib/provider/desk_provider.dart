@@ -141,4 +141,16 @@ class DeskProvider with ChangeNotifier {
     ));
     notifyListeners();
   }
+
+  void addPreset(String deskId,
+      {required String title, required double targetHeight}) {
+    Desk desk = getDesk(deskId);
+    desk.presets!.add(
+      Preset(
+        title: title,
+        targetHeight: targetHeight,
+      ),
+    );
+    notifyListeners();
+  }
 }
