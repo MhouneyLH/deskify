@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:deskify/model/desk.dart';
 import 'package:deskify/model/preset.dart';
+import 'package:deskify/pages/add_preset_page.dart';
 import 'package:deskify/pages/analytics_widget_page.dart';
 import 'package:deskify/pages/move_widget_page.dart';
 import 'package:deskify/pages/preset_widget_page.dart';
@@ -129,28 +130,51 @@ class _HomePageTabState extends State<HomePageTab> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Heading(
-          title: deskProvider.currentDesk.name!,
-          onTapped: () => showDialog(
-            context: context,
-            builder: (_) => SingleValueAlertDialog(
-              title: 'Edit desk name',
-              controller: deskNameController,
-              onSave: () =>
-                  deskProvider.currentDesk.name = deskNameController.text,
-              onCancel: () =>
-                  deskNameController.text = deskProvider.currentDesk.name!,
-            ),
-          ),
-        ),
+        _buildDeskHeading(),
         const SizedBox(width: 10.0),
         Text("Height: ${deskProvider.currentDesk.height} cm"),
         const SizedBox(height: 10.0),
         _buildCarouselDeskAnimation(),
-        _buildInteractiveWidgetGroup(analyticalInteractionWidgets, "Analytics"),
-        _buildInteractiveWidgetGroup(presetInteractionWidgets, "Presets"),
-        _buildInteractiveWidgetGroup(otherInteractionWidgets, "Others"),
+        _buildInteractiveWidgetGroup(
+          items: analyticalInteractionWidgets,
+          title: "Analytics",
+          nextToHeadingWidgets: [
+            IconButton(
+              icon: const Icon(Icons.add),
+              splashRadius: 20.0,
+              onPressed: () => Utils.navigateToWidgetPage(
+                context: context,
+                title: "Add Preset",
+                child: const AddPresetPage(),
+              ),
+            ),
+          ],
+        ),
+        _buildInteractiveWidgetGroup(
+          items: presetInteractionWidgets,
+          title: "Presets",
+        ),
+        _buildInteractiveWidgetGroup(
+          items: otherInteractionWidgets,
+          title: "Others",
+        ),
       ],
+    );
+  }
+
+  Widget _buildDeskHeading() {
+    return Heading(
+      title: deskProvider.currentDesk.name!,
+      onTapped: () => showDialog(
+        context: context,
+        builder: (_) => SingleValueAlertDialog(
+          title: 'Edit desk name',
+          controller: deskNameController,
+          onSave: () => deskProvider.currentDesk.name = deskNameController.text,
+          onCancel: () =>
+              deskNameController.text = deskProvider.currentDesk.name!,
+        ),
+      ),
     );
   }
 
@@ -196,32 +220,45 @@ class _HomePageTabState extends State<HomePageTab> {
   Widget _buildIndicatorBar() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: deskProvider.deskList.asMap().entries.map((entry) {
-        return GestureDetector(
-          onTap: () => buttonCarouselController.animateToPage(entry.key),
-          child: Container(
-            width: 10.0,
-            height: 10.0,
-            margin: const EdgeInsets.all(5.0),
-            decoration: BoxDecoration(
+      children: deskProvider.deskList.asMap().entries.map(
+        (entry) {
+          return GestureDetector(
+            onTap: () => buttonCarouselController.animateToPage(entry.key),
+            child: Container(
+              width: 10.0,
+              height: 10.0,
+              margin: const EdgeInsets.all(5.0),
+              decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: (Theme.of(context).accentColor).withOpacity(
                     deskProvider.currentlySelectedIndex == entry.key
                         ? 0.9
-                        : 0.3)),
-          ),
-        );
-      }).toList(),
+                        : 0.3),
+              ),
+            ),
+          );
+        },
+      ).toList(),
     );
   }
 
   Widget _buildInteractiveWidgetGroup(
-      List<InteractionWidget> items, String title) {
+      {required List<InteractionWidget> items,
+      required String title,
+      List<Widget>? nextToHeadingWidgets}) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Heading(title: title),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Heading(title: title),
+            const SizedBox(width: 10.0),
+            if (nextToHeadingWidgets != null) ...nextToHeadingWidgets,
+          ],
+        ),
         const SizedBox(height: 10.0),
         InteractionWidgetGridView(
           items: items,
