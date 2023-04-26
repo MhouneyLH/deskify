@@ -102,8 +102,16 @@ class _AddPresetPageState extends State<AddPresetPage> {
   Widget _buildAddButton() {
     return ElevatedButton(
       onPressed: () {
+        if (presetTitleController.text.isEmpty) {
+          Utils.showSnackbar(context, "Enter a preset name.");
+          return;
+        }
+
         addPreset();
         widget.onAboutToPop();
+        Utils.showSnackbar(
+            context, "The preset '${presetTitleController.text}' was added.");
+
         Navigator.of(context).pop();
       },
       style: ButtonStyle(

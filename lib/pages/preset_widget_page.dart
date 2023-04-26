@@ -121,6 +121,8 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
     return ElevatedButton(
       onPressed: () {
         savePreset();
+        Utils.showSnackbar(
+            context, "The preset '${presetTitleController.text}' was saved.");
         Navigator.of(context).pop();
       },
       style: ButtonStyle(

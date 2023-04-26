@@ -180,7 +180,7 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
       onPressed: () => setState(
         () {
           if (presetTitleController.text.isEmpty) {
-            Utils.showSnackbar(context, "Please enter a title for the preset");
+            Utils.showSnackbar(context, "Enter a title for the preset.");
             return;
           }
 
@@ -191,7 +191,7 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
             ),
           );
           Utils.showSnackbar(
-              context, "Preset '${presetTitleController.text}' added");
+              context, "The preset '${presetTitleController.text}' added.");
 
           resetPresetInput();
         },
@@ -204,7 +204,7 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
     return ElevatedButton(
       onPressed: () {
         if (deskNameController.text.isEmpty) {
-          Utils.showSnackbar(context, "Please enter a name for the device");
+          Utils.showSnackbar(context, "Enter a name for the device.");
           return;
         }
 
@@ -214,7 +214,7 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
           presets: presetList,
         );
         Utils.showSnackbar(
-            context, "Device '${deskNameController.text}' added");
+            context, "The device '${deskNameController.text}' was added.");
 
         resetTab();
       },
