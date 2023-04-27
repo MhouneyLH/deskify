@@ -133,12 +133,15 @@ class DeskProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void addDesk({String? name, double? height, List<Preset>? presets}) {
-    _deskList.add(Desk(
-      name: name ?? "Deskified Desk",
-      height: height ?? Desk.minimumHeight,
-      presets: presets ?? [],
-    ));
+  void addDesk(Desk desk) {
+    _deskList.add(desk);
+    notifyListeners();
+  }
+
+  void addPreset(String deskId, Preset preset) {
+    Desk desk = getDesk(deskId);
+    desk.presets!.add(preset);
+
     notifyListeners();
   }
 }

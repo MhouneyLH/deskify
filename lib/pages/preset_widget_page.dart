@@ -2,10 +2,8 @@ import 'package:deskify/model/desk.dart';
 import 'package:deskify/model/preset.dart';
 import 'package:deskify/provider/desk_provider.dart';
 import 'package:deskify/utils.dart';
-import 'package:deskify/widgets/generic/adjust_height_slider.dart';
-import 'package:deskify/widgets/generic/desk_animation.dart';
 import 'package:deskify/widgets/generic/heading_widget.dart';
-import 'package:deskify/widgets/generic/numeric_textfield.dart';
+import 'package:deskify/widgets/generic/numeric_text_field_with_desk_animation_and_adjust_height_slider.dart';
 import 'package:deskify/widgets/generic/single_value_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -45,74 +43,40 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Heading(
-            title: providerPreset.title,
-            onTapped: () => showDialog(
-              context: context,
-              builder: (_) => SingleValueAlertDialog(
-                title: "Enter new title",
-                controller: presetTitleController,
-                onSave: () => deskProvider.setPresetTitle(
-                    deskProvider.currentDesk.id,
-                    providerPreset.id,
-                    presetTitleController.text),
-                onCancel: () =>
-                    presetTitleController.text = providerPreset.title,
-              ),
-            ),
-          ),
-          _buildHeightDisplayingInteractiveTextField(
-            controller: presetHeightController,
-            labelText: "Target Height",
-          ),
-          _buildDeskAnimation(),
-          _buildSliderWidget(),
+          _buildPageHeading(),
+          _buildHeightConfiguration(),
           _buildSaveButton(),
         ],
       ),
     );
   }
 
-  Widget _buildHeightDisplayingInteractiveTextField(
-      {required TextEditingController controller, required String labelText}) {
-    return NumericTextfield(
-      controller: controller,
-      title: labelText,
-      onSubmitted: (String value) => setState(
-        () {
-          if (double.tryParse(value) == null) {
-            controller.text = Desk.minimumHeight.toString();
-            return;
-          }
-
-          final double inboundHeight =
-              Desk.getInboundHeight(double.parse(value));
-          controller.text = Utils.roundDouble(inboundHeight, 1).toString();
-        },
-      ),
-    );
-  }
-
-  Widget _buildDeskAnimation() {
-    return Center(
-      child: DeskAnimation(
-        width: 200,
-        deskHeight: providerPreset.targetHeight,
-      ),
-    );
-  }
-
-  Widget _buildSliderWidget() {
-    return Expanded(
-      child: AdjustHeightSlider(
-        width: 150.0,
-        displayedHeight: double.parse(presetHeightController.text),
-        onChanged: (double value) => setState(
-          () {
-            presetHeightController.text =
-                Utils.roundDouble(value, 1).toString();
-          },
+  Widget _buildPageHeading() {
+    return Heading(
+      title: providerPreset.title,
+      onTapped: () => showDialog(
+        context: context,
+        builder: (_) => SingleValueAlertDialog(
+          title: "Enter new title",
+          controller: presetTitleController,
+          onSave: () => deskProvider.setPresetTitle(deskProvider.currentDesk.id,
+              providerPreset.id, presetTitleController.text),
+          onCancel: () => presetTitleController.text = providerPreset.title,
         ),
+      ),
+    );
+  }
+
+  Widget _buildHeightConfiguration() {
+    return Expanded(
+      child: NumericTextFieldWithDeskAnimationAndAdjustHeightSlider(
+        deskHeight: deskProvider
+            .getPreset(currentDesk.id, widget.preset.id)
+            .targetHeight,
+        heightTextFieldController: presetHeightController,
+        titleOfTextField: "Target Height",
+        onHeightChanged: (double value) => deskProvider.setPresetTargetHeight(
+            currentDesk.id, providerPreset.id, value),
       ),
     );
   }
@@ -121,6 +85,8 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
     return ElevatedButton(
       onPressed: () {
         savePreset();
+        Utils.showSnackbar(
+            context, "The preset '${presetTitleController.text}' was saved.");
         Navigator.of(context).pop();
       },
       style: ButtonStyle(
