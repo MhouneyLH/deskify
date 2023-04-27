@@ -2,10 +2,8 @@ import 'package:deskify/model/desk.dart';
 import 'package:deskify/model/preset.dart';
 import 'package:deskify/provider/desk_provider.dart';
 import 'package:deskify/utils.dart';
-import 'package:deskify/widgets/generic/adjust_height_slider.dart';
-import 'package:deskify/widgets/generic/desk_animation.dart';
 import 'package:deskify/widgets/generic/heading_widget.dart';
-import 'package:deskify/widgets/generic/numeric_textfield.dart';
+import 'package:deskify/widgets/generic/numeric_text_field_with_desk_animation_and_adjust_height_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,14 +16,18 @@ class AddDeviceTab extends StatefulWidget {
 
 class _AddDeviceTabState extends State<AddDeviceTab> {
   late DeskProvider deskProvider;
+  Desk newDesk = Desk(
+    name: '',
+    height: Desk.minimumHeight,
+    presets: [],
+  );
+
   final TextEditingController deskNameController = TextEditingController();
   final TextEditingController deskHeightController =
       TextEditingController(text: Desk.minimumHeight.toString());
   final TextEditingController presetTitleController = TextEditingController();
   final TextEditingController presetTargetHeightController =
       TextEditingController(text: Desk.minimumHeight.toString());
-
-  List<Preset> presetList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -57,57 +59,36 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
             controller: deskNameController,
             decoration: const InputDecoration(labelText: 'Device Name')),
         const SizedBox(height: 10.0),
-        _buildHeightDisplayingInteractiveTextField(
-          controller: deskHeightController,
-          labelText: 'Default Height',
-        ),
-        const SizedBox(height: 10.0),
-        _buildDeskAnimation(double.parse(deskHeightController.text)),
-        const SizedBox(height: 10.0),
-        _buildHeightSlider(deskHeightController),
+        _buildDeskHeightConfiguration(),
       ],
     );
   }
 
-  Widget _buildHeightDisplayingInteractiveTextField(
-      {required TextEditingController controller, required String labelText}) {
-    return NumericTextfield(
-      controller: controller,
-      title: labelText,
-      onSubmitted: (String value) => setState(
-        () {
-          if (double.tryParse(value) == null) {
-            controller.text = Desk.minimumHeight.toString();
-            return;
-          }
-
-          final double inboundHeight =
-              Desk.getInboundHeight(double.parse(value));
-          controller.text = Utils.roundDouble(inboundHeight, 1).toString();
-        },
+  Widget _buildDeskHeightConfiguration() {
+    return SizedBox(
+      height: 400.0,
+      child: Expanded(
+        child: NumericTextFieldWithDeskAnimationAndAdjustHeightSlider(
+          deskHeight: double.parse(deskHeightController.text),
+          titleOfTextField: 'Default Height',
+          heightTextFieldController: deskHeightController,
+          onHeightChanged: (double value) =>
+              deskHeightController.text = value.toString(),
+        ),
       ),
     );
   }
 
-  Widget _buildDeskAnimation(double inputValue) {
-    return Center(
-      child: DeskAnimation(
-        width: 200,
-        deskHeight: inputValue,
-      ),
-    );
-  }
-
-  Widget _buildHeightSlider(TextEditingController controller) {
-    return Align(
-      alignment: Alignment.center,
-      child: AdjustHeightSlider(
-        width: 150.0,
-        displayedHeight: double.parse(controller.text),
-        onChanged: (double value) => setState(
-          () {
-            controller.text = Utils.roundDouble(value, 1).toString();
-          },
+  Widget _buildPresetHeightConfiguration() {
+    return SizedBox(
+      height: 400.0,
+      child: Expanded(
+        child: NumericTextFieldWithDeskAnimationAndAdjustHeightSlider(
+          deskHeight: double.parse(presetTargetHeightController.text),
+          titleOfTextField: 'Target Height',
+          heightTextFieldController: presetTargetHeightController,
+          onHeightChanged: (double value) =>
+              presetTargetHeightController.text = value.toString(),
         ),
       ),
     );
@@ -121,17 +102,9 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
         _buildCurrentAddedPresets(),
         TextField(
           controller: presetTitleController,
-          decoration: const InputDecoration(
-            labelText: 'Title',
-          ),
+          decoration: const InputDecoration(labelText: 'Title'),
         ),
-        _buildHeightDisplayingInteractiveTextField(
-          controller: presetTargetHeightController,
-          labelText: 'Target Height',
-        ),
-        const SizedBox(height: 10.0),
-        _buildDeskAnimation(double.parse(presetTargetHeightController.text)),
-        _buildHeightSlider(presetTargetHeightController),
+        _buildPresetHeightConfiguration(),
         _buildAddPresetButton(),
       ],
     );
@@ -141,7 +114,7 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: presetList
+      children: newDesk.presets!
           .map(
             (Preset preset) => Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -158,21 +131,22 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
 
   Widget _buildAddedPresetDelegate(Preset preset) {
     return Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.0),
-          color: Theme.of(context).primaryColor,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+        color: Theme.of(context).primaryColor,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(preset.title),
+            Text("Target height: ${preset.targetHeight} cm"),
+          ],
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(preset.title),
-              Text("Target height: ${preset.targetHeight} cm"),
-            ],
-          ),
-        ));
+      ),
+    );
   }
 
   Widget _buildAddPresetButton() {
@@ -184,12 +158,10 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
             return;
           }
 
-          presetList.add(
-            Preset(
-              title: presetTitleController.text,
-              targetHeight: double.parse(presetTargetHeightController.text),
-            ),
-          );
+          newDesk.presets!.add(Preset(
+            title: presetTitleController.text,
+            targetHeight: double.parse(presetTargetHeightController.text),
+          ));
           Utils.showSnackbar(
               context, "The preset '${presetTitleController.text}' added.");
 
@@ -208,11 +180,10 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
           return;
         }
 
-        deskProvider.addDesk(
-          name: deskNameController.text,
-          height: double.parse(deskHeightController.text),
-          presets: presetList,
-        );
+        newDesk.name = deskNameController.text;
+        newDesk.height = double.parse(deskHeightController.text);
+
+        deskProvider.addDesk(newDesk);
         Utils.showSnackbar(
             context, "The device '${deskNameController.text}' was added.");
 
@@ -235,6 +206,10 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
   void resetTab() {
     resetGeneralInput();
     resetPresetInput();
-    presetList = List<Preset>.empty(growable: true);
+    newDesk = Desk(
+      name: "",
+      height: Desk.minimumHeight,
+      presets: List<Preset>.empty(growable: true),
+    );
   }
 }

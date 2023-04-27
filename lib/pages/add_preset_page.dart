@@ -1,10 +1,8 @@
-import 'package:deskify/model/desk.dart';
+import 'package:deskify/model/preset.dart';
 import 'package:deskify/provider/desk_provider.dart';
 import 'package:deskify/utils.dart';
-import 'package:deskify/widgets/generic/adjust_height_slider.dart';
-import 'package:deskify/widgets/generic/desk_animation.dart';
 import 'package:deskify/widgets/generic/heading_widget.dart';
-import 'package:deskify/widgets/generic/numeric_textfield.dart';
+import 'package:deskify/widgets/generic/numeric_text_field_with_desk_animation_and_adjust_height_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,10 +20,14 @@ class AddPresetPage extends StatefulWidget {
 
 class _AddPresetPageState extends State<AddPresetPage> {
   late DeskProvider deskProvider;
-  late final TextEditingController presetTitleController =
-      TextEditingController();
+  late final Preset newPreset = Preset(
+    title: "",
+    targetHeight: deskProvider.currentDesk.height!,
+  );
+
+  final TextEditingController presetTitleController = TextEditingController();
   late final TextEditingController presetTargetHeightController =
-      TextEditingController(text: deskProvider.currentDesk.height.toString());
+      TextEditingController(text: newPreset.targetHeight.toString());
 
   @override
   Widget build(BuildContext context) {
@@ -42,59 +44,20 @@ class _AddPresetPageState extends State<AddPresetPage> {
             controller: presetTitleController,
             decoration: const InputDecoration(labelText: 'Preset Name'),
           ),
-          _buildHeightDisplayingInteractiveTextField(
-            controller: presetTargetHeightController,
-            labelText: "Target Height",
-          ),
-          const SizedBox(height: 10.0),
-          _buildDeskAnimation(),
-          _buildSliderWidget(),
+          _buildHeightConfiguration(),
           _buildAddButton(),
         ],
       ),
     );
   }
 
-  Widget _buildHeightDisplayingInteractiveTextField(
-      {required TextEditingController controller, required String labelText}) {
-    return NumericTextfield(
-      controller: controller,
-      title: labelText,
-      onSubmitted: (String value) => setState(
-        () {
-          if (double.tryParse(value) == null) {
-            controller.text = Desk.minimumHeight.toString();
-            return;
-          }
-
-          final double inboundHeight =
-              Desk.getInboundHeight(double.parse(value));
-          controller.text = Utils.roundDouble(inboundHeight, 1).toString();
-        },
-      ),
-    );
-  }
-
-  Widget _buildDeskAnimation() {
-    return Center(
-      child: DeskAnimation(
-        width: 200,
-        deskHeight: deskProvider.currentDesk.height!,
-      ),
-    );
-  }
-
-  Widget _buildSliderWidget() {
+  Widget _buildHeightConfiguration() {
     return Expanded(
-      child: AdjustHeightSlider(
-        width: 150.0,
-        displayedHeight: double.parse(presetTargetHeightController.text),
-        onChanged: (double value) => setState(
-          () {
-            presetTargetHeightController.text =
-                Utils.roundDouble(value, 1).toString();
-          },
-        ),
+      child: NumericTextFieldWithDeskAnimationAndAdjustHeightSlider(
+        deskHeight: newPreset.targetHeight,
+        heightTextFieldController: presetTargetHeightController,
+        titleOfTextField: "Target Height",
+        onHeightChanged: (double value) => newPreset.targetHeight = value,
       ),
     );
   }
@@ -107,11 +70,12 @@ class _AddPresetPageState extends State<AddPresetPage> {
           return;
         }
 
-        addPreset();
-        widget.onAboutToPop();
+        newPreset.title = presetTitleController.text;
+        deskProvider.addPreset(deskProvider.currentDesk.id, newPreset);
         Utils.showSnackbar(
-            context, "The preset '${presetTitleController.text}' was added.");
+            context, "The preset '${newPreset.title}' was added.");
 
+        widget.onAboutToPop();
         Navigator.of(context).pop();
       },
       style: ButtonStyle(
@@ -120,14 +84,6 @@ class _AddPresetPageState extends State<AddPresetPage> {
         ),
       ),
       child: const Text("Save"),
-    );
-  }
-
-  void addPreset() {
-    deskProvider.addPreset(
-      deskProvider.currentDesk.id,
-      title: presetTitleController.text,
-      targetHeight: double.parse(presetTargetHeightController.text),
     );
   }
 }
