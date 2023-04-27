@@ -23,27 +23,33 @@ class SingleValueAlertDialog extends StatefulWidget {
 class _SingleValueAlertDialogState extends State<SingleValueAlertDialog> {
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(widget.title),
-      content: TextField(
-        controller: widget.controller,
+    return WillPopScope(
+      onWillPop: () async {
+        widget.onCancel();
+        return true;
+      },
+      child: AlertDialog(
+        title: Text(widget.title),
+        content: TextField(
+          controller: widget.controller,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              widget.onCancel();
+            },
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              widget.onSave();
+              Navigator.of(context).pop();
+            },
+            child: const Text('Save'),
+          ),
+        ],
       ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-            widget.onCancel();
-          },
-          child: const Text('Cancel'),
-        ),
-        TextButton(
-          onPressed: () {
-            widget.onSave();
-            Navigator.of(context).pop();
-          },
-          child: const Text('Save'),
-        ),
-      ],
     );
   }
 }
