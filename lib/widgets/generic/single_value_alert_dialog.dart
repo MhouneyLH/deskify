@@ -27,9 +27,6 @@ class _SingleValueAlertDialogState extends State<SingleValueAlertDialog> {
       title: Text(widget.title),
       content: TextField(
         controller: widget.controller,
-        keyboardType: TextInputType.numberWithOptions(
-          decimal: widget.isNumericInput,
-        ),
       ),
       actions: [
         TextButton(

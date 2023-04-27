@@ -20,7 +20,7 @@ class DeskProvider with ChangeNotifier {
           icon: const Icon(Icons.input),
         ),
         Preset(
-          title: 'Sit on gym-ball',
+          title: 'Sit on gym-ballllllllllllll',
           targetHeight: 72.6,
           icon: const Icon(Icons.input),
         ),
@@ -48,7 +48,7 @@ class DeskProvider with ChangeNotifier {
       ],
     ),
   ];
-  int _currentlySelectedIndex = 1;
+  int _currentlySelectedIndex = 0;
 
   List<Desk> get deskList => _deskList;
   Desk get currentDesk => _deskList[_currentlySelectedIndex];

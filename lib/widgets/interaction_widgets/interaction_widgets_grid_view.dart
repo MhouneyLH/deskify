@@ -53,8 +53,12 @@ class _InteractionWidgetGridViewState extends State<InteractionWidgetGridView> {
   }
 
   Widget _buildGridViewItem(InteractionWidget item) {
-    return SizedBox(
-        key: ValueKey(item), width: itemWidth, height: itemHeight, child: item);
+    return Container(
+      key: ValueKey(item),
+      // width: itemWidth,
+      // height: itemHeight,
+      child: item,
+    );
   }
 
   void _onReorder(int oldIndex, int newIndex) {

@@ -234,13 +234,14 @@ class _HomePageTabState extends State<HomePageTab> {
     );
   }
 
-  Widget _buildInteractiveWidgetGroup(
-      {required List<InteractionWidget> items,
-      required String title,
-      List<Widget>? nextToHeadingWidgets}) {
+  Widget _buildInteractiveWidgetGroup({
+    required List<InteractionWidget> items,
+    required String title,
+    List<Widget>? nextToHeadingWidgets,
+  }) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -261,15 +262,20 @@ class _HomePageTabState extends State<HomePageTab> {
   }
 
   Widget _buildAddPresetButton() {
-    return IconButton(
-      icon: const Icon(Icons.add),
-      splashRadius: 20.0,
-      onPressed: () => Utils.navigateToWidgetPage(
-        context: context,
-        title: 'Add Preset',
-        child: AddPresetPage(
-          onAboutToPop: () =>
-              presetInteractionWidgets = updatedPresetInteractionWidgets,
+    return SizedBox(
+      width: 20.0,
+      height: 20.0,
+      child: IconButton(
+        icon: const Icon(Icons.add),
+        padding: const EdgeInsets.all(0.0),
+        splashRadius: 20.0,
+        onPressed: () => Utils.navigateToWidgetPage(
+          context: context,
+          title: 'Add Preset',
+          child: AddPresetPage(
+            onAboutToPop: () =>
+                presetInteractionWidgets = updatedPresetInteractionWidgets,
+          ),
         ),
       ),
     );

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 class InteractionWidget extends StatefulWidget {
@@ -25,10 +27,11 @@ class InteractionWidget extends StatefulWidget {
 }
 
 class _InteractionWidgetState extends State<InteractionWidget> {
+  final double _padding = 10.0;
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      key: UniqueKey(),
       onPressed: () => widget.onPressedWholeWidget(),
       style: ButtonStyle(
         fixedSize: MaterialStateProperty.all(Size(widget.width, widget.height)),
@@ -39,24 +42,27 @@ class _InteractionWidgetState extends State<InteractionWidget> {
         ),
         backgroundColor:
             MaterialStatePropertyAll(Theme.of(context).primaryColor),
-        padding: MaterialStateProperty.all(const EdgeInsets.all(10.0)),
+        padding: MaterialStateProperty.all(EdgeInsets.all(_padding)),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _buildIcon(),
-              const SizedBox(width: 10.0),
-              _buildTitle(context),
-              const Expanded(child: SizedBox()),
-              widget.onPressedSettingsIcon != null
-                  ? _buildSettingsButton(context)
-                  : const SizedBox(),
-            ],
+          SizedBox(
+            height: widget.height - 2 * _padding,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _buildIcon(),
+                const SizedBox(width: 10.0),
+                _buildTitle(context),
+                const SizedBox(width: 10.0),
+                widget.onPressedSettingsIcon != null
+                    ? _buildSettingsButton(context)
+                    : const SizedBox(),
+              ],
+            ),
           ),
           SizedBox(height: widget.extraInformationWidget == null ? 0.0 : 5.0),
           _buildExtraInformationWidget(),
@@ -72,20 +78,31 @@ class _InteractionWidgetState extends State<InteractionWidget> {
   }
 
   Widget _buildTitle(context) {
-    return Text(
-      widget.title,
-      style: Theme.of(context).textTheme.labelLarge,
-      textAlign: TextAlign.start,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
+    return Expanded(
+      child: Text(
+        widget.title,
+        style: Theme.of(context).textTheme.labelLarge,
+        textAlign: TextAlign.start,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
   }
 
   Widget _buildSettingsButton(context) {
-    return IconButton(
-      icon: const Icon(Icons.settings),
-      splashRadius: 20.0,
-      onPressed: widget.onPressedSettingsIcon!,
+    const double _size = 25.0;
+
+    return SizedBox(
+      width: _size,
+      height: _size,
+      child: IconButton(
+        icon: const Icon(Icons.settings),
+        padding: const EdgeInsets.all(0.0),
+        alignment: Alignment.center,
+        iconSize: _size,
+        splashRadius: _size,
+        onPressed: widget.onPressedSettingsIcon!,
+      ),
     );
   }
 
