@@ -56,9 +56,7 @@ class _InteractionWidgetState extends State<InteractionWidget> {
                 const SizedBox(width: 10.0),
                 _buildTitle(context),
                 const SizedBox(width: 10.0),
-                widget.onPressedSettingsIcon != null
-                    ? _buildSettingsButton(context)
-                    : const SizedBox(),
+                _buildSettingsButton(),
               ],
             ),
           ),
@@ -87,21 +85,23 @@ class _InteractionWidgetState extends State<InteractionWidget> {
     );
   }
 
-  Widget _buildSettingsButton(context) {
-    const double _size = 25.0;
+  Widget _buildSettingsButton() {
+    const double size = 25.0;
 
-    return SizedBox(
-      width: _size,
-      height: _size,
-      child: IconButton(
-        icon: const Icon(Icons.settings),
-        padding: const EdgeInsets.all(0.0),
-        alignment: Alignment.center,
-        iconSize: _size,
-        splashRadius: _size,
-        onPressed: widget.onPressedSettingsIcon!,
-      ),
-    );
+    return widget.onPressedSettingsIcon == null
+        ? const SizedBox()
+        : SizedBox(
+            width: size,
+            height: size,
+            child: IconButton(
+              icon: const Icon(Icons.settings),
+              padding: const EdgeInsets.all(0.0),
+              alignment: Alignment.center,
+              iconSize: size,
+              splashRadius: size,
+              onPressed: widget.onPressedSettingsIcon!,
+            ),
+          );
   }
 
   Widget _buildExtraInformationWidget() {

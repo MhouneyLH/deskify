@@ -137,6 +137,7 @@ class _HomePageTabState extends State<HomePageTab> {
         _buildCarouselDeskAnimation(),
         _buildInteractiveWidgetGroup(
           items: analyticalInteractionWidgets,
+          itemHeight: 65,
           title: 'Analytics',
         ),
         _buildInteractiveWidgetGroup(
@@ -235,8 +236,9 @@ class _HomePageTabState extends State<HomePageTab> {
   }
 
   Widget _buildInteractiveWidgetGroup({
-    required List<InteractionWidget> items,
     required String title,
+    required List<InteractionWidget> items,
+    double itemHeight = 50.0,
     List<Widget>? nextToHeadingWidgets,
   }) {
     return Column(
@@ -255,6 +257,7 @@ class _HomePageTabState extends State<HomePageTab> {
         const SizedBox(height: 10.0),
         InteractionWidgetGridView(
           items: items,
+          itemHeight: itemHeight,
           outerDefinedSpacings: 10.0,
         ),
       ],
