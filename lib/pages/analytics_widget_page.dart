@@ -64,7 +64,7 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "${Utils.roundDouble(profileProvider.getProgress(target) * 100, 1)}% completed",
+          '${Utils.roundDouble(profileProvider.getProgress(target) * 100, 1)}% completed',
           style: const TextStyle(
             fontSize: 20.0,
             fontWeight: FontWeight.bold,
@@ -74,7 +74,7 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
           onTap: () => showDialog(
             context: context,
             builder: (_) => SingleValueAlertDialog(
-              title: "Set Target",
+              title: 'Set Target',
               controller: targetValueController,
               isNumericInput: true,
               onSave: () =>
@@ -84,7 +84,7 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
             ),
           ),
           child: Text(
-            "${Utils.roundDouble(Utils.secondsToMinutes(target.actualValue.toInt()), 1)} / ${target.targetValue} min",
+            '${Utils.roundDouble(Utils.secondsToMinutes(target.actualValue.toInt()), 1)} / ${target.targetValue} min',
             style: const TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.bold,
@@ -147,11 +147,11 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
       sideTitles: SideTitles(
         showTitles: true,
         getTitlesWidget: (value, meta) => Text(
-          "${value.toInt()}",
+          '${value.toInt()}',
         ),
       ),
       axisNameWidget: const Text(
-        "min",
+        'min',
         style: TextStyle(
           fontWeight: FontWeight.bold,
         ),

@@ -36,9 +36,9 @@ class _AdjustHeightSliderState extends State<AdjustHeightSlider> {
           showTicks: true,
           enableTooltip: true,
           tooltipTextFormatterCallback: (actualValue, formattedText) =>
-              "${Utils.roundDouble(actualValue, 1)} cm",
+              '${Utils.roundDouble(actualValue, 1)} cm',
           labelFormatterCallback: (actualValue, formattedText) =>
-              "${Utils.roundDouble(actualValue, 1)} cm"),
+              '${Utils.roundDouble(actualValue, 1)} cm'),
     );
   }
 }

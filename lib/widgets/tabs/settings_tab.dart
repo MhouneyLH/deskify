@@ -107,7 +107,7 @@ class _SettingsTabState extends State<SettingsTab> {
   Widget _buildThemeSwitch() {
     return Row(
       children: [
-        const Text("Darktheme:"),
+        const Text('Darktheme:'),
         Switch(
           value: _darkThemeSwitchValue,
           onChanged: (bool value) => {

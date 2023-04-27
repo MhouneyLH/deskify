@@ -57,7 +57,7 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
       onTapped: () => showDialog(
         context: context,
         builder: (_) => SingleValueAlertDialog(
-          title: "Enter new title",
+          title: 'Enter new title',
           controller: presetTitleController,
           onSave: () => deskProvider.setPresetTitle(deskProvider.currentDesk.id,
               providerPreset.id, presetTitleController.text),
@@ -74,7 +74,7 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
             .getPreset(currentDesk.id, widget.preset.id)
             .targetHeight,
         heightTextFieldController: presetHeightController,
-        titleOfTextField: "Target Height",
+        titleOfTextField: 'Target Height',
         onHeightChanged: (double value) => deskProvider.setPresetTargetHeight(
             currentDesk.id, providerPreset.id, value),
       ),
@@ -94,7 +94,7 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
           Theme.of(context).primaryColor,
         ),
       ),
-      child: const Text("Save"),
+      child: const Text('Save'),
     );
   }
 

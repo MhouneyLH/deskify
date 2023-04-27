@@ -21,7 +21,7 @@ class AddPresetPage extends StatefulWidget {
 class _AddPresetPageState extends State<AddPresetPage> {
   late DeskProvider deskProvider;
   late final Preset newPreset = Preset(
-    title: "",
+    title: '',
     targetHeight: deskProvider.currentDesk.height!,
   );
 
@@ -39,7 +39,7 @@ class _AddPresetPageState extends State<AddPresetPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Heading(title: "Add Preset"),
+          const Heading(title: 'Add Preset'),
           TextField(
             controller: presetTitleController,
             decoration: const InputDecoration(labelText: 'Preset Name'),
@@ -56,7 +56,7 @@ class _AddPresetPageState extends State<AddPresetPage> {
       child: NumericTextFieldWithDeskAnimationAndAdjustHeightSlider(
         deskHeight: newPreset.targetHeight,
         heightTextFieldController: presetTargetHeightController,
-        titleOfTextField: "Target Height",
+        titleOfTextField: 'Target Height',
         onHeightChanged: (double value) => newPreset.targetHeight = value,
       ),
     );
@@ -66,7 +66,7 @@ class _AddPresetPageState extends State<AddPresetPage> {
     return ElevatedButton(
       onPressed: () {
         if (presetTitleController.text.isEmpty) {
-          Utils.showSnackbar(context, "Enter a preset name.");
+          Utils.showSnackbar(context, 'Enter a preset name.');
           return;
         }
 
@@ -83,7 +83,7 @@ class _AddPresetPageState extends State<AddPresetPage> {
           Theme.of(context).primaryColor,
         ),
       ),
-      child: const Text("Save"),
+      child: const Text('Save'),
     );
   }
 }

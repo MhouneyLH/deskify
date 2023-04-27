@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 
 class ProfileProvider extends ChangeNotifier {
   final Profile _profile = Profile(
-    name: "Deskified Test User",
-    email: "lucas.mag.huehner@gmail.com",
-    password: "123456",
+    name: 'Deskified Test User',
+    email: 'lucas.mag.huehner@gmail.com',
+    password: '123456',
     standingAnalytic: {
       DateTime.monday: Target(targetValue: 3.0),
       DateTime.tuesday: Target(targetValue: 4.0),

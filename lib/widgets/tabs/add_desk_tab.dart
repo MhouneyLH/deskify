@@ -38,10 +38,10 @@ class _AddDeskTabState extends State<AddDeskTab> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Heading(title: "General"),
+          const Heading(title: 'General'),
           _buildGeneralInput(),
           const SizedBox(height: 10.0),
-          const Heading(title: "Presets"),
+          const Heading(title: 'Presets'),
           _buildPresetInput(),
           const SizedBox(height: 10.0),
           _buildAddDeskButton(),
@@ -142,7 +142,7 @@ class _AddDeskTabState extends State<AddDeskTab> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(preset.title),
-            Text("Target height: ${preset.targetHeight} cm"),
+            Text('Target height: ${preset.targetHeight} cm'),
           ],
         ),
       ),
@@ -154,7 +154,7 @@ class _AddDeskTabState extends State<AddDeskTab> {
       onPressed: () => setState(
         () {
           if (presetTitleController.text.isEmpty) {
-            Utils.showSnackbar(context, "Enter a title for the preset.");
+            Utils.showSnackbar(context, 'Enter a title for the preset.');
             return;
           }
 
@@ -168,7 +168,7 @@ class _AddDeskTabState extends State<AddDeskTab> {
           resetPresetInput();
         },
       ),
-      child: const Text("Add Preset"),
+      child: const Text('Add Preset'),
     );
   }
 
@@ -176,7 +176,7 @@ class _AddDeskTabState extends State<AddDeskTab> {
     return ElevatedButton(
       onPressed: () {
         if (deskNameController.text.isEmpty) {
-          Utils.showSnackbar(context, "Enter a name for the desk.");
+          Utils.showSnackbar(context, 'Enter a name for the desk.');
           return;
         }
 
@@ -189,7 +189,7 @@ class _AddDeskTabState extends State<AddDeskTab> {
 
         resetTab();
       },
-      child: const Text("Add Desk"),
+      child: const Text('Add Desk'),
     );
   }
 
@@ -207,7 +207,7 @@ class _AddDeskTabState extends State<AddDeskTab> {
     resetGeneralInput();
     resetPresetInput();
     newDesk = Desk(
-      name: "",
+      name: '',
       height: Desk.minimumHeight,
       presets: List<Preset>.empty(growable: true),
     );

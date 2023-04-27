@@ -6,77 +6,77 @@ import 'package:flutter/material.dart';
 class DeskProvider with ChangeNotifier {
   final List<Desk> _deskList = [
     Desk(
-      name: "Deskified Desk 1",
+      name: 'Deskified Desk 1',
       height: 72.0,
       presets: [
         Preset(
-          title: "Preset1",
+          title: 'Preset1',
           targetHeight: 80.0,
           icon: const Icon(Icons.input),
         ),
         Preset(
-          title: "Preset2",
+          title: 'Preset2',
           targetHeight: 90.0,
           icon: const Icon(Icons.input),
         ),
         Preset(
-          title: "Preset3",
+          title: 'Preset3',
           targetHeight: 100.0,
           icon: const Icon(Icons.input),
         ),
         Preset(
-          title: "Preset3",
+          title: 'Preset3',
           targetHeight: 100.0,
           icon: const Icon(Icons.input),
         ),
         Preset(
-          title: "Preset3",
+          title: 'Preset3',
           targetHeight: 100.0,
           icon: const Icon(Icons.input),
         ),
         Preset(
-          title: "Preset3",
+          title: 'Preset3',
           targetHeight: 100.0,
           icon: const Icon(Icons.input),
         ),
         Preset(
-          title: "Preset3",
+          title: 'Preset3',
           targetHeight: 100.0,
           icon: const Icon(Icons.input),
         ),
         Preset(
-          title: "Preset3",
+          title: 'Preset3',
           targetHeight: 100.0,
           icon: const Icon(Icons.input),
         ),
         Preset(
-          title: "Preset3",
+          title: 'Preset3',
           targetHeight: 100.0,
           icon: const Icon(Icons.input),
         ),
       ],
     ),
     Desk(
-      name: "Deskified Desk 2",
+      name: 'Deskified Desk 2',
       height: 119.0,
       presets: [
         Preset(
-          title: "Preset122",
+          title: 'Preset122',
           targetHeight: 80.0,
           icon: const Icon(Icons.input),
         ),
         Preset(
-          title: "Preset222",
+          title: 'Preset222',
           targetHeight: 90.0,
           icon: const Icon(Icons.input),
         ),
         Preset(
-          title: "Preset322",
+          title: 'Preset322',
           targetHeight: 100.0,
           icon: const Icon(Icons.input),
         ),
         Preset(
-          title: "Preset322",
+          title: 'Preset322',
           targetHeight: 100.0,
           icon: const Icon(Icons.input),
         ),

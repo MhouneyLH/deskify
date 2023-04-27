@@ -21,21 +21,21 @@ class Utils {
   static String intToShortWeekday(int dayAsInt) {
     switch (dayAsInt) {
       case DateTime.monday:
-        return "Mon";
+        return 'Mon';
       case DateTime.tuesday:
-        return "Tue";
+        return 'Tue';
       case DateTime.wednesday:
-        return "Wed";
+        return 'Wed';
       case DateTime.thursday:
-        return "Thu";
+        return 'Thu';
       case DateTime.friday:
-        return "Fri";
+        return 'Fri';
       case DateTime.saturday:
-        return "Sat";
+        return 'Sat';
       case DateTime.sunday:
-        return "Sun";
+        return 'Sun';
       default:
-        return "Unknown";
+        return 'Unknown';
     }
   }
 

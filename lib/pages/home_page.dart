@@ -43,15 +43,15 @@ class _HomePageState extends State<HomePage> {
     final List<BottomNavigationBarItem> navigationBarItems = [
       const BottomNavigationBarItem(
         icon: Icon(Icons.home),
-        label: "Home",
+        label: 'Home',
       ),
       const BottomNavigationBarItem(
         icon: Icon(Icons.add),
-        label: "Add",
+        label: 'Add',
       ),
       const BottomNavigationBarItem(
         icon: Icon(Icons.settings),
-        label: "Settings",
+        label: 'Settings',
       ),
     ];
 

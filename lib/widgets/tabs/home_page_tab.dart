@@ -37,7 +37,7 @@ class _HomePageTabState extends State<HomePageTab> {
 
   late List<InteractionWidget> analyticalInteractionWidgets = [
     InteractionWidget(
-      title: "Standing",
+      title: 'Standing',
       icon: const Icon(Icons.info),
       extraInformationWidget: ProgressBar(
         height: 10.0,
@@ -46,7 +46,7 @@ class _HomePageTabState extends State<HomePageTab> {
       ),
       onPressedWholeWidget: () => Utils.navigateToWidgetPage(
         context: context,
-        title: "Standing",
+        title: 'Standing',
         child: AnalyticsWidgetPage(
           targetWeekdayMap: profileProvider.standingAnalytic,
           signalizationColor: themeProvider.darkStandingColor,
@@ -54,7 +54,7 @@ class _HomePageTabState extends State<HomePageTab> {
       ),
     ),
     InteractionWidget(
-      title: "Sitting",
+      title: 'Sitting',
       icon: const Icon(Icons.info),
       extraInformationWidget: ProgressBar(
         height: 10.0,
@@ -63,7 +63,7 @@ class _HomePageTabState extends State<HomePageTab> {
       ),
       onPressedWholeWidget: () => Utils.navigateToWidgetPage(
         context: context,
-        title: "Sitting",
+        title: 'Sitting',
         child: AnalyticsWidgetPage(
           targetWeekdayMap: profileProvider.sittingAnalytic,
           signalizationColor: themeProvider.darkSittingColor,
@@ -75,11 +75,11 @@ class _HomePageTabState extends State<HomePageTab> {
       updatedPresetInteractionWidgets;
   late List<InteractionWidget> otherInteractionWidgets = [
     InteractionWidget(
-      title: "Move",
+      title: 'Move',
       icon: const Icon(Icons.input),
       onPressedWholeWidget: () => Utils.navigateToWidgetPage(
         context: context,
-        title: "Moving",
+        title: 'Moving',
         child: const MoveWidgetPage(),
       ),
     ),
@@ -132,23 +132,23 @@ class _HomePageTabState extends State<HomePageTab> {
       children: [
         _buildDeskHeading(),
         const SizedBox(width: 10.0),
-        Text("Height: ${deskProvider.currentDesk.height} cm"),
+        Text('Height: ${deskProvider.currentDesk.height} cm'),
         const SizedBox(height: 10.0),
         _buildCarouselDeskAnimation(),
         _buildInteractiveWidgetGroup(
           items: analyticalInteractionWidgets,
-          title: "Analytics",
+          title: 'Analytics',
         ),
         _buildInteractiveWidgetGroup(
           items: presetInteractionWidgets,
-          title: "Presets",
+          title: 'Presets',
           nextToHeadingWidgets: [
             _buildAddPresetButton(),
           ],
         ),
         _buildInteractiveWidgetGroup(
           items: otherInteractionWidgets,
-          title: "Others",
+          title: 'Others',
         ),
       ],
     );
@@ -266,7 +266,7 @@ class _HomePageTabState extends State<HomePageTab> {
       splashRadius: 20.0,
       onPressed: () => Utils.navigateToWidgetPage(
         context: context,
-        title: "Add Preset",
+        title: 'Add Preset',
         child: AddPresetPage(
           onAboutToPop: () =>
               presetInteractionWidgets = updatedPresetInteractionWidgets,

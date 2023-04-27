@@ -12,7 +12,7 @@ class Desk {
   static const double standingBreakpointHeight = 90.0;
 
   Desk({
-    this.name = "Deskified Desk",
+    this.name = 'Deskified Desk',
     this.height = minimumHeight,
     this.presets = const [],
   });
