@@ -7,14 +7,14 @@ import 'package:deskify/widgets/generic/numeric_text_field_with_desk_animation_a
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AddDeviceTab extends StatefulWidget {
-  const AddDeviceTab({super.key});
+class AddDeskTab extends StatefulWidget {
+  const AddDeskTab({super.key});
 
   @override
-  State<AddDeviceTab> createState() => _AddDeviceTabState();
+  State<AddDeskTab> createState() => _AddDeskTabState();
 }
 
-class _AddDeviceTabState extends State<AddDeviceTab> {
+class _AddDeskTabState extends State<AddDeskTab> {
   late DeskProvider deskProvider;
   Desk newDesk = Desk(
     name: '',
@@ -44,7 +44,7 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
           const Heading(title: "Presets"),
           _buildPresetInput(),
           const SizedBox(height: 10.0),
-          _buildAddDeviceButton(),
+          _buildAddDeskButton(),
         ],
       ),
     );
@@ -57,7 +57,7 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
       children: [
         TextField(
             controller: deskNameController,
-            decoration: const InputDecoration(labelText: 'Device Name')),
+            decoration: const InputDecoration(labelText: 'Desk name')),
         const SizedBox(height: 10.0),
         _buildDeskHeightConfiguration(),
       ],
@@ -74,21 +74,6 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
           heightTextFieldController: deskHeightController,
           onHeightChanged: (double value) =>
               deskHeightController.text = value.toString(),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPresetHeightConfiguration() {
-    return SizedBox(
-      height: 400.0,
-      child: Expanded(
-        child: NumericTextFieldWithDeskAnimationAndAdjustHeightSlider(
-          deskHeight: double.parse(presetTargetHeightController.text),
-          titleOfTextField: 'Target Height',
-          heightTextFieldController: presetTargetHeightController,
-          onHeightChanged: (double value) =>
-              presetTargetHeightController.text = value.toString(),
         ),
       ),
     );
@@ -126,6 +111,21 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
             ),
           )
           .toList(),
+    );
+  }
+
+  Widget _buildPresetHeightConfiguration() {
+    return SizedBox(
+      height: 400.0,
+      child: Expanded(
+        child: NumericTextFieldWithDeskAnimationAndAdjustHeightSlider(
+          deskHeight: double.parse(presetTargetHeightController.text),
+          titleOfTextField: 'Target Height',
+          heightTextFieldController: presetTargetHeightController,
+          onHeightChanged: (double value) =>
+              presetTargetHeightController.text = value.toString(),
+        ),
+      ),
     );
   }
 
@@ -172,11 +172,11 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
     );
   }
 
-  Widget _buildAddDeviceButton() {
+  Widget _buildAddDeskButton() {
     return ElevatedButton(
       onPressed: () {
         if (deskNameController.text.isEmpty) {
-          Utils.showSnackbar(context, "Enter a name for the device.");
+          Utils.showSnackbar(context, "Enter a name for the desk.");
           return;
         }
 
@@ -185,11 +185,11 @@ class _AddDeviceTabState extends State<AddDeviceTab> {
 
         deskProvider.addDesk(newDesk);
         Utils.showSnackbar(
-            context, "The device '${deskNameController.text}' was added.");
+            context, "The desk '${deskNameController.text}' was added.");
 
         resetTab();
       },
-      child: const Text("Add Device"),
+      child: const Text("Add Desk"),
     );
   }
 

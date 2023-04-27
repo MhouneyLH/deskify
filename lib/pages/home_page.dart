@@ -4,7 +4,7 @@ import 'package:deskify/model/desk.dart';
 import 'package:deskify/provider/desk_provider.dart';
 import 'package:deskify/provider/profile_provider.dart';
 import 'package:deskify/utils.dart';
-import 'package:deskify/widgets/tabs/add_device_tab.dart';
+import 'package:deskify/widgets/tabs/add_desk_tab.dart';
 import 'package:deskify/widgets/tabs/home_page_tab.dart';
 import 'package:deskify/widgets/tabs/settings_tab.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
 
     final List<Widget> tabs = [
       const HomePageTab(),
-      const AddDeviceTab(),
+      const AddDeskTab(),
       const SettingsTab(),
     ];
 
