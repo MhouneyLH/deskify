@@ -16,7 +16,15 @@ An app to manage your desk, and your work. The project is related to a [desk pro
 
 ## 🎆 Showcase
 
-### Nothing here for now :(
+|               Homepage               |       Homepage with another desk       |          Moving the current desk           |                                  |
+| :----------------------------------: | :------------------------------------: | :----------------------------------------: | :------------------------------: |
+| ![](./assets/homepage_work_desk.png) | ![](./assets/homepage_living_desk.png) |        ![](./assets/move_desk.png)         |
+|   Analyse your standing Behaviour    |     Analyse your sitting Behaviour     |
+| ![](./assets/standing_analytics.png) |  ![](./assets/sitting_analytics.png)   |
+|          Create a new desk           |    Create presets for your new desk    |       Your new desk in the Homepage        |
+|  ![](./assets/add_desk_general.png)  |   ![](./assets/add_desk_presets.png)   |        ![](./assets/added_desk.png)        |
+|   Drag your presets to order them    |           Edit your presets            | There are snackbars for active information |      Edit names and titles       |
+|  ![](./assets/dragging_preset.png)   |     ![](./assets/edit_preset.png)      |   ![](./assets/snackbar_in_homepage.png)   | ![](./assets/edit_desk_name.png) |
 
 <p align="right">(<a href="#readme_top">back to top</a>)</p>
 
