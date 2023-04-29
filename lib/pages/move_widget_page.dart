@@ -38,7 +38,7 @@ class _MoveWidgetPageState extends State<MoveWidgetPage> {
       child: NumericTextFieldWithDeskAnimationAndAdjustHeightSlider(
         deskHeight: deskProvider.currentDesk.height!,
         heightTextFieldController: heightController,
-        titleOfTextField: "Current Height",
+        titleOfTextField: 'Current Height',
         onHeightChanged: (double value) =>
             deskProvider.currentDesk.height = value,
       ),

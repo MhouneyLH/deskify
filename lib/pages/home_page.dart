@@ -43,15 +43,15 @@ class _HomePageState extends State<HomePage> {
     final List<BottomNavigationBarItem> navigationBarItems = [
       const BottomNavigationBarItem(
         icon: Icon(Icons.home),
-        label: "Home",
+        label: 'Home',
       ),
       const BottomNavigationBarItem(
         icon: Icon(Icons.add),
-        label: "Add",
+        label: 'Add',
       ),
       const BottomNavigationBarItem(
         icon: Icon(Icons.settings),
-        label: "Settings",
+        label: 'Settings',
       ),
     ];
 
@@ -59,8 +59,6 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text(MainApp.title),
       ),
-      floatingActionButton: _isHomePage() ? _buildFloatingActionButton() : null,
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedTabIndex,
         onTap: (index) => _updateSelectedTabIndex(index),
@@ -79,11 +77,8 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void _updateSelectedTabIndex(int index) {
-    setState(
-      () => selectedTabIndex = index,
-    );
-  }
+  void _updateSelectedTabIndex(int index) =>
+      setState(() => selectedTabIndex = index);
 
   void _updateAnalytics() {
     deskProvider.currentDesk.height! > Desk.standingBreakpointHeight
@@ -91,14 +86,5 @@ class _HomePageState extends State<HomePage> {
             Utils.getCurrentWeekdayAsInt(), 1)
         : profileProvider.incrementSittingAnalytic(
             Utils.getCurrentWeekdayAsInt(), 1);
-  }
-
-  bool _isHomePage() => selectedTabIndex == 0;
-
-  FloatingActionButton _buildFloatingActionButton() {
-    return FloatingActionButton(
-      onPressed: () => _updateSelectedTabIndex(2),
-      child: const Icon(Icons.settings),
-    );
   }
 }

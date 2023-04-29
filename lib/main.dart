@@ -12,7 +12,7 @@ void main() {
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
-  static const String title = "Deskify";
+  static const String title = 'Deskify';
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +25,11 @@ class MainApp extends StatelessWidget {
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, _) => MaterialApp(
           title: MainApp.title,
-          // theme: themeProvider.themeData,
-          darkTheme: themeProvider.themeData,
+          theme: ThemeData.from(
+            useMaterial3: true,
+            colorScheme: themeProvider.themeData.colorScheme,
+            textTheme: themeProvider.themeData.textTheme,
+          ),
           home: const HomePage(),
         ),
       ),

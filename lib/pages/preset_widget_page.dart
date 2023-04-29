@@ -1,4 +1,3 @@
-import 'package:deskify/model/desk.dart';
 import 'package:deskify/model/preset.dart';
 import 'package:deskify/provider/desk_provider.dart';
 import 'package:deskify/utils.dart';
@@ -24,7 +23,6 @@ class PresetWidgetPage extends StatefulWidget {
 
 class _PresetWidgetPageState extends State<PresetWidgetPage> {
   late DeskProvider deskProvider;
-  late Desk currentDesk;
   late Preset providerPreset;
   late TextEditingController presetTitleController =
       TextEditingController(text: providerPreset.title);
@@ -34,8 +32,8 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
   @override
   Widget build(BuildContext context) {
     deskProvider = Provider.of<DeskProvider>(context);
-    currentDesk = deskProvider.currentDesk;
-    providerPreset = deskProvider.getPreset(currentDesk.id, widget.preset.id);
+    providerPreset =
+        deskProvider.getPreset(deskProvider.currentDesk.id, widget.preset.id);
 
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -52,31 +50,40 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
   }
 
   Widget _buildPageHeading() {
+    void openDialog() => showDialog(
+          context: context,
+          builder: (_) => SingleValueAlertDialog(
+            title: 'Enter new title',
+            controller: presetTitleController,
+            onSave: () => deskProvider.setPresetTitle(
+                deskProvider.currentDesk.id,
+                providerPreset.id,
+                presetTitleController.text),
+            onCancel: () => presetTitleController.text = providerPreset.title,
+          ),
+        );
+
     return Heading(
       title: providerPreset.title,
-      onTapped: () => showDialog(
-        context: context,
-        builder: (_) => SingleValueAlertDialog(
-          title: "Enter new title",
-          controller: presetTitleController,
-          onSave: () => deskProvider.setPresetTitle(deskProvider.currentDesk.id,
-              providerPreset.id, presetTitleController.text),
-          onCancel: () => presetTitleController.text = providerPreset.title,
-        ),
-      ),
+      nextToHeadingWidgets: [
+        const SizedBox(width: 10.0),
+        IconButton(
+            onPressed: openDialog,
+            icon: const Icon(Icons.edit),
+            splashRadius: 20.0),
+      ],
+      onTapped: openDialog,
     );
   }
 
   Widget _buildHeightConfiguration() {
     return Expanded(
       child: NumericTextFieldWithDeskAnimationAndAdjustHeightSlider(
-        deskHeight: deskProvider
-            .getPreset(currentDesk.id, widget.preset.id)
-            .targetHeight,
+        deskHeight: double.parse(presetHeightController.text),
         heightTextFieldController: presetHeightController,
-        titleOfTextField: "Target Height",
-        onHeightChanged: (double value) => deskProvider.setPresetTargetHeight(
-            currentDesk.id, providerPreset.id, value),
+        titleOfTextField: 'Target Height',
+        onHeightChanged: (double value) =>
+            presetHeightController.text = value.toString(),
       ),
     );
   }
@@ -86,24 +93,25 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
       onPressed: () {
         savePreset();
         Utils.showSnackbar(
-            context, "The preset '${presetTitleController.text}' was saved.");
+          context,
+          "The preset '${presetTitleController.text}' was saved.",
+        );
+
+        widget.onAboutToPop();
         Navigator.of(context).pop();
       },
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(
-          Theme.of(context).primaryColor,
-        ),
-      ),
-      child: const Text("Save"),
+      child: const Text('Save'),
     );
   }
 
   void savePreset() {
+    deskProvider.setPresetTitle(deskProvider.currentDesk.id, providerPreset.id,
+        presetTitleController.text);
+
     deskProvider.setPresetTargetHeight(
-      currentDesk.id,
+      deskProvider.currentDesk.id,
       providerPreset.id,
       double.parse(presetHeightController.text),
     );
-    widget.onAboutToPop();
   }
 }

@@ -2,6 +2,10 @@ import 'package:deskify/main.dart';
 import 'package:flutter/material.dart';
 
 class Utils {
+  static bool keyboardIsVisible(BuildContext context) {
+    return MediaQuery.of(context).viewInsets.bottom != 0;
+  }
+
   static double roundDouble(double value, int places) {
     return double.parse(value.toStringAsFixed(places));
   }
@@ -21,21 +25,21 @@ class Utils {
   static String intToShortWeekday(int dayAsInt) {
     switch (dayAsInt) {
       case DateTime.monday:
-        return "Mon";
+        return 'Mon';
       case DateTime.tuesday:
-        return "Tue";
+        return 'Tue';
       case DateTime.wednesday:
-        return "Wed";
+        return 'Wed';
       case DateTime.thursday:
-        return "Thu";
+        return 'Thu';
       case DateTime.friday:
-        return "Fri";
+        return 'Fri';
       case DateTime.saturday:
-        return "Sat";
+        return 'Sat';
       case DateTime.sunday:
-        return "Sun";
+        return 'Sun';
       default:
-        return "Unknown";
+        return 'Unknown';
     }
   }
 
@@ -63,9 +67,12 @@ class Utils {
           borderRadius: BorderRadius.circular(10.0),
         ),
         showCloseIcon: true,
+        closeIconColor: Theme.of(context).colorScheme.onPrimary,
         content: Text(
           message,
-          style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
         ),
       ),
     );

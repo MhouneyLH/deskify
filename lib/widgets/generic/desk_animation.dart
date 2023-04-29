@@ -18,11 +18,13 @@ class DeskAnimation extends StatefulWidget {
 class _DeskAnimationState extends State<DeskAnimation> {
   late double deskDisplayHeight;
   final double deskDisplayThickness = 10.0;
+  late Color deskColor;
 
   @override
   Widget build(BuildContext context) {
     deskDisplayHeight =
         (widget.deskHeight / Desk.maximumHeight) * Desk.maximumHeight;
+    deskColor = Theme.of(context).colorScheme.tertiary;
 
     return SizedBox(
       width: widget.width,
@@ -45,8 +47,8 @@ class _DeskAnimationState extends State<DeskAnimation> {
       child: Container(
         height: deskDisplayThickness,
         decoration: BoxDecoration(
-          color: Theme.of(context).accentColor,
           borderRadius: BorderRadius.circular(10),
+          color: deskColor,
         ),
       ),
     );
@@ -63,7 +65,7 @@ class _DeskAnimationState extends State<DeskAnimation> {
         width: 10,
         height: deskDisplayHeight,
         decoration: BoxDecoration(
-          color: Theme.of(context).accentColor,
+          color: deskColor,
           borderRadius: BorderRadius.circular(10.0),
         ),
       ),

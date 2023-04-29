@@ -37,36 +37,36 @@ class _HomePageTabState extends State<HomePageTab> {
 
   late List<InteractionWidget> analyticalInteractionWidgets = [
     InteractionWidget(
-      title: "Standing",
+      title: 'Standing',
       icon: const Icon(Icons.info),
       extraInformationWidget: ProgressBar(
         height: 10.0,
         target: profileProvider.todaysStandingTarget,
-        displayColor: themeProvider.darkStandingColor,
+        displayColor: themeProvider.standingColor,
       ),
       onPressedWholeWidget: () => Utils.navigateToWidgetPage(
         context: context,
-        title: "Standing",
+        title: 'Standing',
         child: AnalyticsWidgetPage(
           targetWeekdayMap: profileProvider.standingAnalytic,
-          signalizationColor: themeProvider.darkStandingColor,
+          signalizationColor: themeProvider.standingColor,
         ),
       ),
     ),
     InteractionWidget(
-      title: "Sitting",
+      title: 'Sitting',
       icon: const Icon(Icons.info),
       extraInformationWidget: ProgressBar(
         height: 10.0,
         target: profileProvider.todaysSittingTarget,
-        displayColor: themeProvider.darkSittingColor,
+        displayColor: themeProvider.sittingColor,
       ),
       onPressedWholeWidget: () => Utils.navigateToWidgetPage(
         context: context,
-        title: "Sitting",
+        title: 'Sitting',
         child: AnalyticsWidgetPage(
           targetWeekdayMap: profileProvider.sittingAnalytic,
-          signalizationColor: themeProvider.darkSittingColor,
+          signalizationColor: themeProvider.sittingColor,
         ),
       ),
     ),
@@ -75,11 +75,11 @@ class _HomePageTabState extends State<HomePageTab> {
       updatedPresetInteractionWidgets;
   late List<InteractionWidget> otherInteractionWidgets = [
     InteractionWidget(
-      title: "Move",
+      title: 'Move',
       icon: const Icon(Icons.input),
       onPressedWholeWidget: () => Utils.navigateToWidgetPage(
         context: context,
-        title: "Moving",
+        title: 'Moving',
         child: const MoveWidgetPage(),
       ),
     ),
@@ -132,41 +132,53 @@ class _HomePageTabState extends State<HomePageTab> {
       children: [
         _buildDeskHeading(),
         const SizedBox(width: 10.0),
-        Text("Height: ${deskProvider.currentDesk.height} cm"),
+        Text('Height: ${deskProvider.currentDesk.height} cm'),
         const SizedBox(height: 10.0),
         _buildCarouselDeskAnimation(),
         _buildInteractiveWidgetGroup(
           items: analyticalInteractionWidgets,
-          title: "Analytics",
+          itemHeight: 65,
+          title: 'Analytics',
         ),
         _buildInteractiveWidgetGroup(
           items: presetInteractionWidgets,
-          title: "Presets",
+          title: 'Presets',
           nextToHeadingWidgets: [
+            const SizedBox(width: 5.0),
             _buildAddPresetButton(),
           ],
         ),
         _buildInteractiveWidgetGroup(
           items: otherInteractionWidgets,
-          title: "Others",
+          title: 'Others',
         ),
       ],
     );
   }
 
   Widget _buildDeskHeading() {
+    void openDialog() => showDialog(
+          context: context,
+          builder: (_) => SingleValueAlertDialog(
+            title: 'Edit desk name',
+            controller: deskNameController,
+            onSave: () =>
+                deskProvider.currentDesk.name = deskNameController.text,
+            onCancel: () =>
+                deskNameController.text = deskProvider.currentDesk.name!,
+          ),
+        );
+
     return Heading(
       title: deskProvider.currentDesk.name!,
-      onTapped: () => showDialog(
-        context: context,
-        builder: (_) => SingleValueAlertDialog(
-          title: 'Edit desk name',
-          controller: deskNameController,
-          onSave: () => deskProvider.currentDesk.name = deskNameController.text,
-          onCancel: () =>
-              deskNameController.text = deskProvider.currentDesk.name!,
-        ),
-      ),
+      nextToHeadingWidgets: [
+        const SizedBox(width: 10.0),
+        IconButton(
+            onPressed: openDialog,
+            icon: const Icon(Icons.edit),
+            splashRadius: 20.0),
+      ],
+      onTapped: openDialog,
     );
   }
 
@@ -222,7 +234,7 @@ class _HomePageTabState extends State<HomePageTab> {
               margin: const EdgeInsets.all(5.0),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: (Theme.of(context).accentColor).withOpacity(
+                color: (Theme.of(context).colorScheme.secondary).withOpacity(
                     deskProvider.currentlySelectedIndex == entry.key
                         ? 0.9
                         : 0.3),
@@ -234,26 +246,21 @@ class _HomePageTabState extends State<HomePageTab> {
     );
   }
 
-  Widget _buildInteractiveWidgetGroup(
-      {required List<InteractionWidget> items,
-      required String title,
-      List<Widget>? nextToHeadingWidgets}) {
+  Widget _buildInteractiveWidgetGroup({
+    required String title,
+    required List<InteractionWidget> items,
+    double itemHeight = 50.0,
+    List<Widget>? nextToHeadingWidgets,
+  }) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Heading(title: title),
-            const SizedBox(width: 5.0),
-            if (nextToHeadingWidgets != null) ...nextToHeadingWidgets,
-          ],
-        ),
+        Heading(title: title, nextToHeadingWidgets: nextToHeadingWidgets),
         const SizedBox(height: 10.0),
         InteractionWidgetGridView(
           items: items,
+          itemHeight: itemHeight,
           outerDefinedSpacings: 10.0,
         ),
       ],
@@ -263,10 +270,11 @@ class _HomePageTabState extends State<HomePageTab> {
   Widget _buildAddPresetButton() {
     return IconButton(
       icon: const Icon(Icons.add),
+      padding: const EdgeInsets.all(0.0),
       splashRadius: 20.0,
       onPressed: () => Utils.navigateToWidgetPage(
         context: context,
-        title: "Add Preset",
+        title: 'Add Preset',
         child: AddPresetPage(
           onAboutToPop: () =>
               presetInteractionWidgets = updatedPresetInteractionWidgets,

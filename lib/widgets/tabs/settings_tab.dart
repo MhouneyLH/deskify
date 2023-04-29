@@ -15,7 +15,6 @@ class _SettingsTabState extends State<SettingsTab> {
   late DeskProvider deskProvider;
   late ProfileProvider profileProvider;
   late ThemeProvider themeProvider;
-  bool _darkThemeSwitchValue = false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +27,7 @@ class _SettingsTabState extends State<SettingsTab> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _buildProfileSummary(),
+        const SizedBox(height: 10.0),
         _buildThemeSwitch(),
       ],
     );
@@ -37,7 +37,7 @@ class _SettingsTabState extends State<SettingsTab> {
     return Container(
       height: 100,
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
@@ -107,18 +107,15 @@ class _SettingsTabState extends State<SettingsTab> {
   Widget _buildThemeSwitch() {
     return Row(
       children: [
-        const Text("Darktheme:"),
+        const Text('Darktheme'),
+        const SizedBox(width: 10.0),
         Switch(
-          value: _darkThemeSwitchValue,
-          onChanged: (bool value) => {
-            setState(() {
-              _darkThemeSwitchValue = value;
-              themeProvider.setDarkTheme();
-              // _darkThemeSwitchValue
-              //     ? themeProvider!.setDarkTheme()
-              //     : themeProvider!.setLightTheme();
-            })
-          },
+          value: themeProvider.isDarkTheme,
+          onChanged: (bool _) => setState(
+            () => themeProvider.isDarkTheme
+                ? themeProvider.setLightTheme()
+                : themeProvider.setDarkTheme(),
+          ),
         ),
       ],
     );

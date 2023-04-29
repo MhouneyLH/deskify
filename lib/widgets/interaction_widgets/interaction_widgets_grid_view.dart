@@ -4,10 +4,12 @@ import 'package:reorderable_grid/reorderable_grid.dart';
 
 class InteractionWidgetGridView extends StatefulWidget {
   final List<InteractionWidget> items;
+  final double itemHeight;
   final double outerDefinedSpacings;
 
   const InteractionWidgetGridView({
     required this.items,
+    required this.itemHeight,
     this.outerDefinedSpacings = 0.0,
     super.key,
   });
@@ -18,8 +20,6 @@ class InteractionWidgetGridView extends StatefulWidget {
 }
 
 class _InteractionWidgetGridViewState extends State<InteractionWidgetGridView> {
-  final double itemWidth = 200.0;
-  final double itemHeight = 50.0;
   final int itemsPerRow = 2;
   final double defaultSpacing = 10.0;
 
@@ -33,7 +33,7 @@ class _InteractionWidgetGridViewState extends State<InteractionWidgetGridView> {
           crossAxisCount: itemsPerRow,
           mainAxisSpacing: defaultSpacing,
           crossAxisSpacing: defaultSpacing,
-          mainAxisExtent: itemHeight,
+          mainAxisExtent: widget.itemHeight,
         ),
         children: widget.items
             .map((InteractionWidget item) => _buildGridViewItem(item))
@@ -46,15 +46,17 @@ class _InteractionWidgetGridViewState extends State<InteractionWidgetGridView> {
 
   double _getTotalGridViewHeightWithOuterDefinedSpacing() {
     final double gridHeight =
-        itemHeight * (widget.items.length / itemsPerRow).ceil() +
+        widget.itemHeight * (widget.items.length / itemsPerRow).ceil() +
             defaultSpacing * ((widget.items.length / itemsPerRow) - 1) +
             widget.outerDefinedSpacings;
     return gridHeight;
   }
 
   Widget _buildGridViewItem(InteractionWidget item) {
-    return SizedBox(
-        key: ValueKey(item), width: itemWidth, height: itemHeight, child: item);
+    return Container(
+      key: ValueKey(item),
+      child: item,
+    );
   }
 
   void _onReorder(int oldIndex, int newIndex) {
