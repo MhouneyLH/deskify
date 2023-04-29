@@ -39,8 +39,16 @@ class _NumericTextFieldWithDeskAnimationAndAdjustHeightSliderState
           labelText: widget.titleOfTextField,
         ),
         const SizedBox(height: 10.0),
-        _buildDeskAnimation(),
-        _buildHeightSlider(),
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildDeskAnimation(),
+              _buildHeightSlider(),
+            ],
+          ),
+        ),
       ],
     );
   }
@@ -87,12 +95,9 @@ class _NumericTextFieldWithDeskAnimationAndAdjustHeightSliderState
   }
 
   Widget _buildHeightSlider() {
-    return Expanded(
-      child: AdjustHeightSlider(
-        width: 150.0,
-        displayedHeight: widget.deskHeight,
-        onChanged: (double value) => setState(() => _updateComponents(value)),
-      ),
+    return AdjustHeightSlider(
+      displayedHeight: widget.deskHeight,
+      onChanged: (double value) => setState(() => _updateComponents(value)),
     );
   }
 }

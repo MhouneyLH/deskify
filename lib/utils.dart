@@ -2,6 +2,10 @@ import 'package:deskify/main.dart';
 import 'package:flutter/material.dart';
 
 class Utils {
+  static bool keyboardIsVisible(BuildContext context) {
+    return MediaQuery.of(context).viewInsets.bottom != 0;
+  }
+
   static double roundDouble(double value, int places) {
     return double.parse(value.toStringAsFixed(places));
   }
