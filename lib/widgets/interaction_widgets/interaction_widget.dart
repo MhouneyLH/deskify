@@ -57,6 +57,7 @@ class _InteractionWidgetState extends State<InteractionWidget> {
                 _buildTitle(context),
                 const SizedBox(width: 10.0),
                 _buildSettingsButton(),
+                SizedBox(width: _padding / 4),
               ],
             ),
           ),
@@ -70,6 +71,7 @@ class _InteractionWidgetState extends State<InteractionWidget> {
   Widget _buildIcon() {
     return Icon(
       widget.icon.icon,
+      size: 20.0,
     );
   }
 
@@ -86,7 +88,7 @@ class _InteractionWidgetState extends State<InteractionWidget> {
   }
 
   Widget _buildSettingsButton() {
-    const double size = 25.0;
+    const double size = 20.0;
 
     return widget.onPressedSettingsIcon == null
         ? const SizedBox()

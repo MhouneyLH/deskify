@@ -157,18 +157,28 @@ class _HomePageTabState extends State<HomePageTab> {
   }
 
   Widget _buildDeskHeading() {
+    void openDialog() => showDialog(
+          context: context,
+          builder: (_) => SingleValueAlertDialog(
+            title: 'Edit desk name',
+            controller: deskNameController,
+            onSave: () =>
+                deskProvider.currentDesk.name = deskNameController.text,
+            onCancel: () =>
+                deskNameController.text = deskProvider.currentDesk.name!,
+          ),
+        );
+
     return Heading(
       title: deskProvider.currentDesk.name!,
-      onTapped: () => showDialog(
-        context: context,
-        builder: (_) => SingleValueAlertDialog(
-          title: 'Edit desk name',
-          controller: deskNameController,
-          onSave: () => deskProvider.currentDesk.name = deskNameController.text,
-          onCancel: () =>
-              deskNameController.text = deskProvider.currentDesk.name!,
-        ),
-      ),
+      nextToHeadingWidgets: [
+        const SizedBox(width: 10.0),
+        IconButton(
+            onPressed: openDialog,
+            icon: const Icon(Icons.edit),
+            splashRadius: 20.0),
+      ],
+      onTapped: openDialog,
     );
   }
 

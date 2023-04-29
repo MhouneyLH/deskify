@@ -50,18 +50,29 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
   }
 
   Widget _buildPageHeading() {
+    void openDialog() => showDialog(
+          context: context,
+          builder: (_) => SingleValueAlertDialog(
+            title: 'Enter new title',
+            controller: presetTitleController,
+            onSave: () => deskProvider.setPresetTitle(
+                deskProvider.currentDesk.id,
+                providerPreset.id,
+                presetTitleController.text),
+            onCancel: () => presetTitleController.text = providerPreset.title,
+          ),
+        );
+
     return Heading(
       title: providerPreset.title,
-      onTapped: () => showDialog(
-        context: context,
-        builder: (_) => SingleValueAlertDialog(
-          title: 'Enter new title',
-          controller: presetTitleController,
-          onSave: () => deskProvider.setPresetTitle(deskProvider.currentDesk.id,
-              providerPreset.id, presetTitleController.text),
-          onCancel: () => presetTitleController.text = providerPreset.title,
-        ),
-      ),
+      nextToHeadingWidgets: [
+        const SizedBox(width: 10.0),
+        IconButton(
+            onPressed: openDialog,
+            icon: const Icon(Icons.edit),
+            splashRadius: 20.0),
+      ],
+      onTapped: openDialog,
     );
   }
 
