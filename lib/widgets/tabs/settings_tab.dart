@@ -27,6 +27,7 @@ class _SettingsTabState extends State<SettingsTab> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _buildProfileSummary(),
+        const SizedBox(height: 10.0),
         _buildThemeSwitch(),
       ],
     );
@@ -36,7 +37,7 @@ class _SettingsTabState extends State<SettingsTab> {
     return Container(
       height: 100,
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
@@ -107,6 +108,7 @@ class _SettingsTabState extends State<SettingsTab> {
     return Row(
       children: [
         const Text('Darktheme'),
+        const SizedBox(width: 10.0),
         Switch(
           value: themeProvider.isDarkTheme,
           onChanged: (bool _) => setState(

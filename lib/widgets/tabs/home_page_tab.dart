@@ -42,14 +42,14 @@ class _HomePageTabState extends State<HomePageTab> {
       extraInformationWidget: ProgressBar(
         height: 10.0,
         target: profileProvider.todaysStandingTarget,
-        displayColor: themeProvider.darkStandingColor,
+        displayColor: themeProvider.standingColor,
       ),
       onPressedWholeWidget: () => Utils.navigateToWidgetPage(
         context: context,
         title: 'Standing',
         child: AnalyticsWidgetPage(
           targetWeekdayMap: profileProvider.standingAnalytic,
-          signalizationColor: themeProvider.darkStandingColor,
+          signalizationColor: themeProvider.standingColor,
         ),
       ),
     ),
@@ -59,14 +59,14 @@ class _HomePageTabState extends State<HomePageTab> {
       extraInformationWidget: ProgressBar(
         height: 10.0,
         target: profileProvider.todaysSittingTarget,
-        displayColor: themeProvider.darkSittingColor,
+        displayColor: themeProvider.sittingColor,
       ),
       onPressedWholeWidget: () => Utils.navigateToWidgetPage(
         context: context,
         title: 'Sitting',
         child: AnalyticsWidgetPage(
           targetWeekdayMap: profileProvider.sittingAnalytic,
-          signalizationColor: themeProvider.darkSittingColor,
+          signalizationColor: themeProvider.sittingColor,
         ),
       ),
     ),
@@ -234,7 +234,7 @@ class _HomePageTabState extends State<HomePageTab> {
               margin: const EdgeInsets.all(5.0),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: (Theme.of(context).accentColor).withOpacity(
+                color: (Theme.of(context).colorScheme.secondary).withOpacity(
                     deskProvider.currentlySelectedIndex == entry.key
                         ? 0.9
                         : 0.3),

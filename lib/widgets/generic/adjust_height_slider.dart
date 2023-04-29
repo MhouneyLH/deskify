@@ -29,7 +29,6 @@ class _AdjustHeightSliderState extends State<AdjustHeightSlider> {
           onChanged: (value) => widget.onChanged(value),
           min: Desk.minimumHeight,
           max: Desk.maximumHeight,
-          inactiveColor: Theme.of(context).primaryColor,
           interval: 10,
           showLabels: true,
           showTicks: true,

@@ -35,10 +35,7 @@ class _HeadingState extends State<Heading> {
   Widget _buildTitle() {
     return Text(
       widget.title,
-      style: const TextStyle(
-        fontSize: 28,
-        fontWeight: FontWeight.bold,
-      ),
+      style: Theme.of(context).textTheme.headlineLarge,
       textAlign: TextAlign.start,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,

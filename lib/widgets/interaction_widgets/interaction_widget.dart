@@ -32,14 +32,17 @@ class _InteractionWidgetState extends State<InteractionWidget> {
     return ElevatedButton(
       onPressed: () => widget.onPressedWholeWidget(),
       style: ButtonStyle(
-        fixedSize: MaterialStateProperty.all(Size(widget.width, widget.height)),
+        fixedSize: MaterialStateProperty.all(
+          Size(
+            widget.width,
+            widget.height,
+          ),
+        ),
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
           ),
         ),
-        backgroundColor:
-            MaterialStatePropertyAll(Theme.of(context).primaryColor),
         padding: MaterialStateProperty.all(EdgeInsets.all(_padding)),
       ),
       child: Column(

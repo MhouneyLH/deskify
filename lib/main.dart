@@ -25,7 +25,11 @@ class MainApp extends StatelessWidget {
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, _) => MaterialApp(
           title: MainApp.title,
-          theme: themeProvider.themeData,
+          theme: ThemeData.from(
+            useMaterial3: true,
+            colorScheme: themeProvider.themeData.colorScheme,
+            textTheme: themeProvider.themeData.textTheme,
+          ),
           home: const HomePage(),
         ),
       ),

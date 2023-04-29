@@ -65,7 +65,7 @@ class Utils {
         showCloseIcon: true,
         content: Text(
           message,
-          style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
+          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
         ),
       ),
     );

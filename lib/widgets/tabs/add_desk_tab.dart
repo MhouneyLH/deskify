@@ -133,7 +133,7 @@ class _AddDeskTabState extends State<AddDeskTab> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
-        color: Theme.of(context).primaryColor,
+        color: Theme.of(context).colorScheme.surface.withOpacity(0.2),
       ),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
