@@ -45,8 +45,8 @@ class _DeskAnimationState extends State<DeskAnimation> {
       child: Container(
         height: deskDisplayThickness,
         decoration: BoxDecoration(
-          color: Theme.of(context).accentColor,
           borderRadius: BorderRadius.circular(10),
+          color: Theme.of(context).accentColor,
         ),
       ),
     );

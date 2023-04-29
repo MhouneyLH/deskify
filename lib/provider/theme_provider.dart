@@ -1,34 +1,35 @@
 import 'package:flutter/material.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  final Color _darkStandingColor = Colors.green;
-  final Color _darkSittingColor = Colors.red;
+  final Color _standingColor = Colors.green;
+  final Color _sittingColor = Colors.red;
 
   final ThemeData _darkTheme = ThemeData(
     brightness: Brightness.dark,
-    primarySwatch: Colors.blue,
+    primarySwatch: Colors.brown,
     accentColor: Colors.brown,
   );
 
-  // final ThemeData _lightTheme = ThemeData(
-  //   brightness: Brightness.light,
-  //   primarySwatch: Colors.blue,
-  //   accentColor: Colors.brown,
-  // );
+  final ThemeData _lightTheme = ThemeData(
+    brightness: Brightness.light,
+    primarySwatch: Colors.brown,
+    accentColor: Colors.brown,
+  );
 
-  Color get darkStandingColor => _darkStandingColor;
-  Color get darkSittingColor => _darkSittingColor;
+  Color get darkStandingColor => _standingColor;
+  Color get darkSittingColor => _sittingColor;
+  bool get isDarkTheme => _themeData == _darkTheme;
 
-  ThemeData? _themeData;
-  ThemeData get themeData => _themeData ?? _darkTheme;
+  late ThemeData _themeData = _darkTheme;
+  ThemeData get themeData => _themeData;
 
   void setDarkTheme() {
     _themeData = _darkTheme;
     notifyListeners();
   }
 
-  // void setLightTheme() {
-  //   _themeData = _lightTheme;
-  //   notifyListeners();
-  // }
+  void setLightTheme() {
+    _themeData = _lightTheme;
+    notifyListeners();
+  }
 }

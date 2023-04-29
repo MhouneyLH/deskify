@@ -15,7 +15,6 @@ class _SettingsTabState extends State<SettingsTab> {
   late DeskProvider deskProvider;
   late ProfileProvider profileProvider;
   late ThemeProvider themeProvider;
-  bool _darkThemeSwitchValue = false;
 
   @override
   Widget build(BuildContext context) {
@@ -107,18 +106,14 @@ class _SettingsTabState extends State<SettingsTab> {
   Widget _buildThemeSwitch() {
     return Row(
       children: [
-        const Text('Darktheme:'),
+        const Text('Darktheme'),
         Switch(
-          value: _darkThemeSwitchValue,
-          onChanged: (bool value) => {
-            setState(() {
-              _darkThemeSwitchValue = value;
-              themeProvider.setDarkTheme();
-              // _darkThemeSwitchValue
-              //     ? themeProvider!.setDarkTheme()
-              //     : themeProvider!.setLightTheme();
-            })
-          },
+          value: themeProvider.isDarkTheme,
+          onChanged: (bool _) => setState(
+            () => themeProvider.isDarkTheme
+                ? themeProvider.setLightTheme()
+                : themeProvider.setDarkTheme(),
+          ),
         ),
       ],
     );
