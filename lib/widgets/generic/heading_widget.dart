@@ -33,12 +33,14 @@ class _HeadingState extends State<Heading> {
   }
 
   Widget _buildTitle() {
-    return Text(
-      widget.title,
-      style: Theme.of(context).textTheme.headlineLarge,
-      textAlign: TextAlign.start,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
+    return Expanded(
+      child: Text(
+        widget.title,
+        style: Theme.of(context).textTheme.headlineLarge,
+        textAlign: TextAlign.start,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
   }
 

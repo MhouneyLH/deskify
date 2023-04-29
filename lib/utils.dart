@@ -63,9 +63,12 @@ class Utils {
           borderRadius: BorderRadius.circular(10.0),
         ),
         showCloseIcon: true,
+        closeIconColor: Theme.of(context).colorScheme.onPrimary,
         content: Text(
           message,
-          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
         ),
       ),
     );

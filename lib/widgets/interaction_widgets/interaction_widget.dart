@@ -26,6 +26,7 @@ class InteractionWidget extends StatefulWidget {
 
 class _InteractionWidgetState extends State<InteractionWidget> {
   final double _padding = 10.0;
+  final double _iconSize = 20.0;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +75,7 @@ class _InteractionWidgetState extends State<InteractionWidget> {
   Widget _buildIcon() {
     return Icon(
       widget.icon.icon,
-      size: 20.0,
+      size: _iconSize,
     );
   }
 
@@ -91,19 +92,17 @@ class _InteractionWidgetState extends State<InteractionWidget> {
   }
 
   Widget _buildSettingsButton() {
-    const double size = 20.0;
-
     return widget.onPressedSettingsIcon == null
         ? const SizedBox()
         : SizedBox(
-            width: size,
-            height: size,
+            width: _iconSize,
+            height: _iconSize,
             child: IconButton(
               icon: const Icon(Icons.settings),
               padding: const EdgeInsets.all(0.0),
               alignment: Alignment.center,
-              iconSize: size,
-              splashRadius: size,
+              iconSize: _iconSize,
+              splashRadius: _iconSize,
               onPressed: widget.onPressedSettingsIcon!,
             ),
           );

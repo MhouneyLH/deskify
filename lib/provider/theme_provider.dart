@@ -10,7 +10,7 @@ class ThemeProvider extends ChangeNotifier {
     textTheme: const TextTheme(
       headlineLarge: TextStyle(
         color: Colors.white,
-        fontSize: 24.0,
+        fontSize: 28.0,
         fontWeight: FontWeight.bold,
       ),
       bodyMedium: TextStyle(
@@ -57,7 +57,7 @@ class ThemeProvider extends ChangeNotifier {
     textTheme: const TextTheme(
       headlineLarge: TextStyle(
         color: Colors.black,
-        fontSize: 24.0,
+        fontSize: 28.0,
         fontWeight: FontWeight.bold,
       ),
       bodyMedium: TextStyle(
