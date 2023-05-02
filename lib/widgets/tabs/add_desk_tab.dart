@@ -43,6 +43,7 @@ class _AddDeskTabState extends State<AddDeskTab> {
           const SizedBox(height: 10.0),
           const Heading(title: 'Presets'),
           _buildPresetInput(),
+          const SizedBox(height: 10.0),
           _buildAddDeskButton(),
         ],
       ),
