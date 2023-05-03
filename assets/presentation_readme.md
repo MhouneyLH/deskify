@@ -16,7 +16,7 @@
 - mit Hilfe von Notion erstellt und [hier](https://uni-lucas.notion.site/Funktionsanforderungen-an-die-Software-64a872d1aa994bad9923f69d2f497f4b) zu finden
 - insgesamt 3 Varianten -> Entwicklung zu sehen
 
-## Leasons Learned
+## Lessons Learned
 
 ### Verwendung von Providern
 
