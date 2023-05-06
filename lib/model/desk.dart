@@ -2,7 +2,7 @@ import 'package:deskify/model/preset.dart';
 import 'package:uuid/uuid.dart';
 
 class Desk {
-  String? id = const Uuid().v4();
+  String? id;
   String? name;
   double? height;
   List<Preset>? presets;
