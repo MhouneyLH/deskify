@@ -23,17 +23,17 @@ class PresetWidgetPage extends StatefulWidget {
 
 class _PresetWidgetPageState extends State<PresetWidgetPage> {
   late DeskProvider deskProvider;
-  late Preset providerPreset;
+  // late Preset widget.preset;
   late TextEditingController presetTitleController =
-      TextEditingController(text: providerPreset.title);
+      TextEditingController(text: widget.preset.title);
   late TextEditingController presetHeightController =
-      TextEditingController(text: providerPreset.targetHeight.toString());
+      TextEditingController(text: widget.preset.targetHeight.toString());
 
   @override
   Widget build(BuildContext context) {
     deskProvider = Provider.of<DeskProvider>(context);
-    providerPreset =
-        deskProvider.getPreset(deskProvider.currentDesk!.id!, widget.preset.id);
+    // widget.preset =
+    //     deskProvider.getPreset(deskProvider.currentDesk!.id!, widget.preset.id);
 
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -55,16 +55,16 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
           builder: (_) => SingleValueAlertDialog(
             title: 'Enter new title',
             controller: presetTitleController,
-            onSave: () => deskProvider.setPresetTitle(
-                deskProvider.currentDesk!.id!,
-                providerPreset.id,
+            onSave: () => deskProvider.updatePresetTitle(
+                deskProvider.currentDesk!,
+                widget.preset,
                 presetTitleController.text),
-            onCancel: () => presetTitleController.text = providerPreset.title,
+            onCancel: () => presetTitleController.text = widget.preset.title,
           ),
         );
 
     return Heading(
-      title: providerPreset.title,
+      title: widget.preset.title,
       nextToHeadingWidgets: [
         const SizedBox(width: 10.0),
         IconButton(
@@ -105,12 +105,12 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
   }
 
   void savePreset() {
-    deskProvider.setPresetTitle(deskProvider.currentDesk!.id!, providerPreset.id,
-        presetTitleController.text);
+    deskProvider.updatePresetTitle(
+        deskProvider.currentDesk!, widget.preset, presetTitleController.text);
 
-    deskProvider.setPresetTargetHeight(
-      deskProvider.currentDesk!.id!,
-      providerPreset.id,
+    deskProvider.updatePresetTargetHeight(
+      deskProvider.currentDesk!,
+      widget.preset,
       double.parse(presetHeightController.text),
     );
   }

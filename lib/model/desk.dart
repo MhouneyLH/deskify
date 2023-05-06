@@ -32,8 +32,8 @@ class Desk {
         id: json['id'],
         name: json['name'],
         height: json['height'],
-        presets:
-            List.from(json['presets'].map((preset) => Preset.fromJson(preset))),
+        presets: List<Preset>.from(
+            json['presets'].map((preset) => Preset.fromJson(preset))),
       );
 
   Map<String, dynamic> toJson() => {

@@ -42,6 +42,11 @@ class _MoveWidgetPageState extends State<MoveWidgetPage> {
         onHeightChanged: (double value) =>
             deskProvider.currentDesk!.height = value,
       ),
+      // onHeightChanged: (double value) => deskProvider.updateDesk(
+      //     deskProvider.currentDesk!,
+      //     deskProvider.currentDesk!.name!,
+      //     value,
+      //     deskProvider.currentDesk!.presets)),
     );
   }
 }

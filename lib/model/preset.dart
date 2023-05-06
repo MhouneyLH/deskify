@@ -3,24 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 class Preset {
-  final String id = const Uuid().v4();
+  String? id;
   String title;
   double targetHeight;
   Icon icon;
 
   Preset({
+    this.id,
     required this.title,
     this.targetHeight = Desk.minimumHeight,
     this.icon = const Icon(Icons.input),
   });
 
   static Preset fromJson(Map<String, dynamic> json) => Preset(
+        id: json['id'],
         title: json['title'],
         targetHeight: json['targetHeight'],
         // icon: json['icon'],
       );
 
   Map<String, dynamic> toJson() => {
+        'id': id,
         'title': title,
         'targetHeight': targetHeight,
         // 'icon': icon,

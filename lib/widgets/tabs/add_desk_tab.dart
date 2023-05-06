@@ -99,8 +99,7 @@ class _AddDeskTabState extends State<AddDeskTab> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: newDesk.presets!
-          .map(
+      children: newDesk.presets.map(
             (Preset preset) => Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -158,7 +157,7 @@ class _AddDeskTabState extends State<AddDeskTab> {
             return;
           }
 
-          newDesk.presets!.add(Preset(
+          newDesk.presets.add(Preset(
             title: presetTitleController.text,
             targetHeight: double.parse(presetTargetHeightController.text),
           ));

@@ -90,7 +90,7 @@ class _HomePageTabState extends State<HomePageTab> {
       );
 
   List<InteractionWidget> get updatedPresetInteractionWidgets => [
-        for (Preset preset in deskProvider.currentDesk!.presets!)
+        for (Preset preset in deskProvider.currentDesk!.presets)
           InteractionWidget(
             title: preset.title,
             icon: preset.icon,
@@ -162,8 +162,10 @@ class _HomePageTabState extends State<HomePageTab> {
           builder: (_) => SingleValueAlertDialog(
             title: 'Edit desk name',
             controller: deskNameController,
-            onSave: () =>
-                deskProvider.currentDesk!.name = deskNameController.text,
+            onSave: () => deskProvider.udpateDeskName(
+              deskProvider.currentDesk!,
+              deskNameController.text,
+            ),
             onCancel: () =>
                 deskNameController.text = deskProvider.currentDesk!.name!,
           ),
