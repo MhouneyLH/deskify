@@ -2,7 +2,7 @@ import 'package:deskify/model/preset.dart';
 import 'package:uuid/uuid.dart';
 
 class Desk {
-  final String id = const Uuid().v4();
+  String? id = const Uuid().v4();
   String? name;
   double? height;
   List<Preset>? presets;
@@ -12,6 +12,7 @@ class Desk {
   static const double standingBreakpointHeight = 90.0;
 
   Desk({
+    this.id,
     this.name = 'Deskified Desk',
     this.height = minimumHeight,
     this.presets = const [],
@@ -26,4 +27,18 @@ class Desk {
     }
     return height;
   }
+
+  static Desk fromJson(Map<String, dynamic> json) => Desk(
+        id: json['id'],
+        name: json['name'],
+        height: json['height'],
+        presets: json['presets'],
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'height': height,
+        'presets': presets,
+      };
 }

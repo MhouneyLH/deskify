@@ -71,7 +71,7 @@ class _AddPresetPageState extends State<AddPresetPage> {
         }
 
         newPreset.title = presetTitleController.text;
-        deskProvider.addPreset(deskProvider.currentDesk.id, newPreset);
+        deskProvider.addPreset(deskProvider.currentDesk.id!, newPreset);
         Utils.showSnackbar(
             context, "The preset '${newPreset.title}' was added.");
 
