@@ -26,18 +26,18 @@
   ```dart
   class DeskProvider with ChangeNotifier {
     ...
-    final List<Desk> _deskList = [
+    final List<Desk> _desks = [
         Desk(...),
         Desk(...),
         ...
     ];
     int _currentlySelectedIndex = 0;
 
-    Desk get currentDesk => _deskList[_currentlySelectedIndex];
+    Desk get currentDesk => _desks[_currentlySelectedIndex];
     ...
 
     void addDesk(Desk desk) {
-        _deskList.add(desk);
+        _desks.add(desk);
         notifyListeners();
     }
   }
@@ -83,7 +83,7 @@
   Widget _buildIndicatorBar() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: deskProvider.deskList.asMap().entries.map((entry) {
+      children: deskProvider.desks.asMap().entries.map((entry) {
         return GestureDetector(
           onTap: () => buttonCarouselController.animateToPage(entry.key),
           child: Container(

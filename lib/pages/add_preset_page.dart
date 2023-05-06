@@ -22,7 +22,7 @@ class _AddPresetPageState extends State<AddPresetPage> {
   late DeskProvider deskProvider;
   late final Preset newPreset = Preset(
     title: '',
-    targetHeight: deskProvider.currentDesk.height!,
+    targetHeight: deskProvider.currentDesk!.height!,
   );
 
   final TextEditingController presetTitleController = TextEditingController();
@@ -71,7 +71,7 @@ class _AddPresetPageState extends State<AddPresetPage> {
         }
 
         newPreset.title = presetTitleController.text;
-        deskProvider.addPreset(deskProvider.currentDesk.id!, newPreset);
+        deskProvider.addPreset(deskProvider.currentDesk!.id!, newPreset);
         Utils.showSnackbar(
             context, "The preset '${newPreset.title}' was added.");
 

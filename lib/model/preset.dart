@@ -13,4 +13,16 @@ class Preset {
     this.targetHeight = Desk.minimumHeight,
     this.icon = const Icon(Icons.input),
   });
+
+  static Preset fromJson(Map<String, dynamic> json) => Preset(
+        title: json['title'],
+        targetHeight: json['targetHeight'],
+        // icon: json['icon'],
+      );
+
+  Map<String, dynamic> toJson() => {
+        'title': title,
+        'targetHeight': targetHeight,
+        // 'icon': icon,
+      };
 }

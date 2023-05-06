@@ -14,7 +14,7 @@ class MoveWidgetPage extends StatefulWidget {
 class _MoveWidgetPageState extends State<MoveWidgetPage> {
   late DeskProvider deskProvider;
   late TextEditingController heightController =
-      TextEditingController(text: deskProvider.currentDesk.height.toString());
+      TextEditingController(text: deskProvider.currentDesk!.height.toString());
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class _MoveWidgetPageState extends State<MoveWidgetPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Heading(title: deskProvider.currentDesk.name!),
+          Heading(title: deskProvider.currentDesk!.name!),
           _buildHeightConfiguration(),
         ],
       ),
@@ -36,11 +36,11 @@ class _MoveWidgetPageState extends State<MoveWidgetPage> {
   Widget _buildHeightConfiguration() {
     return Expanded(
       child: NumericTextFieldWithDeskAnimationAndAdjustHeightSlider(
-        deskHeight: deskProvider.currentDesk.height!,
+        deskHeight: deskProvider.currentDesk!.height!,
         heightTextFieldController: heightController,
         titleOfTextField: 'Current Height',
         onHeightChanged: (double value) =>
-            deskProvider.currentDesk.height = value,
+            deskProvider.currentDesk!.height = value,
       ),
     );
   }

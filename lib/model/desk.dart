@@ -5,7 +5,7 @@ class Desk {
   String? id;
   String? name;
   double? height;
-  List<Preset>? presets;
+  List<Preset> presets;
 
   static const double minimumHeight = 72.0;
   static const double maximumHeight = 119.0;
@@ -32,13 +32,14 @@ class Desk {
         id: json['id'],
         name: json['name'],
         height: json['height'],
-        presets: json['presets'],
+        presets:
+            List.from(json['presets'].map((preset) => Preset.fromJson(preset))),
       );
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
         'height': height,
-        'presets': presets,
+        'presets': presets.map((Preset preset) => preset.toJson()).toList(),
       };
 }

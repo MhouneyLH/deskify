@@ -33,7 +33,7 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
   Widget build(BuildContext context) {
     deskProvider = Provider.of<DeskProvider>(context);
     providerPreset =
-        deskProvider.getPreset(deskProvider.currentDesk.id!, widget.preset.id);
+        deskProvider.getPreset(deskProvider.currentDesk!.id!, widget.preset.id);
 
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -56,7 +56,7 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
             title: 'Enter new title',
             controller: presetTitleController,
             onSave: () => deskProvider.setPresetTitle(
-                deskProvider.currentDesk.id!,
+                deskProvider.currentDesk!.id!,
                 providerPreset.id,
                 presetTitleController.text),
             onCancel: () => presetTitleController.text = providerPreset.title,
@@ -105,11 +105,11 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
   }
 
   void savePreset() {
-    deskProvider.setPresetTitle(deskProvider.currentDesk.id!, providerPreset.id,
+    deskProvider.setPresetTitle(deskProvider.currentDesk!.id!, providerPreset.id,
         presetTitleController.text);
 
     deskProvider.setPresetTargetHeight(
-      deskProvider.currentDesk.id!,
+      deskProvider.currentDesk!.id!,
       providerPreset.id,
       double.parse(presetHeightController.text),
     );

@@ -86,16 +86,16 @@ class _HomePageTabState extends State<HomePageTab> {
   ];
 
   TextEditingController get updatedDeskNameController => TextEditingController(
-        text: deskProvider.currentDesk.name,
+        text: deskProvider.currentDesk!.name,
       );
 
   List<InteractionWidget> get updatedPresetInteractionWidgets => [
-        for (Preset preset in deskProvider.currentDesk.presets!)
+        for (Preset preset in deskProvider.currentDesk!.presets!)
           InteractionWidget(
             title: preset.title,
             icon: preset.icon,
             onPressedWholeWidget: () =>
-                deskProvider.currentDesk.height = preset.targetHeight,
+                deskProvider.currentDesk!.height = preset.targetHeight,
             onPressedSettingsIcon: () => Utils.navigateToWidgetPage(
               context: context,
               title: preset.title,
@@ -132,7 +132,7 @@ class _HomePageTabState extends State<HomePageTab> {
       children: [
         _buildDeskHeading(),
         const SizedBox(width: 10.0),
-        Text('Height: ${deskProvider.currentDesk.height} cm'),
+        Text('Height: ${deskProvider.currentDesk!.height} cm'),
         const SizedBox(height: 10.0),
         _buildCarouselDeskAnimation(),
         _buildInteractiveWidgetGroup(
@@ -163,14 +163,14 @@ class _HomePageTabState extends State<HomePageTab> {
             title: 'Edit desk name',
             controller: deskNameController,
             onSave: () =>
-                deskProvider.currentDesk.name = deskNameController.text,
+                deskProvider.currentDesk!.name = deskNameController.text,
             onCancel: () =>
-                deskNameController.text = deskProvider.currentDesk.name!,
+                deskNameController.text = deskProvider.currentDesk!.name!,
           ),
         );
 
     return Heading(
-      title: deskProvider.currentDesk.name!,
+      title: deskProvider.currentDesk!.name!,
       nextToHeadingWidgets: [
         const SizedBox(width: 10.0),
         IconButton(
@@ -201,7 +201,7 @@ class _HomePageTabState extends State<HomePageTab> {
         onPageChanged: (index, _) => _updateDesk(index),
       ),
       items: [
-        for (Desk desk in deskProvider.deskList) _buildDeskAnimation(desk),
+        for (Desk desk in deskProvider.desks) _buildDeskAnimation(desk),
       ],
     );
   }
@@ -224,7 +224,7 @@ class _HomePageTabState extends State<HomePageTab> {
   Widget _buildIndicatorBar() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: deskProvider.deskList.asMap().entries.map(
+      children: deskProvider.desks.asMap().entries.map(
         (entry) {
           return GestureDetector(
             onTap: () => buttonCarouselController.animateToPage(entry.key),

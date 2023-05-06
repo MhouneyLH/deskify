@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:developer';
+import 'package:deskify/api/firebase_api.dart';
 import 'package:deskify/main.dart';
 import 'package:deskify/model/desk.dart';
 import 'package:deskify/provider/desk_provider.dart';
@@ -64,9 +66,26 @@ class _HomePageState extends State<HomePage> {
         onTap: (index) => _updateSelectedTabIndex(index),
         items: navigationBarItems,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(10.0),
-        child: tabs[selectedTabIndex],
+      body: StreamBuilder(
+        stream: FirebaseApi.readDesks(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            log('ERROR: ${snapshot.error}');
+            return Text('Something went wrong! ${snapshot.error}');
+          }
+
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final List<Desk> desks = snapshot.data!;
+          deskProvider.setDesks(desks);
+
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(10.0),
+            child: tabs[selectedTabIndex],
+          );
+        },
       ),
     );
   }
@@ -81,7 +100,7 @@ class _HomePageState extends State<HomePage> {
       setState(() => selectedTabIndex = index);
 
   void _updateAnalytics() {
-    deskProvider.currentDesk.height! > Desk.standingBreakpointHeight
+    deskProvider.currentDesk!.height! > Desk.standingBreakpointHeight
         ? profileProvider.incrementStandingAnalytic(
             Utils.getCurrentWeekdayAsInt(), 1)
         : profileProvider.incrementSittingAnalytic(
