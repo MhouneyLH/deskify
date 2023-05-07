@@ -113,8 +113,7 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
         borderData: FlBorderData(show: false),
         barTouchData: BarTouchData(enabled: true),
         gridData: FlGridData(
-          // TODO: wtf does this do?
-          checkToShowVerticalLine: (value) => value == 0,
+          checkToShowVerticalLine: (double value) => value == 0,
         ),
       ),
     );
