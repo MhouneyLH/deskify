@@ -1,6 +1,5 @@
 import 'package:deskify/model/desk.dart';
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
 
 class Preset {
   String? id;

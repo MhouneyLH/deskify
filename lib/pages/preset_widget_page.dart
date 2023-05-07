@@ -79,7 +79,7 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
   Widget _buildHeightConfiguration() {
     return Expanded(
       child: NumericTextFieldWithDeskAnimationAndAdjustHeightSlider(
-        deskHeight: double.parse(presetHeightController.text),
+        defaultDeskHeight: double.parse(presetHeightController.text),
         heightTextFieldController: presetHeightController,
         titleOfTextField: 'Target Height',
         onHeightChanged: (double value) =>

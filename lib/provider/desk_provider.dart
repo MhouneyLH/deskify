@@ -32,7 +32,7 @@ class DeskProvider with ChangeNotifier {
   void udpateDeskName(Desk desk, String name) {
     desk.name = name;
     FirebaseApi.updateDesk(desk);
-    notifyListeners(); // TODO: is this necessary?
+    notifyListeners();
   }
 
   void udpateDeskHeight(Desk desk, double height) {

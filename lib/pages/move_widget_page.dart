@@ -36,17 +36,12 @@ class _MoveWidgetPageState extends State<MoveWidgetPage> {
   Widget _buildHeightConfiguration() {
     return Expanded(
       child: NumericTextFieldWithDeskAnimationAndAdjustHeightSlider(
-        deskHeight: deskProvider.currentDesk!.height!,
+        defaultDeskHeight: deskProvider.currentDesk!.height!,
         heightTextFieldController: heightController,
-        titleOfTextField: 'Current Height',
+        titleOfTextField: 'Current height',
         onHeightChanged: (double value) =>
-            deskProvider.currentDesk!.height = value,
+            deskProvider.udpateDeskHeight(deskProvider.currentDesk!, value),
       ),
-      // onHeightChanged: (double value) => deskProvider.updateDesk(
-      //     deskProvider.currentDesk!,
-      //     deskProvider.currentDesk!.name!,
-      //     value,
-      //     deskProvider.currentDesk!.presets)),
     );
   }
 }

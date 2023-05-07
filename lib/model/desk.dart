@@ -1,5 +1,4 @@
 import 'package:deskify/model/preset.dart';
-import 'package:uuid/uuid.dart';
 
 class Desk {
   String? id;

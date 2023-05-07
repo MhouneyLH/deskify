@@ -56,8 +56,9 @@ class _AddDeskTabState extends State<AddDeskTab> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TextField(
-            controller: deskNameController,
-            decoration: const InputDecoration(labelText: 'Desk name')),
+          controller: deskNameController,
+          decoration: const InputDecoration(labelText: 'Desk name'),
+        ),
         const SizedBox(height: 10.0),
         _buildDeskHeightConfiguration(),
       ],
@@ -67,14 +68,12 @@ class _AddDeskTabState extends State<AddDeskTab> {
   Widget _buildDeskHeightConfiguration() {
     return SizedBox(
       height: 400.0,
-      child: Expanded(
-        child: NumericTextFieldWithDeskAnimationAndAdjustHeightSlider(
-          deskHeight: double.parse(deskHeightController.text),
-          titleOfTextField: 'Default Height',
-          heightTextFieldController: deskHeightController,
-          onHeightChanged: (double value) =>
-              deskHeightController.text = value.toString(),
-        ),
+      child: NumericTextFieldWithDeskAnimationAndAdjustHeightSlider(
+        defaultDeskHeight: double.parse(deskHeightController.text),
+        titleOfTextField: 'Default Height',
+        heightTextFieldController: deskHeightController,
+        onHeightChanged: (double value) =>
+            deskHeightController.text = value.toString(),
       ),
     );
   }
@@ -99,7 +98,8 @@ class _AddDeskTabState extends State<AddDeskTab> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: newDesk.presets.map(
+      children: newDesk.presets
+          .map(
             (Preset preset) => Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -118,7 +118,7 @@ class _AddDeskTabState extends State<AddDeskTab> {
       height: 400.0,
       child: Expanded(
         child: NumericTextFieldWithDeskAnimationAndAdjustHeightSlider(
-          deskHeight: double.parse(presetTargetHeightController.text),
+          defaultDeskHeight: double.parse(presetTargetHeightController.text),
           titleOfTextField: 'Target Height',
           heightTextFieldController: presetTargetHeightController,
           onHeightChanged: (double value) =>

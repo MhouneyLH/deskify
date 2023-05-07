@@ -6,10 +6,12 @@ import 'package:syncfusion_flutter_sliders/sliders.dart';
 class AdjustHeightSlider extends StatefulWidget {
   final double displayedHeight;
   final void Function(double) onChanged;
+  final void Function(double) onChangeEnd;
 
   const AdjustHeightSlider({
     required this.displayedHeight,
     required this.onChanged,
+    required this.onChangeEnd,
     super.key,
   });
 
@@ -23,6 +25,7 @@ class _AdjustHeightSliderState extends State<AdjustHeightSlider> {
     return SfSlider.vertical(
         value: widget.displayedHeight,
         onChanged: (value) => widget.onChanged(value),
+        onChangeEnd: (value) => widget.onChangeEnd(value),
         min: Desk.minimumHeight,
         max: Desk.maximumHeight,
         interval: 10,

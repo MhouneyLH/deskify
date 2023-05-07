@@ -54,7 +54,7 @@ class _AddPresetPageState extends State<AddPresetPage> {
   Widget _buildHeightConfiguration() {
     return Expanded(
       child: NumericTextFieldWithDeskAnimationAndAdjustHeightSlider(
-        deskHeight: newPreset.targetHeight,
+        defaultDeskHeight: newPreset.targetHeight,
         heightTextFieldController: presetTargetHeightController,
         titleOfTextField: 'Target Height',
         onHeightChanged: (double value) => newPreset.targetHeight = value,
