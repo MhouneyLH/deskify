@@ -11,10 +11,10 @@ class InteractionWidget extends StatefulWidget {
 
   const InteractionWidget({
     required this.title,
-    this.icon = const Icon(Icons.abc),
+    required this.icon,
+    required this.onPressedWholeWidget,
     this.width = 200.0,
     this.height = 50.0,
-    required this.onPressedWholeWidget,
     this.onPressedSettingsIcon,
     this.extraInformationWidget,
     super.key,

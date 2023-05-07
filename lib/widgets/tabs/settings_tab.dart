@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:deskify/api/firebase_api.dart';
+import 'package:deskify/model/theme_settings.dart';
 import 'package:deskify/provider/desk_provider.dart';
 import 'package:deskify/provider/profile_provider.dart';
 import 'package:deskify/provider/theme_provider.dart';
@@ -15,6 +19,7 @@ class _SettingsTabState extends State<SettingsTab> {
   late DeskProvider deskProvider;
   late ProfileProvider profileProvider;
   late ThemeProvider themeProvider;
+  late bool isDarkTheme = false;
 
   @override
   Widget build(BuildContext context) {
@@ -22,15 +27,32 @@ class _SettingsTabState extends State<SettingsTab> {
     profileProvider = Provider.of<ProfileProvider>(context);
     themeProvider = Provider.of<ThemeProvider>(context);
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _buildProfileSummary(),
-        const SizedBox(height: 10.0),
-        _buildThemeSwitch(),
-      ],
-    );
+    return StreamBuilder(
+        stream: FirebaseApi.readTheme(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            log('ERROR: ${snapshot.error}');
+            return Text('Something went wrong! ${snapshot.error}');
+          }
+
+          if (!snapshot.hasData) {
+            themeProvider.addTheme(themeProvider.currentThemeSettings);
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final ThemeSettings snapshotThemeSettings = snapshot.data!;
+          themeProvider.setCurrentThemeSettings(snapshotThemeSettings);
+
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildProfileSummary(),
+              const SizedBox(height: 10.0),
+              _buildThemeSwitch(),
+            ],
+          );
+        });
   }
 
   Widget _buildProfileSummary() {
@@ -110,11 +132,12 @@ class _SettingsTabState extends State<SettingsTab> {
         const Text('Darktheme'),
         const SizedBox(width: 10.0),
         Switch(
-          value: themeProvider.isDarkTheme,
-          onChanged: (bool _) => setState(
-            () => themeProvider.isDarkTheme
-                ? themeProvider.setLightTheme()
-                : themeProvider.setDarkTheme(),
+          value: isDarkTheme,
+          onChanged: (bool value) => setState(
+            () {
+              themeProvider.updateTheme(
+                  themeProvider.currentThemeSettings, value);
+            },
           ),
         ),
       ],

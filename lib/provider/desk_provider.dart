@@ -29,7 +29,6 @@ class DeskProvider with ChangeNotifier {
       );
 
   void addDesk(Desk desk) => FirebaseApi.createDesk(desk);
-  void removeDesk(Desk desk) => FirebaseApi.deleteDesk(desk);
 
   void udpateDeskName(Desk desk, String name) =>
       WidgetsBinding.instance.addPostFrameCallback(

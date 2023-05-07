@@ -1,7 +1,10 @@
+import 'package:deskify/api/firebase_api.dart';
+import 'package:deskify/model/theme_settings.dart';
 import 'package:flutter/material.dart';
 
 class ThemeProvider extends ChangeNotifier {
   late ThemeData _themeData = _darkTheme;
+  ThemeSettings _currentThemeSettings = ThemeSettings(isDarkTheme: true);
 
   final Color _standingColor = Colors.green;
   final Color _sittingColor = Colors.red;
@@ -102,16 +105,28 @@ class ThemeProvider extends ChangeNotifier {
 
   Color get standingColor => _standingColor;
   Color get sittingColor => _sittingColor;
+
   ThemeData get themeData => _themeData;
   bool get isDarkTheme => _themeData == _darkTheme;
+  ThemeSettings get currentThemeSettings => _currentThemeSettings;
 
-  void setDarkTheme() {
-    _themeData = _darkTheme;
-    notifyListeners();
-  }
+  void setCurrentThemeSettings(ThemeSettings themeSettings) =>
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _currentThemeSettings = themeSettings;
+        _themeData = themeSettings.isDarkTheme ? _darkTheme : _lightTheme;
+        notifyListeners();
+      });
 
-  void setLightTheme() {
-    _themeData = _lightTheme;
-    notifyListeners();
-  }
+  void addTheme(ThemeSettings theme) => FirebaseApi.createTheme(theme);
+
+  void updateTheme(ThemeSettings theme, bool isDarkTheme) =>
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) {
+          theme.isDarkTheme = isDarkTheme;
+          // _themeData = test ? _darkTheme : _lightTheme;
+
+          FirebaseApi.updateTheme(theme);
+          notifyListeners();
+        },
+      );
 }
