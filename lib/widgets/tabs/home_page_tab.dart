@@ -115,8 +115,10 @@ class _HomePageTabState extends State<HomePageTab> {
           InteractionWidget(
             title: preset.title,
             icon: preset.icon,
-            onPressedWholeWidget: () =>
-                deskProvider.currentDesk!.height = preset.targetHeight,
+            onPressedWholeWidget: () => deskProvider.udpateDeskHeight(
+              deskProvider.currentDesk!,
+              preset.targetHeight,
+            ),
             onPressedSettingsIcon: () => Utils.navigateToWidgetPage(
               context: context,
               title: preset.title,
