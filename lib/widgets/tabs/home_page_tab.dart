@@ -1,4 +1,3 @@
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:deskify/model/desk.dart';
 import 'package:deskify/pages/add_preset_page.dart';
@@ -43,12 +42,7 @@ class _HomePageTabState extends State<HomePageTab> {
     if (!_isInitialized) {
       _initProvider();
       _initInteractionWidgets();
-      deskProvider.addListener(() {
-        setState(() {
-          interactionWidgetProvider.initWidgets();
-          deskNameController = getUpdatedDeskNameController();
-        });
-      });
+      deskProvider.addListener(() => interactionWidgetProvider.initWidgets());
 
       _isInitialized = true;
     }

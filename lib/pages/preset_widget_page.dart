@@ -23,7 +23,7 @@ class PresetWidgetPage extends StatefulWidget {
 
 class _PresetWidgetPageState extends State<PresetWidgetPage> {
   late DeskProvider deskProvider;
-  late Preset preset = widget.preset;
+  late Preset editablePreset = widget.preset;
 
   late TextEditingController presetTitleController =
       TextEditingController(text: widget.preset.title);
@@ -55,16 +55,16 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
             title: 'Enter new title',
             controller: presetTitleController,
             onSave: () => setState(() {
-              preset.title = presetTitleController.text;
+              editablePreset.title = presetTitleController.text;
             }),
             onCancel: () => setState(() {
-              presetTitleController.text = preset.title;
+              presetTitleController.text = editablePreset.title;
             }),
           ),
         );
 
     return Heading(
-      title: preset.title,
+      title: editablePreset.title,
       nextToHeadingWidgets: [
         const SizedBox(width: 10.0),
         IconButton(
@@ -83,7 +83,7 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
         heightTextFieldController: presetHeightController,
         titleOfTextField: 'Target Height',
         onHeightChanged: (double value) => setState(() {
-          preset.targetHeight = value;
+          editablePreset.targetHeight = value;
           presetHeightController.text = value.toString();
         }),
       ),
@@ -96,7 +96,7 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
         savePreset();
         Utils.showSnackbar(
           context,
-          "The preset '${preset.title}' was saved.",
+          "The preset '${editablePreset.title}' was saved.",
         );
 
         widget.onAboutToPop();
@@ -107,5 +107,5 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
   }
 
   void savePreset() => deskProvider.updatePreset(
-      deskProvider.currentDesk!, widget.preset, preset);
+      deskProvider.currentDesk!, widget.preset, editablePreset);
 }
