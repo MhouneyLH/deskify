@@ -23,7 +23,8 @@ class PresetWidgetPage extends StatefulWidget {
 
 class _PresetWidgetPageState extends State<PresetWidgetPage> {
   late DeskProvider deskProvider;
-  // late Preset widget.preset;
+  late Preset preset = widget.preset;
+
   late TextEditingController presetTitleController =
       TextEditingController(text: widget.preset.title);
   late TextEditingController presetHeightController =
@@ -32,8 +33,6 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
   @override
   Widget build(BuildContext context) {
     deskProvider = Provider.of<DeskProvider>(context);
-    // widget.preset =
-    //     deskProvider.getPreset(deskProvider.currentDesk!.id!, widget.preset.id);
 
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -55,16 +54,17 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
           builder: (_) => SingleValueAlertDialog(
             title: 'Enter new title',
             controller: presetTitleController,
-            onSave: () => deskProvider.updatePresetTitle(
-                deskProvider.currentDesk!,
-                widget.preset,
-                presetTitleController.text),
-            onCancel: () => presetTitleController.text = widget.preset.title,
+            onSave: () => setState(() {
+              preset.title = presetTitleController.text;
+            }),
+            onCancel: () => setState(() {
+              presetTitleController.text = preset.title;
+            }),
           ),
         );
 
     return Heading(
-      title: widget.preset.title,
+      title: preset.title,
       nextToHeadingWidgets: [
         const SizedBox(width: 10.0),
         IconButton(
@@ -82,8 +82,10 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
         defaultDeskHeight: double.parse(presetHeightController.text),
         heightTextFieldController: presetHeightController,
         titleOfTextField: 'Target Height',
-        onHeightChanged: (double value) =>
-            presetHeightController.text = value.toString(),
+        onHeightChanged: (double value) => setState(() {
+          preset.targetHeight = value;
+          presetHeightController.text = value.toString();
+        }),
       ),
     );
   }
@@ -94,7 +96,7 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
         savePreset();
         Utils.showSnackbar(
           context,
-          "The preset '${presetTitleController.text}' was saved.",
+          "The preset '${preset.title}' was saved.",
         );
 
         widget.onAboutToPop();
@@ -104,14 +106,6 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
     );
   }
 
-  void savePreset() {
-    deskProvider.updatePresetTitle(
-        deskProvider.currentDesk!, widget.preset, presetTitleController.text);
-
-    deskProvider.updatePresetTargetHeight(
-      deskProvider.currentDesk!,
-      widget.preset,
-      double.parse(presetHeightController.text),
-    );
-  }
+  void savePreset() => deskProvider.updatePreset(
+      deskProvider.currentDesk!, widget.preset, preset);
 }

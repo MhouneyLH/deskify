@@ -22,7 +22,7 @@ class _AddPresetPageState extends State<AddPresetPage> {
   late DeskProvider deskProvider;
   late final Preset newPreset = Preset(
     title: '',
-    targetHeight: deskProvider.currentDesk!.height!,
+    targetHeight: deskProvider.currentDesk!.height,
   );
 
   final TextEditingController presetTitleController = TextEditingController();

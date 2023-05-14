@@ -1,4 +1,5 @@
 import 'package:deskify/provider/desk_provider.dart';
+import 'package:deskify/provider/interaction_widget_provider.dart';
 import 'package:deskify/provider/profile_provider.dart';
 import 'package:deskify/provider/theme_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,6 +26,7 @@ class MainApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => DeskProvider()),
         ChangeNotifierProvider(create: (_) => ProfileProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => InteractionWidgetProvider()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, _) => MaterialApp(

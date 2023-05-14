@@ -6,12 +6,14 @@ class InteractionWidgetGridView extends StatefulWidget {
   final List<InteractionWidget> items;
   final double itemHeight;
   final double outerDefinedSpacings;
+  final void Function(int oldIndex, int newIndex) onReorder;
 
   const InteractionWidgetGridView({
     required this.items,
     required this.itemHeight,
     this.outerDefinedSpacings = 0.0,
     super.key,
+    required this.onReorder,
   });
 
   @override
@@ -39,7 +41,7 @@ class _InteractionWidgetGridViewState extends State<InteractionWidgetGridView> {
             .map((InteractionWidget item) => _buildGridViewItem(item))
             .toList(),
         onReorder: (int oldIndex, int newIndex) =>
-            _onReorder(oldIndex, newIndex),
+            widget.onReorder(oldIndex, newIndex),
       ),
     );
   }
@@ -57,12 +59,5 @@ class _InteractionWidgetGridViewState extends State<InteractionWidgetGridView> {
       key: ValueKey(item),
       child: item,
     );
-  }
-
-  void _onReorder(int oldIndex, int newIndex) {
-    setState(() {
-      final InteractionWidget item = widget.items.removeAt(oldIndex);
-      widget.items.insert(newIndex, item);
-    });
   }
 }

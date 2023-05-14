@@ -1,3 +1,5 @@
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deskify/api/firebase_api.dart';
 import 'package:deskify/model/desk.dart';
 import 'package:deskify/model/preset.dart';
@@ -7,6 +9,20 @@ import 'package:flutter/material.dart';
 class DeskProvider with ChangeNotifier {
   List<Desk> _desks = [];
   int _currentlySelectedIndex = 0;
+
+  DeskProvider() {
+    _subscribeToDesks();
+  }
+
+  void _subscribeToDesks() => FirebaseFirestore.instance
+          .collection(FirebaseApi.deskCollectionName)
+          .snapshots()
+          .listen(
+        (snapshot) async {
+          final List<Desk> desks = await FirebaseApi.readDesks();
+          setDesks(desks);
+        },
+      );
 
   /// DESK ///
   List<Desk> get desks => _desks;
@@ -20,7 +36,7 @@ class DeskProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setDesks(List<Desk> desks) =>
+  Future<void> setDesks(List<Desk> desks) async =>
       WidgetsBinding.instance.addPostFrameCallback(
         (_) {
           _desks = desks;
@@ -91,6 +107,20 @@ class DeskProvider with ChangeNotifier {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) {
           preset.targetHeight = Utils.roundDouble(targetHeight, 1);
+
+          FirebaseApi.updateDesk(desk);
+          notifyListeners();
+        },
+      );
+
+  void updatePreset(Desk desk, Preset preset, Preset newPreset) =>
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) {
+          final int index = desk.presets.indexWhere(
+            (element) => element.id == preset.id,
+          );
+
+          desk.presets[index] = newPreset;
 
           FirebaseApi.updateDesk(desk);
           notifyListeners();

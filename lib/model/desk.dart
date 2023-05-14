@@ -2,8 +2,8 @@ import 'package:deskify/model/preset.dart';
 
 class Desk {
   String? id;
-  String? name;
-  double? height;
+  String name;
+  double height;
   List<Preset> presets;
 
   static const double minimumHeight = 72.0;
@@ -12,7 +12,7 @@ class Desk {
 
   Desk({
     this.id,
-    this.name = 'Deskified Desk',
+    this.name = '',
     this.height = minimumHeight,
     this.presets = const [],
   });

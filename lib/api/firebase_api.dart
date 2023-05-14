@@ -24,12 +24,14 @@ class FirebaseApi {
     return deskDocument.id;
   }
 
-  static Stream<List<Desk>> readDesks() => FirebaseFirestore.instance
-      .collection(deskCollectionName)
-      .snapshots()
-      .map((snapshot) => snapshot.docs
-          .map((document) => Desk.fromJson(document.data()))
-          .toList());
+  static Future<List<Desk>> readDesks() async {
+    final querySnapshot =
+        await FirebaseFirestore.instance.collection(deskCollectionName).get();
+
+    return querySnapshot.docs
+        .map((document) => Desk.fromJson(document.data()))
+        .toList();
+  }
 
   static Future updateDesk(Desk desk) async {
     final deskDocument =

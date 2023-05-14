@@ -26,7 +26,7 @@ class _MoveWidgetPageState extends State<MoveWidgetPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Heading(title: deskProvider.currentDesk!.name!),
+          Heading(title: deskProvider.currentDesk!.name),
           _buildHeightConfiguration(),
         ],
       ),
@@ -36,7 +36,7 @@ class _MoveWidgetPageState extends State<MoveWidgetPage> {
   Widget _buildHeightConfiguration() {
     return Expanded(
       child: NumericTextFieldWithDeskAnimationAndAdjustHeightSlider(
-        defaultDeskHeight: deskProvider.currentDesk!.height!,
+        defaultDeskHeight: deskProvider.currentDesk!.height,
         heightTextFieldController: heightController,
         titleOfTextField: 'Current height',
         onHeightChanged: (double value) =>
