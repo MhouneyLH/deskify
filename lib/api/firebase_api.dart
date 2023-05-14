@@ -56,12 +56,16 @@ class FirebaseApi {
     return themeDocument.id;
   }
 
-  static Stream<ThemeSettings> readTheme() => FirebaseFirestore.instance
-      .collection(themeCollectionName)
-      .snapshots()
-      .map((snapshot) => ThemeSettings.fromJson(snapshot.docs.first.data()));
+  static Future<ThemeSettings> readTheme() async {
+    final themeDocument = FirebaseFirestore.instance
+        .collection(themeCollectionName)
+        .doc(themeCollectionName);
+    final themeSnapshot = await themeDocument.get();
 
-  static Future updateTheme(ThemeSettings theme) async {
+    return ThemeSettings.fromJson(themeSnapshot.data()!);
+  }
+
+  static Future<void> updateTheme(ThemeSettings theme) async {
     final themeDocument = FirebaseFirestore.instance
         .collection(themeCollectionName)
         .doc(themeCollectionName);

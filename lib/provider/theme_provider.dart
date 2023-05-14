@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deskify/api/firebase_api.dart';
 import 'package:deskify/model/theme_settings.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,10 @@ import 'package:flutter/material.dart';
 class ThemeProvider extends ChangeNotifier {
   late ThemeData _themeData = _darkTheme;
   ThemeSettings _currentThemeSettings = ThemeSettings(isDarkTheme: true);
+
+  ThemeProvider() {
+    _subscribeToThemeChanges();
+  }
 
   final Color _standingColor = Colors.green;
   final Color _sittingColor = Colors.red;
@@ -107,26 +112,27 @@ class ThemeProvider extends ChangeNotifier {
   Color get sittingColor => _sittingColor;
 
   ThemeData get themeData => _themeData;
-  bool get isDarkTheme => _themeData == _darkTheme;
   ThemeSettings get currentThemeSettings => _currentThemeSettings;
 
-  void setCurrentThemeSettings(ThemeSettings themeSettings) =>
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _currentThemeSettings = themeSettings;
-        _themeData = themeSettings.isDarkTheme ? _darkTheme : _lightTheme;
-        notifyListeners();
-      });
+  void _subscribeToThemeChanges() => FirebaseFirestore.instance
+      .collection(FirebaseApi.themeCollectionName)
+      .snapshots()
+      .listen((snapshot) => getTheme());
 
   void addTheme(ThemeSettings theme) => FirebaseApi.createTheme(theme);
 
-  void updateTheme(ThemeSettings theme, bool isDarkTheme) =>
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) {
-          theme.isDarkTheme = isDarkTheme;
-          // _themeData = test ? _darkTheme : _lightTheme;
+  void getTheme() async {
+    _currentThemeSettings = await FirebaseApi.readTheme();
+    _themeData = _currentThemeSettings.isDarkTheme ? _darkTheme : _lightTheme;
 
-          FirebaseApi.updateTheme(theme);
-          notifyListeners();
-        },
-      );
+    notifyListeners();
+  }
+
+  void updateTheme(bool isDarkTheme) {
+    _currentThemeSettings.isDarkTheme = isDarkTheme;
+    _themeData = _currentThemeSettings.isDarkTheme ? _darkTheme : _lightTheme;
+
+    FirebaseApi.updateTheme(_currentThemeSettings);
+    notifyListeners();
+  }
 }
