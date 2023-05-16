@@ -1,11 +1,9 @@
-import 'package:deskify/main.dart';
 import 'package:flutter/material.dart';
 
-class Utils {
-  static bool keyboardIsVisible(BuildContext context) {
-    return MediaQuery.of(context).viewInsets.bottom != 0;
-  }
+import 'main.dart';
 
+// utility class for static methods that don't fit anywhere else
+class Utils {
   static double roundDouble(double value, int places) {
     return double.parse(value.toStringAsFixed(places));
   }
@@ -22,7 +20,7 @@ class Utils {
     return DateTime.now().weekday;
   }
 
-  static String intToShortWeekday(int dayAsInt) {
+  static String intToThreeLetterWeekday(int dayAsInt) {
     switch (dayAsInt) {
       case DateTime.monday:
         return 'Mon';

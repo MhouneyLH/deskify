@@ -1,20 +1,25 @@
-import 'package:deskify/model/desk.dart';
-import 'package:deskify/utils.dart';
-import 'package:deskify/widgets/generic/adjust_height_slider.dart';
-import 'package:deskify/widgets/generic/desk_animation.dart';
-import 'package:deskify/widgets/generic/numeric_textfield.dart';
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
+import '../../model/desk.dart';
+import '../../utils.dart';
+import 'adjust_height_slider.dart';
+import 'desk_animation.dart';
+import 'numeric_textfield.dart';
+
+// collection of different widgets (text field, slider, animation)
+// to adjust the height of the current desk / preset / new desk
+// no good practice, because of high coupling: shame on me
+// -> need these 3 pieces together everytime for now
+// change the height wether by text field or slider and see the result immediately in the animation
 class NumericTextFieldWithDeskAnimationAndAdjustHeightSlider
     extends StatefulWidget {
-  double deskHeight;
+  final double defaultDeskHeight;
   final String titleOfTextField;
   final TextEditingController heightTextFieldController;
   final void Function(double) onHeightChanged;
 
-  NumericTextFieldWithDeskAnimationAndAdjustHeightSlider({
-    required this.deskHeight,
+  const NumericTextFieldWithDeskAnimationAndAdjustHeightSlider({
+    required this.defaultDeskHeight,
     required this.titleOfTextField,
     required this.heightTextFieldController,
     required this.onHeightChanged,
@@ -28,16 +33,22 @@ class NumericTextFieldWithDeskAnimationAndAdjustHeightSlider
 
 class _NumericTextFieldWithDeskAnimationAndAdjustHeightSliderState
     extends State<NumericTextFieldWithDeskAnimationAndAdjustHeightSlider> {
+  late double deskHeight;
+
+  @override
+  void initState() {
+    super.initState();
+
+    deskHeight = widget.defaultDeskHeight;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _buildHeightDisplayingInteractiveTextField(
-          controller: widget.heightTextFieldController,
-          labelText: widget.titleOfTextField,
-        ),
+        _buildHeightDisplayingInteractiveTextField(),
         const SizedBox(height: 10.0),
         Expanded(
           child: Row(
@@ -53,12 +64,37 @@ class _NumericTextFieldWithDeskAnimationAndAdjustHeightSliderState
     );
   }
 
-  Widget _buildHeightDisplayingInteractiveTextField(
-      {required TextEditingController controller, required String labelText}) {
+  Widget _buildHeightDisplayingInteractiveTextField() {
     return NumericTextfield(
-      controller: controller,
-      title: labelText,
+      controller: widget.heightTextFieldController,
+      title: widget.titleOfTextField,
       onSubmitted: (String value) => _updateHeight(value),
+    );
+  }
+
+  Widget _buildDeskAnimation() {
+    return Center(
+      child: DeskAnimation(
+        width: 200,
+        deskHeight: deskHeight,
+      ),
+    );
+  }
+
+  Widget _buildHeightSlider() {
+    return AdjustHeightSlider(
+      displayedHeight: deskHeight,
+      onChanged: (double value) => setState(() {
+        final double roundedValue = Utils.roundDouble(value, 1);
+
+        _updateComponents(roundedValue);
+      }),
+      onChangeEnd: (double value) => setState(() {
+        final double roundedValue = Utils.roundDouble(value, 1);
+
+        _updateComponents(roundedValue);
+        widget.onHeightChanged(roundedValue);
+      }),
     );
   }
 
@@ -72,32 +108,16 @@ class _NumericTextFieldWithDeskAnimationAndAdjustHeightSliderState
         }
 
         final double inboundHeight = Desk.getInboundHeight(double.parse(value));
-        _updateComponents(inboundHeight);
+        final double roundedInboundHeight = Utils.roundDouble(inboundHeight, 1);
+
+        _updateComponents(roundedInboundHeight);
+        widget.onHeightChanged(roundedInboundHeight);
       },
     );
   }
 
   void _updateComponents(double value) {
-    final double roundedValue = Utils.roundDouble(value, 1);
-
-    widget.deskHeight = roundedValue;
-    widget.heightTextFieldController.text = roundedValue.toString();
-    widget.onHeightChanged(roundedValue);
-  }
-
-  Widget _buildDeskAnimation() {
-    return Center(
-      child: DeskAnimation(
-        width: 200,
-        deskHeight: widget.deskHeight,
-      ),
-    );
-  }
-
-  Widget _buildHeightSlider() {
-    return AdjustHeightSlider(
-      displayedHeight: widget.deskHeight,
-      onChanged: (double value) => setState(() => _updateComponents(value)),
-    );
+    deskHeight = value;
+    widget.heightTextFieldController.text = value.toString();
   }
 }

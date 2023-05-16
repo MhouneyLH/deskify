@@ -1,9 +1,14 @@
-import 'package:deskify/provider/desk_provider.dart';
-import 'package:deskify/provider/profile_provider.dart';
-import 'package:deskify/provider/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../provider/desk_provider.dart';
+import '../../provider/profile_provider.dart';
+import '../../provider/theme_provider.dart';
+
+// tab for displaying the settings
+// currently only:
+// - profile summary (profile image, name, email)
+// - theme switch
 class SettingsTab extends StatefulWidget {
   const SettingsTab({super.key});
 
@@ -110,12 +115,8 @@ class _SettingsTabState extends State<SettingsTab> {
         const Text('Darktheme'),
         const SizedBox(width: 10.0),
         Switch(
-          value: themeProvider.isDarkTheme,
-          onChanged: (bool _) => setState(
-            () => themeProvider.isDarkTheme
-                ? themeProvider.setLightTheme()
-                : themeProvider.setDarkTheme(),
-          ),
+          value: themeProvider.themeSettings.isDarkTheme,
+          onChanged: (bool value) => themeProvider.updateTheme(value),
         ),
       ],
     );

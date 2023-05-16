@@ -1,12 +1,17 @@
-import 'package:deskify/model/preset.dart';
-import 'package:deskify/provider/desk_provider.dart';
-import 'package:deskify/utils.dart';
-import 'package:deskify/widgets/generic/heading_widget.dart';
-import 'package:deskify/widgets/generic/numeric_text_field_with_desk_animation_and_adjust_height_slider.dart';
-import 'package:deskify/widgets/generic/single_value_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../model/preset.dart';
+import '../provider/desk_provider.dart';
+import '../utils.dart';
+import '../widgets/generic/heading_widget.dart';
+import '../widgets/generic/numeric_text_field_with_desk_animation_and_adjust_height_slider.dart';
+import '../widgets/generic/single_value_alert_dialog.dart';
+
+// edit an existing preset of a desk
+// editable is:
+// - title
+// - target height
 class PresetWidgetPage extends StatefulWidget {
   final Preset preset;
   final void Function() onAboutToPop;
@@ -23,17 +28,16 @@ class PresetWidgetPage extends StatefulWidget {
 
 class _PresetWidgetPageState extends State<PresetWidgetPage> {
   late DeskProvider deskProvider;
-  late Preset providerPreset;
+  late Preset editablePreset = widget.preset;
+
   late TextEditingController presetTitleController =
-      TextEditingController(text: providerPreset.title);
+      TextEditingController(text: widget.preset.title);
   late TextEditingController presetHeightController =
-      TextEditingController(text: providerPreset.targetHeight.toString());
+      TextEditingController(text: widget.preset.targetHeight.toString());
 
   @override
   Widget build(BuildContext context) {
     deskProvider = Provider.of<DeskProvider>(context);
-    providerPreset =
-        deskProvider.getPreset(deskProvider.currentDesk.id, widget.preset.id);
 
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -55,22 +59,24 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
           builder: (_) => SingleValueAlertDialog(
             title: 'Enter new title',
             controller: presetTitleController,
-            onSave: () => deskProvider.setPresetTitle(
-                deskProvider.currentDesk.id,
-                providerPreset.id,
-                presetTitleController.text),
-            onCancel: () => presetTitleController.text = providerPreset.title,
+            onSave: () => setState(
+              () => editablePreset.title = presetTitleController.text,
+            ),
+            onCancel: () => setState(
+              () => presetTitleController.text = editablePreset.title,
+            ),
           ),
         );
 
     return Heading(
-      title: providerPreset.title,
+      title: editablePreset.title,
       nextToHeadingWidgets: [
         const SizedBox(width: 10.0),
         IconButton(
-            onPressed: openDialog,
-            icon: const Icon(Icons.edit),
-            splashRadius: 20.0),
+          onPressed: openDialog,
+          icon: const Icon(Icons.edit),
+          splashRadius: 20.0,
+        ),
       ],
       onTapped: openDialog,
     );
@@ -79,11 +85,15 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
   Widget _buildHeightConfiguration() {
     return Expanded(
       child: NumericTextFieldWithDeskAnimationAndAdjustHeightSlider(
-        deskHeight: double.parse(presetHeightController.text),
+        defaultDeskHeight: double.parse(presetHeightController.text),
         heightTextFieldController: presetHeightController,
         titleOfTextField: 'Target Height',
-        onHeightChanged: (double value) =>
-            presetHeightController.text = value.toString(),
+        onHeightChanged: (double value) => setState(
+          () {
+            editablePreset.targetHeight = value;
+            presetHeightController.text = value.toString();
+          },
+        ),
       ),
     );
   }
@@ -94,7 +104,7 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
         savePreset();
         Utils.showSnackbar(
           context,
-          "The preset '${presetTitleController.text}' was saved.",
+          "The preset '${editablePreset.title}' was saved.",
         );
 
         widget.onAboutToPop();
@@ -104,14 +114,6 @@ class _PresetWidgetPageState extends State<PresetWidgetPage> {
     );
   }
 
-  void savePreset() {
-    deskProvider.setPresetTitle(deskProvider.currentDesk.id, providerPreset.id,
-        presetTitleController.text);
-
-    deskProvider.setPresetTargetHeight(
-      deskProvider.currentDesk.id,
-      providerPreset.id,
-      double.parse(presetHeightController.text),
-    );
-  }
+  void savePreset() => deskProvider.updatePreset(
+      deskProvider.currentDesk!, widget.preset, editablePreset);
 }

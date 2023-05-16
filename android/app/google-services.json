@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "398414682040",
+    "project_id": "deskify-3fb04",
+    "storage_bucket": "deskify-3fb04.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:398414682040:android:e25ccffec60b72ee9b614d",
+        "android_client_info": {
+          "package_name": "com.example.deskify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "398414682040-4ar5g2dcfev1le63i26pfiu6t3b68kj8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMLc_Bj9ymm38pMSRJIKQTRedotzT9k-U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "398414682040-4ar5g2dcfev1le63i26pfiu6t3b68kj8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

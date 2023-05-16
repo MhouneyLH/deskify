@@ -1,12 +1,18 @@
-import 'package:deskify/model/desk.dart';
-import 'package:deskify/model/preset.dart';
-import 'package:deskify/provider/desk_provider.dart';
-import 'package:deskify/utils.dart';
-import 'package:deskify/widgets/generic/heading_widget.dart';
-import 'package:deskify/widgets/generic/numeric_text_field_with_desk_animation_and_adjust_height_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../model/desk.dart';
+import '../../model/preset.dart';
+import '../../provider/desk_provider.dart';
+import '../../utils.dart';
+import '../generic/heading_widget.dart';
+import '../generic/numeric_text_field_with_desk_animation_and_adjust_height_slider.dart';
+
+// tab for adding a new desk
+// configurable is:
+// - name
+// - default height
+// - presets (title, target height)
 class AddDeskTab extends StatefulWidget {
   const AddDeskTab({super.key});
 
@@ -16,6 +22,7 @@ class AddDeskTab extends StatefulWidget {
 
 class _AddDeskTabState extends State<AddDeskTab> {
   late DeskProvider deskProvider;
+
   Desk newDesk = Desk(
     name: '',
     height: Desk.minimumHeight,
@@ -43,6 +50,7 @@ class _AddDeskTabState extends State<AddDeskTab> {
           const SizedBox(height: 10.0),
           const Heading(title: 'Presets'),
           _buildPresetInput(),
+          const SizedBox(height: 10.0),
           _buildAddDeskButton(),
         ],
       ),
@@ -55,8 +63,9 @@ class _AddDeskTabState extends State<AddDeskTab> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TextField(
-            controller: deskNameController,
-            decoration: const InputDecoration(labelText: 'Desk name')),
+          controller: deskNameController,
+          decoration: const InputDecoration(labelText: 'Desk name'),
+        ),
         const SizedBox(height: 10.0),
         _buildDeskHeightConfiguration(),
       ],
@@ -66,14 +75,12 @@ class _AddDeskTabState extends State<AddDeskTab> {
   Widget _buildDeskHeightConfiguration() {
     return SizedBox(
       height: 400.0,
-      child: Expanded(
-        child: NumericTextFieldWithDeskAnimationAndAdjustHeightSlider(
-          deskHeight: double.parse(deskHeightController.text),
-          titleOfTextField: 'Default Height',
-          heightTextFieldController: deskHeightController,
-          onHeightChanged: (double value) =>
-              deskHeightController.text = value.toString(),
-        ),
+      child: NumericTextFieldWithDeskAnimationAndAdjustHeightSlider(
+        defaultDeskHeight: double.parse(deskHeightController.text),
+        titleOfTextField: 'Default Height',
+        heightTextFieldController: deskHeightController,
+        onHeightChanged: (double value) =>
+            deskHeightController.text = value.toString(),
       ),
     );
   }
@@ -98,7 +105,7 @@ class _AddDeskTabState extends State<AddDeskTab> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: newDesk.presets!
+      children: newDesk.presets
           .map(
             (Preset preset) => Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -118,7 +125,7 @@ class _AddDeskTabState extends State<AddDeskTab> {
       height: 400.0,
       child: Expanded(
         child: NumericTextFieldWithDeskAnimationAndAdjustHeightSlider(
-          deskHeight: double.parse(presetTargetHeightController.text),
+          defaultDeskHeight: double.parse(presetTargetHeightController.text),
           titleOfTextField: 'Target Height',
           heightTextFieldController: presetTargetHeightController,
           onHeightChanged: (double value) =>
@@ -141,7 +148,7 @@ class _AddDeskTabState extends State<AddDeskTab> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(preset.title),
-            Text('Target height: ${preset.targetHeight} cm'),
+            Text('Target height: ${preset.targetHeight} ${Desk.heightMetric}'),
           ],
         ),
       ),
@@ -157,7 +164,7 @@ class _AddDeskTabState extends State<AddDeskTab> {
             return;
           }
 
-          newDesk.presets!.add(Preset(
+          newDesk.presets.add(Preset(
             title: presetTitleController.text,
             targetHeight: double.parse(presetTargetHeightController.text),
           ));
@@ -181,8 +188,8 @@ class _AddDeskTabState extends State<AddDeskTab> {
 
         newDesk.name = deskNameController.text;
         newDesk.height = double.parse(deskHeightController.text);
-
         deskProvider.addDesk(newDesk);
+
         Utils.showSnackbar(
             context, "The desk '${deskNameController.text}' was added.");
 

@@ -15,6 +15,8 @@ dependencies:
   fl_chart: ^0.61.0
   reorderable_grid: ^1.0.6
   carousel_slider: ^4.2.1
+  cloud_firestore: ^4.6.0
+  firebase_core: ^2.11.0
 
 dev_dependencies:
   flutter_test:

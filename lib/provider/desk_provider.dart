@@ -1,112 +1,94 @@
-import 'package:deskify/model/desk.dart';
-import 'package:deskify/model/preset.dart';
-import 'package:deskify/utils.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../api/firebase_api.dart';
+import '../model/desk.dart';
+import '../model/preset.dart';
+import '../utils.dart';
+
+// makes the desks (and so presets, etc.) available for the app
+// = connection between the app and the database
 class DeskProvider with ChangeNotifier {
-  final List<Desk> _deskList = [
-    Desk(
-      name: 'Living Room Desk',
-      height: 78.5,
-      presets: [
-        Preset(
-          title: 'Sit on chair',
-          targetHeight: 78.5,
-          icon: const Icon(Icons.input),
-        ),
-        Preset(
-          title: 'Stand at desk',
-          targetHeight: 118.6,
-          icon: const Icon(Icons.input),
-        ),
-        Preset(
-          title: 'Sit on gym-ballllllllllllll',
-          targetHeight: 72.6,
-          icon: const Icon(Icons.input),
-        ),
-        Preset(
-          title: 'Crouch on chair',
-          targetHeight: 100.0,
-          icon: const Icon(Icons.input),
-        ),
-      ],
-    ),
-    Desk(
-      name: 'Work Room Desk',
-      height: 119.0,
-      presets: [
-        Preset(
-          title: 'Sit on chair',
-          targetHeight: 75.3,
-          icon: const Icon(Icons.input),
-        ),
-        Preset(
-          title: 'Stand up',
-          targetHeight: 119.0,
-          icon: const Icon(Icons.input),
-        ),
-      ],
-    ),
-  ];
+  List<Desk> _desks = [];
   int _currentlySelectedIndex = 0;
 
-  List<Desk> get deskList => _deskList;
-  Desk get currentDesk => _deskList[_currentlySelectedIndex];
+  DeskProvider() {
+    _subscribeToDesks();
+  }
+
+  void _subscribeToDesks() => FirebaseFirestore.instance
+          .collection(FirebaseApi.deskCollectionName)
+          .snapshots()
+          .listen(
+        (snapshot) async {
+          final List<Desk> desks = await FirebaseApi.readDesks();
+          setDesks(desks);
+        },
+      );
+
+  /// DESK ///
+  List<Desk> get desks => _desks;
+  Desk? get currentDesk =>
+      _desks.isNotEmpty ? _desks[_currentlySelectedIndex] : Desk();
   int get currentlySelectedIndex => _currentlySelectedIndex;
-  Desk getDesk(String id) => _deskList.firstWhere((desk) => desk.id == id);
-  double getHeight(String id) => getDesk(id).height!;
-  String getName(String id) => getDesk(id).name!;
-  List<Preset> getPresets(String id) => getDesk(id).presets!;
-  Preset getPreset(String deskId, String presetId) =>
-      getPresets(deskId).firstWhere((preset) => preset.id == presetId);
 
   set currentlySelectedIndex(int value) {
     _currentlySelectedIndex = value;
     notifyListeners();
   }
 
-  void setHeight(String id, double value) {
-    Desk desk = getDesk(id);
+  void setDesks(List<Desk> desks) =>
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) {
+          _desks = desks;
+          notifyListeners();
+        },
+      );
 
-    double inboundHeight = Desk.getInboundHeight(value);
-    desk.height = Utils.roundDouble(inboundHeight, 1);
+  void addDesk(Desk desk) => FirebaseApi.createDesk(desk);
 
-    notifyListeners();
-  }
+  void udpateDeskName(Desk desk, String name) =>
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) {
+          desk.name = name;
+          FirebaseApi.updateDesk(desk);
+          notifyListeners();
+        },
+      );
 
-  void setName(String id, String value) {
-    Desk desk = getDesk(id);
-    desk.name = value;
-    notifyListeners();
-  }
+  void udpateDeskHeight(Desk desk, double height) =>
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) {
+          final double inboundHeight = Desk.getInboundHeight(height);
+          desk.height = Utils.roundDouble(inboundHeight, 1);
 
-  void setPresets(String id, List<Preset> value) {
-    Desk desk = getDesk(id);
-    desk.presets = value;
-    notifyListeners();
-  }
+          FirebaseApi.updateDesk(desk);
+          notifyListeners();
+        },
+      );
 
-  void setPresetTitle(String deskId, String presetId, String value) {
-    Preset preset = getPreset(deskId, presetId);
-    preset.title = value;
-    notifyListeners();
-  }
+  /// PRESET ///
+  void addPreset(Desk desk, Preset preset) =>
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) {
+          desk.presets.add(preset);
 
-  void setPresetTargetHeight(String deskId, String presetId, double value) {
-    Preset preset = getPreset(deskId, presetId);
-    preset.targetHeight = Utils.roundDouble(value, 1);
-    notifyListeners();
-  }
+          FirebaseApi.updateDesk(desk);
+          notifyListeners();
+        },
+      );
 
-  void addDesk(Desk desk) {
-    _deskList.add(desk);
-    notifyListeners();
-  }
+  void updatePreset(Desk desk, Preset preset, Preset newPreset) =>
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) {
+          final int index = desk.presets.indexWhere(
+            (element) => element.id == preset.id,
+          );
 
-  void addPreset(String deskId, Preset preset) {
-    Desk desk = getDesk(deskId);
-    desk.presets!.add(preset);
+          desk.presets[index] = newPreset;
 
-    notifyListeners();
-  }
+          FirebaseApi.updateDesk(desk);
+          notifyListeners();
+        },
+      );
 }

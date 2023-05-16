@@ -1,6 +1,9 @@
-import 'package:deskify/model/desk.dart';
 import 'package:flutter/material.dart';
 
+import '../../model/desk.dart';
+
+// a desk-animation for showing the current height
+// just 3 positioned containers with adjusted margins
 class DeskAnimation extends StatefulWidget {
   final double width;
   final double deskHeight;

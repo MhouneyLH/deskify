@@ -1,14 +1,19 @@
-import 'package:deskify/model/target.dart';
-import 'package:deskify/provider/profile_provider.dart';
-import 'package:deskify/utils.dart';
-import 'package:deskify/widgets/generic/progress_bar.dart';
-import 'package:deskify/widgets/generic/single_value_alert_dialog.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fl_chart/fl_chart.dart';
 
+import '../model/target.dart';
+import '../provider/profile_provider.dart';
+import '../utils.dart';
+import '../widgets/generic/progress_bar.dart';
+import '../widgets/generic/single_value_alert_dialog.dart';
+
+// showing analytics of the current week (standing time, sitting time)
+// todays progress is shown in a progress bar
+// editable is:
+// - target value
 class AnalyticsWidgetPage extends StatefulWidget {
-  final Map<int, Target> targetWeekdayMap;
+  final Map<int, TimeTarget> targetWeekdayMap;
   final Color signalizationColor;
 
   const AnalyticsWidgetPage({
@@ -23,14 +28,14 @@ class AnalyticsWidgetPage extends StatefulWidget {
 
 class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
   late ProfileProvider profileProvider;
-  late Target target;
+  late TimeTarget target;
   late double progressValue;
 
   @override
   Widget build(BuildContext context) {
     profileProvider = Provider.of<ProfileProvider>(context);
     target = widget.targetWeekdayMap[Utils.getCurrentWeekdayAsInt()]!;
-    progressValue = profileProvider.getProgress(target);
+    progressValue = profileProvider.getTargetProgressAsPercent(target);
 
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -56,7 +61,7 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
   }
 
   late TextEditingController targetValueController =
-      TextEditingController(text: target.targetValue.toString());
+      TextEditingController(text: target.targetValueInSeconds.toString());
 
   Widget _buildSemanticsLabel() {
     return Row(
@@ -64,7 +69,7 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          '${Utils.roundDouble(profileProvider.getProgress(target) * 100, 1)}% completed',
+          '${Utils.roundDouble(profileProvider.getTargetProgressAsPercent(target) * 100, 1)}% completed',
           style: const TextStyle(
             fontSize: 20.0,
             fontWeight: FontWeight.bold,
@@ -77,14 +82,14 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
               title: 'Set Target',
               controller: targetValueController,
               isNumericInput: true,
-              onSave: () =>
-                  target.targetValue = double.parse(targetValueController.text),
-              onCancel: () =>
-                  targetValueController.text = target.targetValue.toString(),
+              onSave: () => target.targetValueInSeconds =
+                  int.parse(targetValueController.text),
+              onCancel: () => targetValueController.text =
+                  target.targetValueInSeconds.toString(),
             ),
           ),
           child: Text(
-            '${Utils.roundDouble(Utils.secondsToMinutes(target.actualValue.toInt()), 1)} / ${target.targetValue} min',
+            '${Utils.roundDouble(Utils.secondsToMinutes(target.actualValueInSeconds), 1)} / ${Utils.roundDouble(Utils.secondsToMinutes(target.targetValueInSeconds), 1)} min',
             style: const TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.bold,
@@ -95,13 +100,12 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
     );
   }
 
-  Widget _buildBarChart(Map<int, Target> targetWeekdayMap) {
+  Widget _buildBarChart(Map<int, TimeTarget> targetWeekdayMap) {
     return BarChart(
       BarChartData(
         barGroups: targetWeekdayMap.entries
-            .map(
-              (MapEntry<int, Target> entry) => _buildBarChartGroupData(entry),
-            )
+            .map((MapEntry<int, TimeTarget> entry) =>
+                _buildBarChartGroupData(entry))
             .toList(),
         titlesData: FlTitlesData(
           show: true,
@@ -113,26 +117,25 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
         borderData: FlBorderData(show: false),
         barTouchData: BarTouchData(enabled: true),
         gridData: FlGridData(
-          // TODO: wtf does this do?
-          checkToShowVerticalLine: (value) => value == 0,
+          checkToShowVerticalLine: (double value) => value == 0,
         ),
       ),
     );
   }
 
-  BarChartGroupData _buildBarChartGroupData(MapEntry<int, Target> entry) {
+  BarChartGroupData _buildBarChartGroupData(MapEntry<int, TimeTarget> entry) {
     return BarChartGroupData(
       x: entry.key,
       barRods: [
         BarChartRodData(
           fromY: 0.0,
-          toY: Utils.secondsToMinutes(entry.value.actualValue.toInt()),
+          toY: Utils.secondsToMinutes(entry.value.actualValueInSeconds),
           width: 15.0,
           color: widget.signalizationColor,
         ),
         BarChartRodData(
           fromY: 0.0,
-          toY: entry.value.targetValue,
+          toY: entry.value.targetValueInSeconds.toDouble(),
           width: 15.0,
           color: Theme.of(context).primaryColor,
         ),
@@ -165,7 +168,7 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
       sideTitles: SideTitles(
         showTitles: true,
         getTitlesWidget: (value, meta) => Text(
-          Utils.intToShortWeekday(value.toInt()),
+          Utils.intToThreeLetterWeekday(value.toInt()),
         ),
       ),
     );
