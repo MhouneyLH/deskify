@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deskify/api/firebase_api.dart';
 import 'package:deskify/model/desk.dart';
@@ -36,7 +35,7 @@ class DeskProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> setDesks(List<Desk> desks) async =>
+  void setDesks(List<Desk> desks) =>
       WidgetsBinding.instance.addPostFrameCallback(
         (_) {
           _desks = desks;

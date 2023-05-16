@@ -110,7 +110,7 @@ class _SettingsTabState extends State<SettingsTab> {
         const Text('Darktheme'),
         const SizedBox(width: 10.0),
         Switch(
-          value: themeProvider.currentThemeSettings.isDarkTheme,
+          value: themeProvider.themeSettings.isDarkTheme,
           onChanged: (bool value) => themeProvider.updateTheme(value),
         ),
       ],

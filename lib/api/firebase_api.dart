@@ -5,7 +5,6 @@ import 'package:deskify/model/theme_settings.dart';
 import 'package:uuid/uuid.dart';
 
 class FirebaseApi {
-  // TODO: writing api-functions for presets + profile
   static const String deskCollectionName = 'desks';
   static const String themeCollectionName = 'themes';
 
