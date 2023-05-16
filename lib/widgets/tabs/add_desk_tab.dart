@@ -181,8 +181,8 @@ class _AddDeskTabState extends State<AddDeskTab> {
 
         newDesk.name = deskNameController.text;
         newDesk.height = double.parse(deskHeightController.text);
-
         deskProvider.addDesk(newDesk);
+
         Utils.showSnackbar(
             context, "The desk '${deskNameController.text}' was added.");
 

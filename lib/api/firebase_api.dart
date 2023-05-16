@@ -62,6 +62,13 @@ class FirebaseApi {
         .doc(themeCollectionName);
     final themeSnapshot = await themeDocument.get();
 
+    if (!themeSnapshot.exists) {
+      final ThemeSettings newThemeSettings = ThemeSettings(isDarkTheme: true);
+      await createTheme(newThemeSettings);
+
+      return newThemeSettings;
+    }
+
     return ThemeSettings.fromJson(themeSnapshot.data()!);
   }
 

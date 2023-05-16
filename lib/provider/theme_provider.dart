@@ -115,14 +115,23 @@ class ThemeProvider extends ChangeNotifier {
   ThemeSettings get currentThemeSettings => _currentThemeSettings;
 
   void _subscribeToThemeChanges() => FirebaseFirestore.instance
-      .collection(FirebaseApi.themeCollectionName)
-      .snapshots()
-      .listen((snapshot) => getTheme());
+          .collection(FirebaseApi.themeCollectionName)
+          .snapshots()
+          .listen(
+        (snapshot) {
+          getTheme();
+          _themeData =
+              _currentThemeSettings.isDarkTheme ? _darkTheme : _lightTheme;
+        },
+      );
 
   void addTheme(ThemeSettings theme) => FirebaseApi.createTheme(theme);
 
   void getTheme() async {
-    _currentThemeSettings = await FirebaseApi.readTheme();
+    final ThemeSettings fetchedThemeSettings = await FirebaseApi.readTheme();
+    _currentThemeSettings = fetchedThemeSettings;
+    // has to set theme data here explicitly, as it just get the themeSettings-data and
+    // does not trigger the lister in _subscribeToThemeChanges()
     _themeData = _currentThemeSettings.isDarkTheme ? _darkTheme : _lightTheme;
 
     notifyListeners();
@@ -130,7 +139,6 @@ class ThemeProvider extends ChangeNotifier {
 
   void updateTheme(bool isDarkTheme) {
     _currentThemeSettings.isDarkTheme = isDarkTheme;
-    _themeData = _currentThemeSettings.isDarkTheme ? _darkTheme : _lightTheme;
 
     FirebaseApi.updateTheme(_currentThemeSettings);
     notifyListeners();
