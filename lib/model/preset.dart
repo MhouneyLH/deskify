@@ -1,6 +1,9 @@
-import 'package:deskify/model/desk.dart';
 import 'package:flutter/material.dart';
 
+import 'desk.dart';
+
+// part of the desk
+// preset is a height that can be saved and selected
 class Preset {
   String? id;
   String title;
@@ -18,13 +21,11 @@ class Preset {
         id: json['id'],
         title: json['title'],
         targetHeight: json['targetHeight'],
-        // icon: json['icon'],
       );
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'title': title,
         'targetHeight': targetHeight,
-        // 'icon': icon,
       };
 }

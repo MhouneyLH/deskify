@@ -1,9 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:deskify/model/desk.dart';
-import 'package:deskify/model/preset.dart';
-import 'package:deskify/model/theme_settings.dart';
 import 'package:uuid/uuid.dart';
 
+import '../model/desk.dart';
+import '../model/preset.dart';
+import '../model/theme_settings.dart';
+
+// interact with firebase
+// basic CRUD-operations (CREATE, READ, UPDATE, DELETE)
+// for desks and themes (currently)
+// TODO: in future = profile, user-auth, etc.
 class FirebaseApi {
   static const String deskCollectionName = 'desks';
   static const String themeCollectionName = 'themes';
@@ -19,7 +24,6 @@ class FirebaseApi {
     }
 
     await deskDocument.set(desk.toJson());
-
     return deskDocument.id;
   }
 
@@ -44,6 +48,8 @@ class FirebaseApi {
     await deskDocument.delete();
   }
 
+  // no need for delete, as the user should not
+  // be able to delete a theme
   /// THEME ///
   static Future<String> createTheme(ThemeSettings theme) async {
     final themeDocument = FirebaseFirestore.instance
@@ -63,8 +69,8 @@ class FirebaseApi {
 
     if (!themeSnapshot.exists) {
       final ThemeSettings newThemeSettings = ThemeSettings(isDarkTheme: true);
-      await createTheme(newThemeSettings);
 
+      await createTheme(newThemeSettings);
       return newThemeSettings;
     }
 

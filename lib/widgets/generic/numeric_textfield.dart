@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// a textfield that only accepts numeric values (with decimal point)
 class NumericTextfield extends StatefulWidget {
   final TextEditingController controller;
   final String title;

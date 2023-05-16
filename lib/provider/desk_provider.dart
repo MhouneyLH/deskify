@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:deskify/api/firebase_api.dart';
-import 'package:deskify/model/desk.dart';
-import 'package:deskify/model/preset.dart';
-import 'package:deskify/utils.dart';
 import 'package:flutter/material.dart';
 
+import '../api/firebase_api.dart';
+import '../model/desk.dart';
+import '../model/preset.dart';
+import '../utils.dart';
+
+// makes the desks (and so presets, etc.) available for the app
+// = connection between the app and the database
 class DeskProvider with ChangeNotifier {
   List<Desk> _desks = [];
   int _currentlySelectedIndex = 0;
@@ -27,7 +30,6 @@ class DeskProvider with ChangeNotifier {
   List<Desk> get desks => _desks;
   Desk? get currentDesk =>
       _desks.isNotEmpty ? _desks[_currentlySelectedIndex] : Desk();
-
   int get currentlySelectedIndex => _currentlySelectedIndex;
 
   set currentlySelectedIndex(int value) {
@@ -65,47 +67,11 @@ class DeskProvider with ChangeNotifier {
         },
       );
 
-  void udpateDeskPresets(Desk desk, List<Preset> presets) =>
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) {
-          desk.presets = presets;
-
-          FirebaseApi.updateDesk(desk);
-          notifyListeners();
-        },
-      );
-
   /// PRESET ///
   void addPreset(Desk desk, Preset preset) =>
       WidgetsBinding.instance.addPostFrameCallback(
         (_) {
           desk.presets.add(preset);
-
-          FirebaseApi.updateDesk(desk);
-          notifyListeners();
-        },
-      );
-
-  void updatePresetTitle(Desk desk, Preset preset, String title) =>
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) {
-          final int index = desk.presets.indexWhere(
-            (element) => element.id == preset.id,
-          );
-
-          preset.title = title;
-          desk.presets[index] = preset;
-
-          FirebaseApi.updateDesk(desk);
-          notifyListeners();
-        },
-      );
-
-  void updatePresetTargetHeight(
-          Desk desk, Preset preset, double targetHeight) =>
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) {
-          preset.targetHeight = Utils.roundDouble(targetHeight, 1);
 
           FirebaseApi.updateDesk(desk);
           notifyListeners();

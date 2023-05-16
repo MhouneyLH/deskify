@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
+// settings for the themes, like colorsSchemes, fontSizes,
+// if it is currently dark- or light-theme, etc.
 class ThemeSettings {
   bool isDarkTheme;
+  late ThemeData themeData = isDarkTheme ? darkTheme : lightTheme;
   final Color standingColor = Colors.green;
   final Color sittingColor = Colors.red;
-  late ThemeData themeData = isDarkTheme ? darkTheme : lightTheme;
 
   static final ThemeData darkTheme = ThemeData(
     textTheme: const TextTheme(

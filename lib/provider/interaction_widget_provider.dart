@@ -1,24 +1,36 @@
-import 'package:deskify/model/preset.dart';
-import 'package:deskify/pages/analytics_widget_page.dart';
-import 'package:deskify/pages/move_widget_page.dart';
-import 'package:deskify/pages/preset_widget_page.dart';
-import 'package:deskify/provider/desk_provider.dart';
-import 'package:deskify/provider/profile_provider.dart';
-import 'package:deskify/provider/theme_provider.dart';
-import 'package:deskify/utils.dart';
-import 'package:deskify/widgets/generic/progress_bar.dart';
-import 'package:deskify/widgets/interaction_widgets/interaction_widget.dart';
 import 'package:flutter/material.dart';
 
+import '../model/preset.dart';
+import '../pages/analytics_widget_page.dart';
+import '../pages/move_widget_page.dart';
+import '../pages/preset_widget_page.dart';
+import '../utils.dart';
+import '../widgets/generic/progress_bar.dart';
+import '../widgets/interaction_widgets/interaction_widget.dart';
+import 'desk_provider.dart';
+import 'profile_provider.dart';
+import 'theme_provider.dart';
+
+// makes the interaction widgets available for the HomePageTab
 class InteractionWidgetProvider extends ChangeNotifier {
   BuildContext? context;
   DeskProvider? deskProvider;
   ProfileProvider? profileProvider;
   ThemeProvider? themeProvider;
 
+  // widgets for: standingTime, sittingTime
   List<InteractionWidget> _analyticalInteractionWidgets = [];
+  // widgets for all presets of the desk
   List<InteractionWidget> _presetInteractionWidgets = [];
+  // widgets that dont fit in the other categories (currently only: move desk)
   List<InteractionWidget> _otherInteractionWidgets = [];
+
+  List<InteractionWidget> get analyticalInteractionWidgets =>
+      _analyticalInteractionWidgets;
+  List<InteractionWidget>? get presetInteractionWidgets =>
+      _presetInteractionWidgets;
+  List<InteractionWidget> get otherInteractionWidgets =>
+      _otherInteractionWidgets;
 
   void initWidgets() {
     _analyticalInteractionWidgets = [
@@ -73,8 +85,6 @@ class InteractionWidgetProvider extends ChangeNotifier {
             child: PresetWidgetPage(
               preset: preset,
               onAboutToPop: () => {},
-              // onAboutToPop: () => presetInteractionWidgets =
-              //     getUpdatedPresetInteractionWidgets(),
             ),
           ),
         ),
@@ -92,13 +102,6 @@ class InteractionWidgetProvider extends ChangeNotifier {
       ),
     ];
   }
-
-  List<InteractionWidget> get analyticalInteractionWidgets =>
-      _analyticalInteractionWidgets;
-  List<InteractionWidget>? get presetInteractionWidgets =>
-      _presetInteractionWidgets;
-  List<InteractionWidget> get otherInteractionWidgets =>
-      _otherInteractionWidgets;
 
   void reorderAnalytical(int oldIndex, int newIndex) {
     final InteractionWidget item =

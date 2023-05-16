@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+// a widget (button-like) that can be used to interact with the app
+// can have an extra information widget, like e. g. the progress bar in the
+// analyitcalIntercationWidgets
 class InteractionWidget extends StatefulWidget {
   final String title;
   final Icon icon;
@@ -32,26 +35,13 @@ class _InteractionWidgetState extends State<InteractionWidget> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () => widget.onPressedWholeWidget(),
-      style: ButtonStyle(
-        fixedSize: MaterialStateProperty.all(
-          Size(
-            widget.width,
-            widget.height,
-          ),
-        ),
-        shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-        ),
-        padding: MaterialStateProperty.all(EdgeInsets.all(_padding)),
-      ),
+      style: _buildButtonStyle(),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            height: widget.height - 2 * _padding,
+            height: _getHeightOfWidgetExceptExtraInformationWidget(),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -69,6 +59,23 @@ class _InteractionWidgetState extends State<InteractionWidget> {
           _buildExtraInformationWidget(),
         ],
       ),
+    );
+  }
+
+  ButtonStyle _buildButtonStyle() {
+    return ButtonStyle(
+      fixedSize: MaterialStateProperty.all(
+        Size(
+          widget.width,
+          widget.height,
+        ),
+      ),
+      shape: MaterialStateProperty.all(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+      ),
+      padding: MaterialStateProperty.all(EdgeInsets.all(_padding)),
     );
   }
 
@@ -113,4 +120,7 @@ class _InteractionWidgetState extends State<InteractionWidget> {
         ? const SizedBox()
         : widget.extraInformationWidget!;
   }
+
+  double _getHeightOfWidgetExceptExtraInformationWidget() =>
+      widget.height - 2 * _padding;
 }

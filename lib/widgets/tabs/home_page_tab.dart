@@ -1,19 +1,26 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:deskify/model/desk.dart';
-import 'package:deskify/pages/add_preset_page.dart';
-import 'package:deskify/provider/desk_provider.dart';
-import 'package:deskify/provider/interaction_widget_provider.dart';
-import 'package:deskify/provider/profile_provider.dart';
-import 'package:deskify/provider/theme_provider.dart';
-import 'package:deskify/utils.dart';
-import 'package:deskify/widgets/generic/desk_animation.dart';
-import 'package:deskify/widgets/generic/heading_widget.dart';
-import 'package:deskify/widgets/generic/single_value_alert_dialog.dart';
-import 'package:deskify/widgets/interaction_widgets/interaction_widgets_grid_view.dart';
-import 'package:deskify/widgets/interaction_widgets/interaction_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../model/desk.dart';
+import '../../pages/add_preset_page.dart';
+import '../../provider/desk_provider.dart';
+import '../../provider/interaction_widget_provider.dart';
+import '../../provider/profile_provider.dart';
+import '../../provider/theme_provider.dart';
+import '../../utils.dart';
+import '../generic/desk_animation.dart';
+import '../generic/heading_widget.dart';
+import '../generic/single_value_alert_dialog.dart';
+import '../interaction_widgets/interaction_widget.dart';
+import '../interaction_widgets/interaction_widgets_grid_view.dart';
+
+// tab for displaying the home page -> acts as overview and main part of the app
+// contains the desk animation and the interaction widgets
+// editable is:
+// - desk name
+// - currently selected desk via Carousel Slider
+// - order of the interaction widgets
 class HomePageTab extends StatefulWidget {
   const HomePageTab({super.key});
 
@@ -34,11 +41,16 @@ class _HomePageTabState extends State<HomePageTab> {
   late List<InteractionWidget> otherInteractionWidgets;
 
   late TextEditingController deskNameController =
-      getUpdatedDeskNameController();
+      TextEditingController(text: deskProvider.currentDesk!.name);
   final CarouselController buttonCarouselController = CarouselController();
 
   @override
   void didChangeDependencies() {
+    // providers has to be initialized here, because the context is needed
+    // is possible with listen: false when initializing the providers
+    // but this would disable the listeners
+    // providers + widgets only should be initialized once
+    // (otherwise e. g. the dragging of interactionWidgets don't work, as it would update the ui every frame)
     if (!_isInitialized) {
       _initProvider();
       _initInteractionWidgets();
@@ -50,25 +62,6 @@ class _HomePageTabState extends State<HomePageTab> {
     super.didChangeDependencies();
   }
 
-  void _initProvider() {
-    deskProvider = Provider.of<DeskProvider>(context);
-    profileProvider = Provider.of<ProfileProvider>(context);
-    themeProvider = Provider.of<ThemeProvider>(context);
-    interactionWidgetProvider = Provider.of<InteractionWidgetProvider>(context);
-  }
-
-  void _initInteractionWidgets() {
-    interactionWidgetProvider.context = context;
-    interactionWidgetProvider.deskProvider = deskProvider;
-    interactionWidgetProvider.profileProvider = profileProvider;
-    interactionWidgetProvider.themeProvider = themeProvider;
-    interactionWidgetProvider.initWidgets();
-  }
-
-  TextEditingController getUpdatedDeskNameController() => TextEditingController(
-        text: deskProvider.currentDesk!.name,
-      );
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -77,7 +70,8 @@ class _HomePageTabState extends State<HomePageTab> {
       children: [
         _buildDeskHeading(),
         const SizedBox(width: 10.0),
-        Text('Height: ${deskProvider.currentDesk!.height} cm'),
+        Text(
+            'Height: ${deskProvider.currentDesk!.height} ${Desk.heightMetric}'),
         const SizedBox(height: 10.0),
         _buildCarouselDeskAnimation(),
         _buildInteractiveWidgetGroup(
@@ -108,30 +102,16 @@ class _HomePageTabState extends State<HomePageTab> {
   }
 
   Widget _buildDeskHeading() {
-    void openDialog() => showDialog(
-          context: context,
-          builder: (_) => SingleValueAlertDialog(
-            title: 'Edit desk name',
-            controller: deskNameController,
-            onSave: () => deskProvider.udpateDeskName(
-              deskProvider.currentDesk!,
-              deskNameController.text,
-            ),
-            onCancel: () =>
-                deskNameController.text = deskProvider.currentDesk!.name,
-          ),
-        );
-
     return Heading(
       title: deskProvider.currentDesk!.name,
       nextToHeadingWidgets: [
         const SizedBox(width: 10.0),
         IconButton(
-            onPressed: openDialog,
+            onPressed: _openDeskNameDialog,
             icon: const Icon(Icons.edit),
             splashRadius: 20.0),
       ],
-      onTapped: openDialog,
+      onTapped: _openDeskNameDialog,
     );
   }
 
@@ -157,12 +137,6 @@ class _HomePageTabState extends State<HomePageTab> {
         for (Desk desk in deskProvider.desks) _buildDeskAnimation(desk),
       ],
     );
-  }
-
-  void _updateDesk(int index) {
-    deskProvider.currentlySelectedIndex = index;
-    deskNameController = getUpdatedDeskNameController();
-    interactionWidgetProvider.initWidgets();
   }
 
   Widget _buildDeskAnimation(Desk desk) {
@@ -235,5 +209,40 @@ class _HomePageTabState extends State<HomePageTab> {
         ),
       ),
     );
+  }
+
+  void _initProvider() {
+    deskProvider = Provider.of<DeskProvider>(context);
+    profileProvider = Provider.of<ProfileProvider>(context);
+    themeProvider = Provider.of<ThemeProvider>(context);
+    interactionWidgetProvider = Provider.of<InteractionWidgetProvider>(context);
+  }
+
+  void _initInteractionWidgets() {
+    interactionWidgetProvider.context = context;
+    interactionWidgetProvider.deskProvider = deskProvider;
+    interactionWidgetProvider.profileProvider = profileProvider;
+    interactionWidgetProvider.themeProvider = themeProvider;
+    interactionWidgetProvider.initWidgets();
+  }
+
+  void _openDeskNameDialog() => showDialog(
+        context: context,
+        builder: (_) => SingleValueAlertDialog(
+          title: 'Edit desk name',
+          controller: deskNameController,
+          onSave: () => deskProvider.udpateDeskName(
+            deskProvider.currentDesk!,
+            deskNameController.text,
+          ),
+          onCancel: () =>
+              deskNameController.text = deskProvider.currentDesk!.name,
+        ),
+      );
+
+  void _updateDesk(int index) {
+    deskProvider.currentlySelectedIndex = index;
+    deskNameController.text = deskProvider.currentDesk!.name;
+    interactionWidgetProvider.initWidgets();
   }
 }

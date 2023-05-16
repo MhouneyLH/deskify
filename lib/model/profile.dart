@@ -1,7 +1,11 @@
-import 'package:deskify/model/target.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
+import 'target.dart';
+
+// currently just used as placeholder for the analytical information
+// (standing and sitting time)
+// TODO: in future = contains desks + google-auth
 class Profile {
   final String id = const Uuid().v4();
   String name;
@@ -9,24 +13,24 @@ class Profile {
   String password;
   Icon image;
 
-  Map<int, Target> standingAnalytic = {
-    DateTime.monday: Target(),
-    DateTime.tuesday: Target(),
-    DateTime.wednesday: Target(),
-    DateTime.thursday: Target(),
-    DateTime.friday: Target(),
-    DateTime.saturday: Target(),
-    DateTime.sunday: Target(),
+  Map<int, TimeTarget> standingAnalytic = {
+    DateTime.monday: TimeTarget(),
+    DateTime.tuesday: TimeTarget(),
+    DateTime.wednesday: TimeTarget(),
+    DateTime.thursday: TimeTarget(),
+    DateTime.friday: TimeTarget(),
+    DateTime.saturday: TimeTarget(),
+    DateTime.sunday: TimeTarget(),
   };
 
-  Map<int, Target> sittingAnalytic = {
-    DateTime.monday: Target(),
-    DateTime.tuesday: Target(),
-    DateTime.wednesday: Target(),
-    DateTime.thursday: Target(),
-    DateTime.friday: Target(),
-    DateTime.saturday: Target(),
-    DateTime.sunday: Target(),
+  Map<int, TimeTarget> sittingAnalytic = {
+    DateTime.monday: TimeTarget(),
+    DateTime.tuesday: TimeTarget(),
+    DateTime.wednesday: TimeTarget(),
+    DateTime.thursday: TimeTarget(),
+    DateTime.friday: TimeTarget(),
+    DateTime.saturday: TimeTarget(),
+    DateTime.sunday: TimeTarget(),
   };
 
   Profile({

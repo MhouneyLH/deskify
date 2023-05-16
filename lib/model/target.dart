@@ -1,9 +1,10 @@
-class Target {
-  double targetValue;
-  double actualValue;
+// time-target in seconds for a day
+class TimeTarget {
+  int targetValueInSeconds;
+  int actualValueInSeconds;
 
-  Target({
-    this.targetValue = 0.0,
-    this.actualValue = 0.0,
+  TimeTarget({
+    this.targetValueInSeconds = 0,
+    this.actualValueInSeconds = 0,
   });
 }

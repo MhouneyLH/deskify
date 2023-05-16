@@ -1,13 +1,16 @@
-import 'package:deskify/model/preset.dart';
+import 'preset.dart';
 
+// propterties of a connected desk
 class Desk {
   String? id;
   String name;
   double height;
   List<Preset> presets;
 
+  static const String heightMetric = 'cm';
   static const double minimumHeight = 72.0;
   static const double maximumHeight = 119.0;
+  // everything above 90.0cm is considered as standing
   static const double standingBreakpointHeight = 90.0;
 
   Desk({
@@ -17,6 +20,7 @@ class Desk {
     this.presets = const [],
   });
 
+  // important for textfield-inputs
   static double getInboundHeight(double height) {
     if (height < minimumHeight) {
       return minimumHeight;

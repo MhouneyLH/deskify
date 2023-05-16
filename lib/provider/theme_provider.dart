@@ -1,19 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:deskify/api/firebase_api.dart';
-import 'package:deskify/model/theme_settings.dart';
 import 'package:flutter/material.dart';
 
+import '../api/firebase_api.dart';
+import '../model/theme_settings.dart';
+
+// makes the theme available for the app
+// = connection between the app and the database
 class ThemeProvider extends ChangeNotifier {
   ThemeSettings _themeSettings = ThemeSettings(isDarkTheme: true);
 
   ThemeProvider() {
     _subscribeToThemeChanges();
   }
-
-  Color get standingColor => _themeSettings.standingColor;
-  Color get sittingColor => _themeSettings.sittingColor;
-  ThemeData get themeData => _themeSettings.themeData;
-  ThemeSettings get themeSettings => _themeSettings;
 
   void _subscribeToThemeChanges() => FirebaseFirestore.instance
           .collection(FirebaseApi.themeCollectionName)
@@ -26,6 +24,11 @@ class ThemeProvider extends ChangeNotifier {
               : ThemeSettings.lightTheme;
         },
       );
+
+  Color get standingColor => _themeSettings.standingColor;
+  Color get sittingColor => _themeSettings.sittingColor;
+  ThemeData get themeData => _themeSettings.themeData;
+  ThemeSettings get themeSettings => _themeSettings;
 
   void getTheme() => WidgetsBinding.instance.addPostFrameCallback(
         (_) async {

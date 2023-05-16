@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// custom heading between different parts of a page / tab
+// able to have any widgets next to the title
 class Heading extends StatefulWidget {
   final String title;
   final List<Widget>? nextToHeadingWidgets;

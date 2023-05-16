@@ -1,11 +1,13 @@
 import 'dart:async';
-import 'package:deskify/model/target.dart';
-import 'package:deskify/utils.dart';
+
 import 'package:flutter/material.dart';
 
+import '../../model/target.dart';
+
+// a progress bar that shows the progress of a target
 class ProgressBar extends StatefulWidget {
   final double height;
-  final Target target;
+  final TimeTarget target;
   final Color displayColor;
 
   const ProgressBar({
@@ -26,9 +28,13 @@ class _ProgressBarState extends State<ProgressBar> {
   @override
   void initState() {
     super.initState();
-    _updateTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      _updateProgress();
-    });
+
+    _progress =
+        widget.target.actualValueInSeconds / widget.target.targetValueInSeconds;
+    _updateTimer = Timer.periodic(
+      const Duration(seconds: 1),
+      (timer) => _updateProgress(),
+    );
   }
 
   @override
@@ -39,12 +45,6 @@ class _ProgressBarState extends State<ProgressBar> {
 
   @override
   Widget build(BuildContext context) {
-    _progress = widget.target.actualValue /
-        Utils.minutesToSeconds(widget.target.targetValue);
-    return _buildProgressBar();
-  }
-
-  Widget _buildProgressBar() {
     return SizedBox(
       height: widget.height,
       child: ClipRRect(
@@ -59,8 +59,8 @@ class _ProgressBarState extends State<ProgressBar> {
 
   void _updateProgress() {
     setState(() {
-      _progress = widget.target.actualValue /
-          Utils.minutesToSeconds(widget.target.targetValue);
+      _progress = widget.target.actualValueInSeconds /
+          widget.target.targetValueInSeconds;
     });
   }
 }

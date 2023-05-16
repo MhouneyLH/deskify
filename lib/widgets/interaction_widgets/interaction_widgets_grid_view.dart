@@ -1,7 +1,10 @@
-import 'package:deskify/widgets/interaction_widgets/interaction_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:reorderable_grid/reorderable_grid.dart';
 
+import 'interaction_widget.dart';
+
+// reorderable (interactionWidgets are draggable) grid view for a group of interaction widgets
+// scrolling the grid view is disabled
 class InteractionWidgetGridView extends StatefulWidget {
   final List<InteractionWidget> items;
   final double itemHeight;
@@ -22,21 +25,18 @@ class InteractionWidgetGridView extends StatefulWidget {
 }
 
 class _InteractionWidgetGridViewState extends State<InteractionWidgetGridView> {
-  final int itemsPerRow = 2;
-  final double defaultSpacing = 10.0;
+  final int _itemsPerRow = 2;
+  final double _defaultSpacing = 10.0;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: _getTotalGridViewHeightWithOuterDefinedSpacing(),
       child: ReorderableGridView(
+        // otherwise the grid view is scrollable
+        // -> User could not scroll the page properly
         physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: itemsPerRow,
-          mainAxisSpacing: defaultSpacing,
-          crossAxisSpacing: defaultSpacing,
-          mainAxisExtent: widget.itemHeight,
-        ),
+        gridDelegate: _buildGridDelegate(),
         children: widget.items
             .map((InteractionWidget item) => _buildGridViewItem(item))
             .toList(),
@@ -46,12 +46,13 @@ class _InteractionWidgetGridViewState extends State<InteractionWidgetGridView> {
     );
   }
 
-  double _getTotalGridViewHeightWithOuterDefinedSpacing() {
-    final double gridHeight =
-        widget.itemHeight * (widget.items.length / itemsPerRow).ceil() +
-            defaultSpacing * ((widget.items.length / itemsPerRow) - 1) +
-            widget.outerDefinedSpacings;
-    return gridHeight;
+  SliverGridDelegateWithFixedCrossAxisCount _buildGridDelegate() {
+    return SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: _itemsPerRow,
+      mainAxisSpacing: _defaultSpacing,
+      crossAxisSpacing: _defaultSpacing,
+      mainAxisExtent: widget.itemHeight,
+    );
   }
 
   Widget _buildGridViewItem(InteractionWidget item) {
@@ -59,5 +60,15 @@ class _InteractionWidgetGridViewState extends State<InteractionWidgetGridView> {
       key: ValueKey(item),
       child: item,
     );
+  }
+
+  // has to calculate the height of the whole grid view myself
+  // otherwise the grid view is too small and the widgets are not properly visible
+  double _getTotalGridViewHeightWithOuterDefinedSpacing() {
+    final double gridHeight =
+        widget.itemHeight * (widget.items.length / _itemsPerRow).ceil() +
+            _defaultSpacing * ((widget.items.length / _itemsPerRow) - 1) +
+            widget.outerDefinedSpacings;
+    return gridHeight;
   }
 }
