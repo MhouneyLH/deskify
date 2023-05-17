@@ -41,10 +41,12 @@ class Utils {
     }
   }
 
-  static Future<dynamic> navigateToWidgetPage(
-      {required BuildContext context,
-      required Widget child,
-      String title = MainApp.title}) {
+  // moves to a new page, when clicked on an interaction-widget
+  static Future<dynamic> navigateToWidgetPage({
+    required BuildContext context,
+    required Widget child,
+    String title = MainApp.title,
+  }) {
     return Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => Scaffold(
@@ -57,6 +59,7 @@ class Utils {
     );
   }
 
+  // shows a snackbar with a message and a close button
   static void showSnackbar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

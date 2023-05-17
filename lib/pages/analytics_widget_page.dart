@@ -117,6 +117,7 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
         borderData: FlBorderData(show: false),
         barTouchData: BarTouchData(enabled: true),
         gridData: FlGridData(
+          // shows a horizontal line for each value shown at the vertical axis
           checkToShowVerticalLine: (double value) => value == 0,
         ),
       ),
@@ -126,16 +127,19 @@ class _AnalyticsWidgetPageState extends State<AnalyticsWidgetPage> {
   BarChartGroupData _buildBarChartGroupData(MapEntry<int, TimeTarget> entry) {
     return BarChartGroupData(
       x: entry.key,
+      // for each entry = weekday -> 7 pairs
       barRods: [
+        // bar of the actual value
         BarChartRodData(
           fromY: 0.0,
           toY: Utils.secondsToMinutes(entry.value.actualValueInSeconds),
           width: 15.0,
           color: widget.signalizationColor,
         ),
+        // bar of the target value
         BarChartRodData(
           fromY: 0.0,
-          toY: entry.value.targetValueInSeconds.toDouble(),
+          toY: Utils.secondsToMinutes(entry.value.targetValueInSeconds),
           width: 15.0,
           color: Theme.of(context).primaryColor,
         ),

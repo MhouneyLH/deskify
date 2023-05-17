@@ -14,6 +14,9 @@ class FirebaseApi {
   static const String themeCollectionName = 'themes';
 
   /// DESK ///
+  // create a new desk
+  // deskId is the id of the desk-document in the database
+  // presetId is a UUID-generated Id
   static Future<String> createDesk(Desk desk) async {
     final deskDocument =
         FirebaseFirestore.instance.collection(deskCollectionName).doc();
@@ -27,6 +30,7 @@ class FirebaseApi {
     return deskDocument.id;
   }
 
+  // read all desks from the database
   static Future<List<Desk>> readDesks() async {
     final querySnapshot =
         await FirebaseFirestore.instance.collection(deskCollectionName).get();
@@ -36,12 +40,14 @@ class FirebaseApi {
         .toList();
   }
 
+  // update the value of a desk in the database
   static Future updateDesk(Desk desk) async {
     final deskDocument =
         FirebaseFirestore.instance.collection(deskCollectionName).doc(desk.id);
     await deskDocument.update(desk.toJson());
   }
 
+  // delete a desk from the database
   static Future deleteDesk(Desk desk) async {
     final deskDocument =
         FirebaseFirestore.instance.collection(deskCollectionName).doc(desk.id);
@@ -51,6 +57,7 @@ class FirebaseApi {
   // no need for delete, as the user should not
   // be able to delete a theme
   /// THEME ///
+  // create a new theme in the database (used when no theme-document exists)
   static Future<String> createTheme(ThemeSettings theme) async {
     final themeDocument = FirebaseFirestore.instance
         .collection(themeCollectionName)
@@ -61,6 +68,7 @@ class FirebaseApi {
     return themeDocument.id;
   }
 
+  // read the theme from the database
   static Future<ThemeSettings> readTheme() async {
     final themeDocument = FirebaseFirestore.instance
         .collection(themeCollectionName)
@@ -77,6 +85,7 @@ class FirebaseApi {
     return ThemeSettings.fromJson(themeSnapshot.data()!);
   }
 
+  // update the theme in the database
   static Future<void> updateTheme(ThemeSettings theme) async {
     final themeDocument = FirebaseFirestore.instance
         .collection(themeCollectionName)

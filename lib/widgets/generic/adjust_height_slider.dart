@@ -30,9 +30,10 @@ class _AdjustHeightSliderState extends State<AdjustHeightSlider> {
         onChangeEnd: (value) => widget.onChangeEnd(value),
         min: Desk.minimumHeight,
         max: Desk.maximumHeight,
-        interval: 10,
+        interval: 10, // when to show a number next to the slider
         showLabels: true,
         showTicks: true,
+        // when dragging the bullet of the slider, a tooltip is shown
         enableTooltip: true,
         tooltipTextFormatterCallback: (actualValue, formattedText) =>
             '${Utils.roundDouble(actualValue, 1)} ${Desk.heightMetric}',

@@ -157,58 +157,31 @@ class _AddDeskTabState extends State<AddDeskTab> {
 
   Widget _buildAddPresetButton() {
     return ElevatedButton(
-      onPressed: () => setState(
-        () {
-          if (presetTitleController.text.isEmpty) {
-            Utils.showSnackbar(context, 'Enter a title for the preset.');
-            return;
-          }
-
-          newDesk.presets.add(Preset(
-            title: presetTitleController.text,
-            targetHeight: double.parse(presetTargetHeightController.text),
-          ));
-          Utils.showSnackbar(
-              context, "The preset '${presetTitleController.text}' added.");
-
-          resetPresetInput();
-        },
-      ),
+      onPressed: addPreset,
       child: const Text('Add Preset'),
     );
   }
 
   Widget _buildAddDeskButton() {
     return ElevatedButton(
-      onPressed: () {
-        if (deskNameController.text.isEmpty) {
-          Utils.showSnackbar(context, 'Enter a name for the desk.');
-          return;
-        }
-
-        newDesk.name = deskNameController.text;
-        newDesk.height = double.parse(deskHeightController.text);
-        deskProvider.addDesk(newDesk);
-
-        Utils.showSnackbar(
-            context, "The desk '${deskNameController.text}' was added.");
-
-        resetTab();
-      },
+      onPressed: addDesk,
       child: const Text('Add Desk'),
     );
   }
 
+  // reset desk name and height input fields
   void resetGeneralInput() {
     deskNameController.clear();
     deskHeightController.text = Desk.minimumHeight.toString();
   }
 
+  // reset preset title and target height input fields
   void resetPresetInput() {
     presetTitleController.clear();
     presetTargetHeightController.text = Desk.minimumHeight.toString();
   }
 
+  // reset all input fields
   void resetTab() {
     resetGeneralInput();
     resetPresetInput();
@@ -217,5 +190,45 @@ class _AddDeskTabState extends State<AddDeskTab> {
       height: Desk.minimumHeight,
       presets: List<Preset>.empty(growable: true),
     );
+  }
+
+  // manages the adding of a new preset
+  void addPreset() {
+    setState(
+      () {
+        if (presetTitleController.text.isEmpty) {
+          Utils.showSnackbar(context, 'Enter a title for the preset.');
+          return;
+        }
+
+        newDesk.presets.add(Preset(
+          title: presetTitleController.text,
+          targetHeight: double.parse(presetTargetHeightController.text),
+        ));
+        Utils.showSnackbar(
+            context, "The preset '${presetTitleController.text}' added.");
+
+        resetPresetInput();
+      },
+    );
+  }
+
+  // manages the adding of a new desk
+  void addDesk() {
+    setState(() {
+      if (deskNameController.text.isEmpty) {
+        Utils.showSnackbar(context, 'Enter a name for the desk.');
+        return;
+      }
+
+      newDesk.name = deskNameController.text;
+      newDesk.height = double.parse(deskHeightController.text);
+      deskProvider.addDesk(newDesk);
+
+      Utils.showSnackbar(
+          context, "The desk '${deskNameController.text}' was added.");
+
+      resetTab();
+    });
   }
 }

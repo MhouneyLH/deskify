@@ -5,7 +5,7 @@ import '../provider/desk_provider.dart';
 import '../widgets/generic/heading_widget.dart';
 import '../widgets/generic/numeric_text_field_with_desk_animation_and_adjust_height_slider.dart';
 
-// change the height of an existing desk
+// change the height of the current desk
 class MoveWidgetPage extends StatefulWidget {
   const MoveWidgetPage({super.key});
 
