@@ -18,7 +18,5 @@ jobs:
       - name: AI Code Review
         uses: freeedcom/ai-codereviewer@main
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.THE_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.GASTA_REVIEW_API_KEY_GPT }}
-          OPENAI_API_MODEL: "gpt-4" # Optional: defaults to "gpt-4"
-          exclude: "**/*.json, **/*.md" # Optional: exclude patterns separated by commas
