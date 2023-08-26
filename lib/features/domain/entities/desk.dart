@@ -5,6 +5,7 @@ import '../../../core/core.dart';
 import 'preset.dart';
 
 /// A Desk is a connected height adjustable desk.
+// ignore: must_be_immutable
 class Desk extends Equatable {
   // sad: have to be dynamic, so that I can set the id of the firebase document as an id
   Id id;

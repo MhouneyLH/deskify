@@ -5,6 +5,7 @@ import '../../domain/entities/desk.dart';
 import '../../domain/entities/preset.dart';
 import 'preset_model.dart';
 
+// ignore: must_be_immutable
 class DeskModel extends Desk {
   DeskModel({
     required super.id,

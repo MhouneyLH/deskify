@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
-import '../repository/desk_repository.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../core/core.dart';
 import '../entities/desk.dart';
+import '../repository/desk_repository.dart';
 
 class CreateDeskUsecase implements Usecase<void, CreateDeskParams> {
   final DeskRepository repository;

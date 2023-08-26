@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:deskify/features/presentation/bloc/app_bloc_observer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -13,6 +12,7 @@ import 'features/domain/usecases/delete_desk_usecase.dart';
 import 'features/domain/usecases/get_all_desks_usecase.dart';
 import 'features/domain/usecases/get_desk_by_id_usecase.dart';
 import 'features/domain/usecases/update_desk_usecase.dart';
+import 'features/presentation/bloc/app_bloc_observer.dart';
 import 'features/presentation/bloc/desk/desk_bloc.dart';
 
 // sl = service locator

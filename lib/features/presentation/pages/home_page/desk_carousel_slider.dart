@@ -1,10 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:deskify/old/widgets/generic/desk_animation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../domain/entities/desk.dart';
-import '../../bloc/desk/desk_bloc.dart';
+import '../../widgets/desk_animation.dart';
 
 const int initialIndex = 0;
 

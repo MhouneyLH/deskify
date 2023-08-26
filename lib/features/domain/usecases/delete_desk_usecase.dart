@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import '../repository/desk_repository.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../core/core.dart';
+import '../repository/desk_repository.dart';
 
 class DeleteDeskUsecase implements Usecase<void, DeleteDeskParams> {
   final DeskRepository repository;
