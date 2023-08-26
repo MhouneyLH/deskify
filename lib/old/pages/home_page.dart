@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../main.dart';
+import '../../main.dart';
 import '../model/desk.dart';
 import '../provider/desk_provider.dart';
 import '../provider/profile_provider.dart';

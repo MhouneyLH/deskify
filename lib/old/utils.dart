@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'main.dart';
+import '../main.dart';
 
 // utility class for static methods that don't fit anywhere else
 class Utils {

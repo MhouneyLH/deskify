@@ -2,11 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'pages/home_page.dart';
-import 'provider/desk_provider.dart';
-import 'provider/interaction_widget_provider.dart';
-import 'provider/profile_provider.dart';
-import 'provider/theme_provider.dart';
+import 'old/pages/home_page.dart';
+import 'old/provider/desk_provider.dart';
+import 'old/provider/interaction_widget_provider.dart';
+import 'old/provider/profile_provider.dart';
+import 'old/provider/theme_provider.dart';
 
 // entry point of the app
 Future main() async {
