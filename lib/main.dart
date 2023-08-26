@@ -1,8 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'app.dart';
 
+import 'features/presentation/bloc/desk/desk_bloc.dart';
 import 'injection_container.dart' as injection_container;
 
 Future main() async {
@@ -11,7 +13,9 @@ Future main() async {
   await Firebase.initializeApp();
   await injection_container.init();
 
-  runApp(const MainApp());
+  runApp(MultiBlocProvider(providers: [
+    BlocProvider(create: (_) => injection_container.sl<DeskBloc>()),
+  ], child: const MainApp()));
 }
 
 class MainApp extends StatelessWidget {

@@ -7,6 +7,10 @@ sealed class DeskState extends Equatable {
   List<Object> get props => [];
 }
 
+sealed class CreateDeskState extends DeskState {
+  const CreateDeskState();
+}
+
 sealed class Failure extends DeskState {
   final String message;
 
@@ -20,13 +24,15 @@ sealed class Failure extends DeskState {
 
 final class Empty extends DeskState {}
 
-final class Loading extends DeskState {}
+final class CreateDeskFetching extends DeskState {}
 
 final class CreateDeskSuccess extends DeskState {}
 
 final class CreateDeskFailure extends Failure {
   const CreateDeskFailure({required super.message});
 }
+
+final class GetAllDesksFetching extends DeskState {}
 
 final class GetAllDesksSuccess extends DeskState {
   final List<Desk> desks;
@@ -43,6 +49,8 @@ final class GetAllDesksFailure extends Failure {
   const GetAllDesksFailure({required super.message});
 }
 
+final class GetDeskByIdFetching extends DeskState {}
+
 final class GetDeskByIdSuccess extends DeskState {
   final Desk desk;
 
@@ -58,11 +66,15 @@ final class GetDeskByIdFailure extends Failure {
   const GetDeskByIdFailure({required super.message});
 }
 
+final class UpdateDeskFetching extends DeskState {}
+
 final class UpdateDeskSuccess extends DeskState {}
 
 final class UpdateDeskFailure extends Failure {
   const UpdateDeskFailure({required super.message});
 }
+
+final class DeleteDeskFetching extends DeskState {}
 
 final class DeleteDeskSuccess extends DeskState {}
 

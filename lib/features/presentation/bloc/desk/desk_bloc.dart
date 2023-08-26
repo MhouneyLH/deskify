@@ -12,9 +12,6 @@ import '../../../domain/usecases/update_desk_usecase.dart';
 part 'desk_event.dart';
 part 'desk_state.dart';
 
-const String apiFailureMessage = 'API Failure';
-const String unexpectedFailureMessage = 'Unexpected error';
-
 class DeskBloc extends Bloc<DeskEvent, DeskState> {
   final CreateDeskUsecase createDeskUsecase;
   final GetAllDesksUsecase getAllDesksUsecase;
@@ -36,79 +33,83 @@ class DeskBloc extends Bloc<DeskEvent, DeskState> {
     on<DeletedDesk>(onDeletedDesk);
   }
 
-  void onCreatedDesk(CreatedDesk event, Emitter<DeskState> emit) async {
-    emit(Loading());
+  void onCreatedDesk(DeskEvent event, Emitter<DeskState> emit) async {
+    if (event is CreatedDesk) {
+      emit(CreateDeskFetching());
 
-    final failureOrVoid = await createDeskUsecase(
-      CreateDeskParams(desk: event.desk),
-    );
+      final failureOrVoid = await createDeskUsecase(
+        CreateDeskParams(desk: event.desk),
+      );
 
-    failureOrVoid.fold(
-      (failure) => emit(const CreateDeskFailure(message: 'CreateDeskFailure')),
-      (success) => emit(CreateDeskSuccess()),
-    );
+      failureOrVoid.fold(
+        (failure) =>
+            emit(const CreateDeskFailure(message: 'CreateDeskFailure')),
+        (success) => emit(CreateDeskSuccess()),
+      );
+    }
   }
 
-  void onGotAllDesks(GotAllDesks event, Emitter<DeskState> emit) async {
-    emit(Loading());
+  void onGotAllDesks(DeskEvent event, Emitter<DeskState> emit) async {
+    if (event is GotAllDesks) {
+      emit(GetAllDesksFetching());
 
-    final failureOrDesks = await getAllDesksUsecase(
-      GetAllDesksParams(),
-    );
+      final failureOrDesks = await getAllDesksUsecase(
+        GetAllDesksParams(),
+      );
 
-    failureOrDesks.fold(
-      (failure) =>
-          emit(const GetAllDesksFailure(message: 'GetAllDesksFailure')),
-      (success) => emit(GetAllDesksSuccess(desks: success)),
-    );
+      failureOrDesks.fold(
+        (failure) =>
+            emit(const GetAllDesksFailure(message: 'GetAllDesksFailure')),
+        (success) => emit(GetAllDesksSuccess(desks: success)),
+      );
+    }
   }
 
-  void onGotDeskById(GotDeskById event, Emitter<DeskState> emit) async {
-    emit(Loading());
+  void onGotDeskById(DeskEvent event, Emitter<DeskState> emit) async {
+    if (event is GotDeskById) {
+      emit(GetDeskByIdFetching());
 
-    final failureOrDesk = await getDeskByIdUsecase(
-      GetDeskByIdParams(deskId: event.id),
-    );
+      final failureOrDesk = await getDeskByIdUsecase(
+        GetDeskByIdParams(deskId: event.id),
+      );
 
-    failureOrDesk.fold(
-      (failure) =>
-          emit(const GetDeskByIdFailure(message: 'GetDeskByIdFailure')),
-      (success) => emit(GetDeskByIdSuccess(desk: success)),
-    );
+      failureOrDesk.fold(
+        (failure) =>
+            emit(const GetDeskByIdFailure(message: 'GetDeskByIdFailure')),
+        (success) => emit(GetDeskByIdSuccess(desk: success)),
+      );
+    }
   }
 
-  void onUpdatedDesk(UpdatedDesk event, Emitter<DeskState> emit) async {
-    emit(Loading());
+  void onUpdatedDesk(DeskEvent event, Emitter<DeskState> emit) async {
+    if (event is UpdatedDesk) {
+      emit(UpdateDeskFetching());
 
-    final failureOrVoid = await updateDeskUsecase(
-      UpdateDeskParams(desk: event.desk),
-    );
+      final failureOrVoid = await updateDeskUsecase(
+        UpdateDeskParams(desk: event.desk),
+      );
 
-    failureOrVoid.fold(
-      (failure) => emit(const UpdateDeskFailure(message: 'UpdateDeskFailure')),
-      (success) => emit(UpdateDeskSuccess()),
-    );
+      failureOrVoid.fold(
+        (failure) =>
+            emit(const UpdateDeskFailure(message: 'UpdateDeskFailure')),
+        (success) => emit(UpdateDeskSuccess()),
+      );
+    }
   }
 
-  void onDeletedDesk(DeletedDesk event, Emitter<DeskState> emit) async {
-    emit(Loading());
+  void onDeletedDesk(DeskEvent event, Emitter<DeskState> emit) async {
+    if (event is DeletedDesk) {
+      emit(DeleteDeskFetching());
 
-    final failureOrVoid = await deleteDeskUsecase(
-      DeleteDeskParams(deskId: event.id),
-    );
+      final failureOrVoid = await deleteDeskUsecase(
+        DeleteDeskParams(deskId: event.id),
+      );
 
-    failureOrVoid.fold(
-      (failure) => emit(const DeleteDeskFailure(message: 'DeleteDeskFailure')),
-      (success) => emit(DeleteDeskSuccess()),
-    );
-  }
-
-  String _mapFailureToMessage(Failure failure) {
-    switch (failure.runtimeType) {
-      case APIFailure:
-        return apiFailureMessage;
-      default:
-        return unexpectedFailureMessage;
+      failureOrVoid.fold(
+        (failure) =>
+            emit(const DeleteDeskFailure(message: 'DeleteDeskFailure')),
+        (success) => emit(DeleteDeskSuccess()),
+      );
     }
   }
 }

@@ -20,6 +20,8 @@ class DeskRemoteDataSourceImpl implements DeskRemoteDataSource {
   Future<void> createDesk(DeskModel desk) async {
     final deskDocument = instance.collection(deskCollectionName).doc();
 
+    desk.id = deskDocument.id;
+
     await deskDocument.set(desk.toMap());
   }
 

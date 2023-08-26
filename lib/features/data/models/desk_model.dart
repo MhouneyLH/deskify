@@ -6,7 +6,7 @@ import '../../domain/entities/preset.dart';
 import 'preset_model.dart';
 
 class DeskModel extends Desk {
-  const DeskModel({
+  DeskModel({
     required super.id,
     required super.name,
     required super.height,
