@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:deskify/features/domain/repository/desk_repository.dart';
+import '../repository/desk_repository.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../core/core.dart';
@@ -8,7 +8,7 @@ import '../entities/desk.dart';
 class GetAllDesksUsecase implements Usecase<void, GetAllDesksParams> {
   final DeskRepository repository;
 
-  GetAllDesksUsecase(this.repository);
+  GetAllDesksUsecase({required this.repository});
 
   // use of callable classes
   // otherwise this class just would have 1 function named "execute()" or something like that

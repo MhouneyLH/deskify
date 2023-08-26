@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:deskify/core/core.dart';
-import 'package:deskify/features/domain/entities/desk.dart';
-import 'package:deskify/features/domain/repository/desk_repository.dart';
+import '../../../core/core.dart';
+import '../../domain/entities/desk.dart';
+import '../../domain/repository/desk_repository.dart';
 
 import '../data_sources/desk_remote_data_source.dart';
 import '../models/desk_model.dart';

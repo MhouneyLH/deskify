@@ -16,14 +16,12 @@ dependencies:
   flutter_bloc: ^8.1.3
   # Functional programming thingies
   dartz: ^0.10.1
-  # Firebase
-  firebase_core: ^2.11.0
-  cloud_firestore: ^4.6.0
   # Value equality
   equatable: ^2.0.5
   # Remote API
   internet_connection_checker: ^1.0.0+1
-  http: ^1.1.0
+  firebase_core: ^2.11.0
+  cloud_firestore: ^4.6.0
 
   #! Frontend
   syncfusion_flutter_sliders: ^21.1.38
