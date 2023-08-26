@@ -5,23 +5,23 @@ import 'package:equatable/equatable.dart';
 import '../../../core/core.dart';
 import '../entities/desk.dart';
 
-class CreateDeskUsecase implements Usecase<void, Params> {
+class UpdateDeskUsecase implements Usecase<void, UpdateDeskParams> {
   final DeskRepository repository;
 
-  CreateDeskUsecase(this.repository);
+  UpdateDeskUsecase(this.repository);
 
   // use of callable classes
   // otherwise this class just would have 1 function named "execute()" or something like that
   @override
-  Future<Either<Failure, void>> call(Params params) async {
+  Future<Either<Failure, void>> call(UpdateDeskParams params) async {
     return await repository.updateDesk(params.desk);
   }
 }
 
-class Params extends Equatable {
+class UpdateDeskParams extends Equatable {
   final Desk desk;
 
-  const Params({required this.desk});
+  const UpdateDeskParams({required this.desk});
 
   @override
   List<dynamic> get props => [desk];
