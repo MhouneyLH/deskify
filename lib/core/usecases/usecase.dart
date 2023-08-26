@@ -15,5 +15,5 @@ abstract class Usecase<Type, Params> {
 /// This is the base class for all usecases that do not require any parameters.
 class NoParams extends Equatable {
   @override
-  List<dynamic> get props => [];
+  List<Object?> get props => [];
 }
