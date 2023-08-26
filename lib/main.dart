@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'app.dart';
 
 import 'features/presentation/bloc/desk/desk_bloc.dart';
+import 'features/presentation/themes/theme.dart';
 import 'injection_container.dart' as injection_container;
 
 Future main() async {
@@ -32,14 +33,12 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: MainApp.title,
-      // theme: ThemeData.from(
-      //   useMaterial3: true, // for a more modern look
-      //   colorScheme: themeProvider.themeData.colorScheme,
-      //   textTheme: themeProvider.themeData.textTheme,
-      // ),
-      home: App(),
+      themeMode: ThemeMode.system,
+      theme: ThemeSettings.lightTheme,
+      darkTheme: ThemeSettings.darkTheme,
+      home: const App(),
     );
   }
 }
