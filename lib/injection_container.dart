@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deskify/features/presentation/bloc/app_bloc_observer.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
@@ -21,6 +23,7 @@ final sl = GetIt.instance;
 Future<void> init() async {
   //! Features
   // Bloc
+  sl.registerLazySingleton<BlocObserver>(() => AppBlocObserver());
   sl.registerFactory(() => DeskBloc(
         sl(),
         sl(),

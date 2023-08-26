@@ -13,9 +13,16 @@ Future main() async {
   await Firebase.initializeApp();
   await injection_container.init();
 
-  runApp(MultiBlocProvider(providers: [
-    BlocProvider(create: (_) => injection_container.sl<DeskBloc>()),
-  ], child: const MainApp()));
+  Bloc.observer = injection_container.sl();
+
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => injection_container.sl<DeskBloc>()),
+      ],
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
