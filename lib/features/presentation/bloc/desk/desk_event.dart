@@ -52,3 +52,14 @@ final class DeletedDesk extends DeskEvent {
   @override
   List<Object> get props => [id];
 }
+
+final class UpdatedCurrentDesk extends DeskEvent {
+  final Desk currentDesk;
+
+  const UpdatedCurrentDesk({
+    required this.currentDesk,
+  });
+
+  @override
+  List<Object> get props => [currentDesk];
+}

@@ -10,6 +10,6 @@ class AddDeskPage extends StatefulWidget {
 class _AddDeskPageState extends State<AddDeskPage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Text('Add Desk Page');
   }
 }

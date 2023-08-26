@@ -13,24 +13,27 @@ part 'desk_event.dart';
 part 'desk_state.dart';
 
 class DeskBloc extends Bloc<DeskEvent, DeskState> {
+  Desk currentDesk = Desk.empty();
+
   final CreateDeskUsecase createDeskUsecase;
   final GetAllDesksUsecase getAllDesksUsecase;
   final GetDeskByIdUsecase getDeskByIdUsecase;
   final UpdateDeskUsecase updateDeskUsecase;
   final DeleteDeskUsecase deleteDeskUsecase;
 
-  DeskBloc(
-    this.createDeskUsecase,
-    this.getAllDesksUsecase,
-    this.getDeskByIdUsecase,
-    this.updateDeskUsecase,
-    this.deleteDeskUsecase,
-  ) : super(Empty()) {
+  DeskBloc({
+    required this.createDeskUsecase,
+    required this.getAllDesksUsecase,
+    required this.getDeskByIdUsecase,
+    required this.updateDeskUsecase,
+    required this.deleteDeskUsecase,
+  }) : super(Empty()) {
     on<CreatedDesk>(onCreatedDesk);
     on<GotAllDesks>(onGotAllDesks);
     on<GotDeskById>(onGotDeskById);
     on<UpdatedDesk>(onUpdatedDesk);
     on<DeletedDesk>(onDeletedDesk);
+    on<UpdatedCurrentDesk>(onUpdatedCurrentDesk);
   }
 
   void onCreatedDesk(DeskEvent event, Emitter<DeskState> emit) async {
@@ -110,6 +113,20 @@ class DeskBloc extends Bloc<DeskEvent, DeskState> {
             emit(const DeleteDeskFailure(message: 'DeleteDeskFailure')),
         (success) => emit(DeleteDeskSuccess()),
       );
+    }
+  }
+
+  void onUpdatedCurrentDesk(
+    DeskEvent event,
+    Emitter<DeskState> emit,
+  ) async {
+    if (event is UpdatedCurrentDesk) {
+      currentDesk = event.currentDesk;
+
+      // should only be successful
+      emit(UpdateCurrentDeskSuccess(
+        currentDesk: event.currentDesk,
+      ));
     }
   }
 }

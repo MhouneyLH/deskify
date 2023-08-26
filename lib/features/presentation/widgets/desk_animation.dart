@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../model/desk.dart';
+import '../../../core/utils/constants.dart';
 
-// a desk-animation for showing the current height
-// just 3 positioned containers with adjusted margins
 class DeskAnimation extends StatefulWidget {
   final double width;
   final double deskHeight;
@@ -25,13 +23,12 @@ class _DeskAnimationState extends State<DeskAnimation> {
 
   @override
   Widget build(BuildContext context) {
-    deskDisplayHeight =
-        (widget.deskHeight / Desk.maximumHeight) * Desk.maximumHeight;
+    deskDisplayHeight = widget.deskHeight;
     deskColor = Theme.of(context).colorScheme.tertiary;
 
     return SizedBox(
       width: widget.width,
-      height: Desk.maximumHeight + deskDisplayThickness,
+      height: deskMaximumHeight + deskDisplayThickness,
       child: Stack(
         children: [
           _buildDesk(),

@@ -25,11 +25,11 @@ Future<void> init() async {
   // Bloc
   sl.registerLazySingleton<BlocObserver>(() => AppBlocObserver());
   sl.registerFactory(() => DeskBloc(
-        sl(),
-        sl(),
-        sl(),
-        sl(),
-        sl(),
+        createDeskUsecase: sl(),
+        getAllDesksUsecase: sl(),
+        getDeskByIdUsecase: sl(),
+        updateDeskUsecase: sl(),
+        deleteDeskUsecase: sl(),
       ));
 
   // Usecases

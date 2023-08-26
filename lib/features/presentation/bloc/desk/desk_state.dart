@@ -81,3 +81,14 @@ final class DeleteDeskSuccess extends DeskState {}
 final class DeleteDeskFailure extends Failure {
   const DeleteDeskFailure({required super.message});
 }
+
+final class UpdateCurrentDeskSuccess extends DeskState {
+  final Desk currentDesk;
+
+  const UpdateCurrentDeskSuccess({
+    required this.currentDesk,
+  });
+
+  @override
+  List<Object> get props => [currentDesk];
+}

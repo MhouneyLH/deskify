@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
 import '../../../core/core.dart';
@@ -18,6 +19,18 @@ class Desk extends Equatable {
     required this.presets,
   });
 
+  factory Desk.empty() {
+    return Desk(
+      id: '-1',
+      name: '',
+      height: 0.0,
+      presets: const [],
+    );
+  }
+
   @override
   List<Object?> get props => [id, name, height, presets];
+
+  @override
+  bool get stringify => true;
 }

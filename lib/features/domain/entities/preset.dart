@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
 import '../../../core/core.dart';
@@ -16,4 +17,7 @@ class Preset extends Equatable {
 
   @override
   List<Object?> get props => [id, name, targetHeight];
+
+  @override
+  bool get stringify => true;
 }
