@@ -1,23 +1,31 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'pages/home_page.dart';
-import 'provider/desk_provider.dart';
-import 'provider/interaction_widget_provider.dart';
-import 'provider/profile_provider.dart';
-import 'provider/theme_provider.dart';
+import 'app.dart';
+import 'features/presentation/bloc/desk/desk_bloc.dart';
+import 'features/presentation/themes/theme.dart';
+import 'injection_container.dart' as injection_container;
 
-// entry point of the app
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
 
-  runApp(const MainApp());
+  await Firebase.initializeApp();
+  await injection_container.init();
+
+  // TODO: maybe this should be moved in injection_container.dart???
+  Bloc.observer = injection_container.sl();
+
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => injection_container.sl<DeskBloc>()),
+      ],
+      child: const MainApp(),
+    ),
+  );
 }
 
-// root widget of the app
-// connection between the app and the providers
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
@@ -25,25 +33,12 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      // initialize all available providers
-      providers: [
-        ChangeNotifierProvider(create: (_) => DeskProvider()),
-        ChangeNotifierProvider(create: (_) => ProfileProvider()),
-        ChangeNotifierProvider(create: (_) => ThemeProvider()),
-        ChangeNotifierProvider(create: (_) => InteractionWidgetProvider()),
-      ],
-      child: Consumer<ThemeProvider>(
-        builder: (context, themeProvider, _) => MaterialApp(
-          title: MainApp.title,
-          theme: ThemeData.from(
-            useMaterial3: true, // for a more modern look
-            colorScheme: themeProvider.themeData.colorScheme,
-            textTheme: themeProvider.themeData.textTheme,
-          ),
-          home: const HomePage(),
-        ),
-      ),
+    return MaterialApp(
+      title: MainApp.title,
+      themeMode: ThemeMode.system,
+      theme: ThemeSettings.lightTheme,
+      darkTheme: ThemeSettings.darkTheme,
+      home: const App(),
     );
   }
 }
