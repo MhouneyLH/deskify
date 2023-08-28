@@ -14,6 +14,7 @@ part 'desk_event.dart';
 part 'desk_state.dart';
 
 class DeskBloc extends Bloc<DeskEvent, DeskState> {
+  // TODO: not sure, if this should be located here... -> maybe change in the future
   Desk currentDesk = Desk.empty();
 
   final CreateDeskUsecase createDeskUsecase;

@@ -33,9 +33,14 @@ class _HomePageState extends State<HomePage> {
         const SizedBox(width: 10.0),
         //! TEST PART
         ElevatedButton(
-          onPressed: () => BlocProvider.of<DeskBloc>(context).add(
-            DeletedDesk(id: BlocProvider.of<DeskBloc>(context).currentDesk.id),
-          ),
+          onPressed: () {
+            BlocProvider.of<DeskBloc>(context).add(
+              DeletedDesk(
+                  id: BlocProvider.of<DeskBloc>(context).currentDesk.id),
+            );
+
+            BlocProvider.of<DeskBloc>(context).add(GotAllDesks());
+          },
           child: const Text('Delete Desk'),
         ),
         BlocBuilder<DeskBloc, DeskState>(
@@ -59,26 +64,30 @@ class _HomePageState extends State<HomePage> {
         ),
         const SizedBox(height: 20),
         ElevatedButton(
-            onPressed: () => BlocProvider.of<DeskBloc>(context).add(
-                  CreatedDesk(
-                    desk: Desk(
-                      height: 100.1,
-                      name: 'This is my desk',
-                      presets: const [
-                        Preset(
-                          id: '0',
-                          name: 'preset 1',
-                          targetHeight: 88.8,
-                        ),
-                        Preset(
-                          id: '1',
-                          name: 'preset 2',
-                          targetHeight: 102.1,
-                        ),
-                      ],
-                    ),
+            onPressed: () {
+              BlocProvider.of<DeskBloc>(context).add(
+                CreatedDesk(
+                  desk: Desk(
+                    height: 100.1,
+                    name: 'This is my desk',
+                    presets: const [
+                      Preset(
+                        id: '0',
+                        name: 'preset 1',
+                        targetHeight: 88.8,
+                      ),
+                      Preset(
+                        id: '1',
+                        name: 'preset 2',
+                        targetHeight: 102.1,
+                      ),
+                    ],
                   ),
                 ),
+              );
+
+              BlocProvider.of<DeskBloc>(context).add(GotAllDesks());
+            },
             child: const Text('Create Desk')),
         const SizedBox(height: 20),
         BlocBuilder<DeskBloc, DeskState>(

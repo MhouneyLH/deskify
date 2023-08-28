@@ -14,7 +14,7 @@ class Desk extends Equatable {
   final List<Preset> presets;
 
   Desk({
-    this.id = '-1',
+    this.id = defaultId,
     required this.name,
     required this.height,
     required this.presets,
@@ -22,7 +22,7 @@ class Desk extends Equatable {
 
   factory Desk.empty() {
     return Desk(
-      id: '-1',
+      id: defaultId,
       name: '',
       height: 0.0,
       presets: const [],

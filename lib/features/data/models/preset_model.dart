@@ -3,6 +3,9 @@ import 'dart:convert';
 import '../../../core/core.dart';
 import '../../domain/entities/preset.dart';
 
+/// This class is the data model for the [Preset] entity that is contained in [DeskModel].
+///
+/// It is used as a data transfer object between the data and domain layer.
 class PresetModel extends Preset {
   const PresetModel({
     required super.id,
@@ -10,6 +13,7 @@ class PresetModel extends Preset {
     required super.targetHeight,
   });
 
+  /// Creates a [PresetModel] from a [Preset] entity.
   factory PresetModel.fromEntity(Preset preset) {
     return PresetModel(
       id: preset.id,
@@ -18,6 +22,7 @@ class PresetModel extends Preset {
     );
   }
 
+  /// Creates a [Preset] entity from a [PresetModel].
   Preset toEntity() {
     return Preset(
       id: id,
@@ -26,6 +31,7 @@ class PresetModel extends Preset {
     );
   }
 
+  /// Creates a [PresetModel] from a map.
   factory PresetModel.fromMap(Map<String, dynamic> map) {
     return PresetModel(
       id: map['id'] as Id,
@@ -34,6 +40,9 @@ class PresetModel extends Preset {
     );
   }
 
+  /// Creates a map from a [PresetModel].
+  ///
+  /// This map is used to store the [PresetModel] in the database.
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -42,8 +51,10 @@ class PresetModel extends Preset {
     };
   }
 
+  /// Creates a [PresetModel] from a json string.
   factory PresetModel.fromJson(String source) =>
       PresetModel.fromMap(json.decode(source));
 
+  /// Creates a json string from a [PresetModel].
   String toJson(PresetModel model) => json.encode(model.toMap());
 }

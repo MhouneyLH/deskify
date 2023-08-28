@@ -5,6 +5,9 @@ import '../../domain/entities/desk.dart';
 import '../../domain/entities/preset.dart';
 import 'preset_model.dart';
 
+/// This class is the data model for the [Desk] entity.
+/// 
+/// It is used as a data transfer object between the data and domain layer.
 // ignore: must_be_immutable
 class DeskModel extends Desk {
   DeskModel({
@@ -14,6 +17,7 @@ class DeskModel extends Desk {
     required super.presets,
   });
 
+  /// Creates a [DeskModel] from a [Desk] entity. 
   factory DeskModel.fromEntity(Desk desk) {
     return DeskModel(
       id: desk.id,
@@ -23,6 +27,7 @@ class DeskModel extends Desk {
     );
   }
 
+  /// Creates a [Desk] entity from a [DeskModel].
   Desk toEntity() {
     return Desk(
       id: id,
@@ -32,6 +37,7 @@ class DeskModel extends Desk {
     );
   }
 
+  /// Creates a [DeskModel] from a map.
   factory DeskModel.fromMap(Map<String, dynamic> map) {
     return DeskModel(
       id: map['id'] as Id,
@@ -42,6 +48,9 @@ class DeskModel extends Desk {
     );
   }
 
+  /// Creates a map from a [DeskModel].
+  /// 
+  /// This map is used to store the [DeskModel] in the database.
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -53,8 +62,10 @@ class DeskModel extends Desk {
     };
   }
 
+  /// Creates a [DeskModel] from a json string.
   factory DeskModel.fromJson(String source) =>
       DeskModel.fromMap(json.decode(source));
 
+  /// Creates a json string from a [DeskModel].
   String toJson(DeskModel model) => json.encode(model.toMap());
 }

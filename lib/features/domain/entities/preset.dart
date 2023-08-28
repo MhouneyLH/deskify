@@ -4,6 +4,8 @@ import 'package:equatable/equatable.dart';
 import '../../../core/core.dart';
 
 /// A preset is a set of settings for a [Desk].
+///
+/// A [Desk] can have multiple [Preset]s.
 class Preset extends Equatable {
   final Id id;
   final String name;
