@@ -47,7 +47,7 @@ Future<void> init() async {
 
   // Data sources
   sl.registerLazySingleton<DeskRemoteDataSource>(
-      () => DeskRemoteDataSourceImpl(instance: sl()));
+      () => DeskRemoteDataSourceImpl(firestoreInstance: sl()));
 
   //! Core
   sl.registerLazySingleton<NetworkInfo>(

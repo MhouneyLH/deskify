@@ -35,35 +35,45 @@ abstract class DeskRemoteDataSource {
 }
 
 class DeskRemoteDataSourceImpl implements DeskRemoteDataSource {
-  final FirebaseFirestore instance;
+  final FirebaseFirestore firestoreInstance;
 
-  DeskRemoteDataSourceImpl({required this.instance});
+  DeskRemoteDataSourceImpl({required this.firestoreInstance});
 
   @override
   Future<void> createDesk(DeskModel desk) async {
-    final deskDocument = instance.collection(deskCollectionName).doc();
+    try {
+      final deskDocument =
+          firestoreInstance.collection(deskCollectionName).doc();
 
-    desk.id = deskDocument.id;
+      desk.id = deskDocument.id;
 
-    await deskDocument.set(desk.toMap());
+      await deskDocument.set(desk.toMap());
+    } on Exception catch (_) {
+      throw APIException(message: 'createDesk');
+    }
   }
 
   @override
   Future<List<DeskModel>> getAllDesks() async {
-    final snapshot = await instance.collection(deskCollectionName).get();
+    try {
+      final snapshot =
+          await firestoreInstance.collection(deskCollectionName).get();
 
-    final List<DeskModel> desks = [];
-    for (final doc in snapshot.docs) {
-      desks.add(DeskModel.fromMap(doc.data()));
+      final List<DeskModel> desks = [];
+      for (final doc in snapshot.docs) {
+        desks.add(DeskModel.fromMap(doc.data()));
+      }
+
+      return desks;
+    } on Exception catch (_) {
+      throw APIException(message: 'getAllDesks');
     }
-
-    return desks;
   }
 
   @override
   Future<DeskModel> getDeskById(String id) async {
     final snapshot =
-        await instance.collection(deskCollectionName).doc(id).get();
+        await firestoreInstance.collection(deskCollectionName).doc(id).get();
 
     final DeskModel desk = DeskModel.fromMap(snapshot.data()!);
     return desk;
@@ -71,14 +81,16 @@ class DeskRemoteDataSourceImpl implements DeskRemoteDataSource {
 
   @override
   Future<void> updateDesk(DeskModel desk) async {
-    final deskDocument = instance.collection(deskCollectionName).doc(desk.id);
+    final deskDocument =
+        firestoreInstance.collection(deskCollectionName).doc(desk.id);
 
     await deskDocument.update(desk.toMap());
   }
 
   @override
   Future<void> deleteDesk(String id) async {
-    final deskDocument = instance.collection(deskCollectionName).doc(id);
+    final deskDocument =
+        firestoreInstance.collection(deskCollectionName).doc(id);
 
     await deskDocument.delete();
   }

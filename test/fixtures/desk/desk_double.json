@@ -1,0 +1,17 @@
+{
+    "id": "0",
+    "name": "test",
+    "height": 0.0,
+    "presets": [
+      {
+        "id": "0",
+        "name": "test",
+        "targetHeight": 0.0
+      },
+      {
+        "id": "1",
+        "name": "test",
+        "targetHeight": 1.0
+      }
+    ]
+}

@@ -21,7 +21,7 @@ class DeskRepositoryImpl implements DeskRepository {
       try {
         await remoteDataSource.createDesk(DeskModel.fromEntity(desk));
         return const Right(null);
-      } catch (e) {
+      } on APIException catch (_) {
         return Left(APIFailure());
       }
     }
@@ -36,7 +36,7 @@ class DeskRepositoryImpl implements DeskRepository {
       try {
         final List<Desk> result = await remoteDataSource.getAllDesks();
         return Right(result);
-      } catch (e) {
+      } on APIException catch (_) {
         return Left(APIFailure());
       }
     }
@@ -51,7 +51,7 @@ class DeskRepositoryImpl implements DeskRepository {
       try {
         final Desk desk = await remoteDataSource.getDeskById(id);
         return Right(desk);
-      } catch (e) {
+      } on APIException catch (_) {
         return Left(APIFailure());
       }
     }
@@ -66,7 +66,7 @@ class DeskRepositoryImpl implements DeskRepository {
       try {
         await remoteDataSource.updateDesk(DeskModel.fromEntity(desk));
         return const Right(null);
-      } catch (e) {
+      } on APIException catch (_) {
         return Left(APIFailure());
       }
     }
@@ -81,7 +81,7 @@ class DeskRepositoryImpl implements DeskRepository {
       try {
         await remoteDataSource.deleteDesk(id);
         return const Right(null);
-      } catch (e) {
+      } on APIException catch (_) {
         return Left(APIFailure());
       }
     }

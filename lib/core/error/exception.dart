@@ -1,14 +1,9 @@
 /// Custom [Exception] to handle API related errors.
 class APIException implements Exception {
-  final String clientMessage;
-  final String jsonBody;
+  final String message;
 
-  const APIException({
-    required this.clientMessage,
-    required this.jsonBody,
-  });
+  APIException({required this.message});
 
   @override
-  String toString() => '''APIException(clientMessage: $clientMessage)
-                          JSON Body: $jsonBody''';
+  String toString() => message;
 }

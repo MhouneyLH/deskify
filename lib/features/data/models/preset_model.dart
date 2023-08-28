@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import '../../../core/core.dart';
 import '../../domain/entities/preset.dart';
@@ -36,7 +35,9 @@ class PresetModel extends Preset {
     return PresetModel(
       id: map['id'] as Id,
       name: map['name'] as String,
-      targetHeight: map['targetHeight'] as double,
+      targetHeight: map['targetHeight'] is int
+          ? (map['targetHeight'] as int).toDouble()
+          : map['targetHeight'] as double,
     );
   }
 
@@ -50,11 +51,4 @@ class PresetModel extends Preset {
       'targetHeight': targetHeight,
     };
   }
-
-  /// Creates a [PresetModel] from a json string.
-  factory PresetModel.fromJson(String source) =>
-      PresetModel.fromMap(json.decode(source));
-
-  /// Creates a json string from a [PresetModel].
-  String toJson(PresetModel model) => json.encode(model.toMap());
 }

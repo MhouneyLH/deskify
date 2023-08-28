@@ -38,6 +38,8 @@ class DeskBloc extends Bloc<DeskEvent, DeskState> {
     on<UpdatedCurrentDesk>(onUpdatedCurrentDesk);
   }
 
+  DeskState get initialState => Empty();
+
   void onCreatedDesk(DeskEvent event, Emitter<DeskState> emit) async {
     if (event is CreatedDesk) {
       emit(CreateDeskFetching());
