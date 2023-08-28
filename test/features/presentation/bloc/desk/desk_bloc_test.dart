@@ -69,10 +69,10 @@ void main() {
     registerFallbackValue(tDeskModel);
 
     registerFallbackValue(CreateDeskParams(desk: tDeskModel));
+    registerFallbackValue(NoParams());
     registerFallbackValue(const GetDeskByIdParams(deskId: tDeskId));
     registerFallbackValue(UpdateDeskParams(desk: tDeskModel));
     registerFallbackValue(const DeleteDeskParams(deskId: tDeskId));
-    registerFallbackValue(GetAllDesksParams());
   });
 
   test('initialState should be Empty', () {
@@ -144,7 +144,7 @@ void main() {
         sut.add(GotAllDesks());
         await untilCalled(() => mockGetAllDesksUsecase(any()));
         // assert
-        verify(() => mockGetAllDesksUsecase(GetAllDesksParams()));
+        verify(() => mockGetAllDesksUsecase(NoParams()));
       },
     );
 

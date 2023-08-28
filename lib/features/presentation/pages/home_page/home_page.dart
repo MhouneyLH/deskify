@@ -6,6 +6,8 @@ import '../../../domain/entities/preset.dart';
 import '../../bloc/desk/desk_bloc.dart';
 import 'desk_carousel_slider.dart';
 
+/// A page on which the user gets an overview of all [Desk] entities and
+/// possibilities to interact with them. (e. g. select a desk, move the desk, tap on a preset, add a preset, etc.)
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 

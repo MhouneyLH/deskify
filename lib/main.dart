@@ -13,6 +13,7 @@ Future main() async {
   await Firebase.initializeApp();
   await injection_container.init();
 
+  // TODO: maybe this should be moved in injection_container.dart???
   Bloc.observer = injection_container.sl();
 
   runApp(

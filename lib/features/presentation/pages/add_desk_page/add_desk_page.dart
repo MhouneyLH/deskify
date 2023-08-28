@@ -1,5 +1,8 @@
 import 'package:flutter/widgets.dart';
 
+/// A page on which a [Desk] entity can be added.
+///
+/// You can select a name and height for the desk and add presets to it.
 class AddDeskPage extends StatefulWidget {
   const AddDeskPage({super.key});
 

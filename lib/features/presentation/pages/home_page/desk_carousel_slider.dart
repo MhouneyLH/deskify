@@ -6,6 +6,9 @@ import '../../widgets/desk_animation.dart';
 
 const int initialIndex = 0;
 
+/// A carousel slider that displays all [Desk] entities.
+///
+/// The user can select a desk by swiping through the carousel. (while doing this, the currentDesk gets updated)
 class DeskCarouselSlider extends StatefulWidget {
   final List<Desk> allDesks;
   final Function(Desk) onDeskSelected;

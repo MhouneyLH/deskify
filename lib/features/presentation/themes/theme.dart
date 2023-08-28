@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// This class defines the colors for the themes of the app.
 class ThemeSettings {
   static final ThemeData darkTheme = ThemeData(
     useMaterial3: true,

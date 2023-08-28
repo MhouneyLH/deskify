@@ -13,6 +13,9 @@ import '../../../domain/usecases/update_desk_usecase.dart';
 part 'desk_event.dart';
 part 'desk_state.dart';
 
+/// This class is used to manage the state of the [Desk] entity.
+/// 
+/// It is used to communicate between the presentation and domain layer.
 class DeskBloc extends Bloc<DeskEvent, DeskState> {
   // TODO: not sure, if this should be located here... -> maybe change in the future
   Desk currentDesk = Desk.empty();
@@ -60,9 +63,7 @@ class DeskBloc extends Bloc<DeskEvent, DeskState> {
     if (event is GotAllDesks) {
       emit(GetAllDesksFetching());
 
-      final failureOrDesks = await getAllDesksUsecase(
-        GetAllDesksParams(),
-      );
+      final failureOrDesks = await getAllDesksUsecase(NoParams());
 
       failureOrDesks.fold(
         (failure) =>
