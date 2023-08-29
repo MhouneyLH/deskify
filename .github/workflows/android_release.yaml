@@ -1,0 +1,46 @@
+name: Android Release
+
+on: [release, workflow_dispatch]
+
+env:
+  ARTIFACT_NAME: android-release
+  ARTIFACT_PATH: ${{ github.workspace }}/build/app/outputs/flutter-apk/app-release.apk
+
+jobs:
+  build:
+    name: Create Android Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: "zulu"
+          java-version: "12.x"
+          # for a faster build
+          cache: "gradle"
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          # for a faster build
+          cache: true
+      - name: Show Flutter version
+        run: flutter --version
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Build release apk
+        run: flutter build apk --release
+
+      - name: Upload apk
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.ARTIFACT_PATH }}
