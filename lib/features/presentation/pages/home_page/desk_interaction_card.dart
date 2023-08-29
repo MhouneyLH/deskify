@@ -1,4 +1,5 @@
 import 'package:deskify/features/presentation/themes/theme.dart';
+import 'package:deskify/features/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 /// A card like Button with which the user can interact.
@@ -44,13 +45,13 @@ class _DeskInteractionCardState extends State<DeskInteractionCard> {
                 widget.title,
                 style: Theme.of(context).textTheme.labelLarge,
               ),
-              const Spacer(),
+              widget.iconAtEnd == null ? Container() : const Spacer(),
               widget.iconAtEnd == null
                   ? Container()
-                  : IconButton(
-                      onPressed: widget.onPressedIconAtEnd,
-                      icon: Icon(widget.iconAtEnd!.icon),
-                    ),
+                  : CustomIconButton(
+                      onPressed: widget.onPressedIconAtEnd!,
+                      icon: widget.iconAtEnd!,
+                    )
             ],
           ),
           widget.child == null

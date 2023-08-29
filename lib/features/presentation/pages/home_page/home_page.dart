@@ -39,58 +39,45 @@ class _HomePageState extends State<HomePage> {
         const Heading(title: 'Analytics'),
         const SizedBox(height: ThemeSettings.smallSpacing),
         DeskInteractionCard(
-          title: 'My Height Preset',
+          title: 'Standing Time',
           iconAtStart: const Icon(Icons.info),
-          // iconAtEnd: const Icon(Icons.settings),
           onPressedCard: () {},
-          onPressedIconAtEnd: () {},
-          child: const Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              LinearProgressIndicator(
-                value: 0.5,
-              ),
-              const SizedBox(height: ThemeSettings.smallSpacing),
-              LinearProgressIndicator(
-                value: 0.5,
-              ),
-              const SizedBox(height: ThemeSettings.smallSpacing),
-              LinearProgressIndicator(
-                value: 0.5,
-              ),
-              const SizedBox(height: ThemeSettings.smallSpacing),
-              LinearProgressIndicator(
-                value: 0.5,
-              ),
-              const SizedBox(height: ThemeSettings.smallSpacing),
-              LinearProgressIndicator(
-                value: 0.5,
-              ),
-            ],
+          child: const LinearProgressIndicator(
+            value: 0.7,
           ),
         ),
-        const Placeholder(
-          fallbackHeight: 70,
+        const SizedBox(height: ThemeSettings.smallSpacing),
+        DeskInteractionCard(
+          title: 'Sitting Time',
+          iconAtStart: const Icon(Icons.info),
+          onPressedCard: () {},
+          child: const LinearProgressIndicator(
+            value: 0.3,
+          ),
         ),
         const SizedBox(height: ThemeSettings.mediumSpacing),
         const Heading(title: 'Presets'),
         const SizedBox(height: ThemeSettings.smallSpacing),
-        const Placeholder(
-          fallbackHeight: 70,
-        ),
-        const SizedBox(height: ThemeSettings.smallSpacing),
-        const Placeholder(
-          fallbackHeight: 70,
-        ),
+        for (int i = 0; i < 3; i++)
+          Column(
+            children: [
+              DeskInteractionCard(
+                title: 'Preset $i',
+                iconAtStart: const Icon(Icons.info),
+                onPressedCard: () {},
+                iconAtEnd: const Icon(Icons.settings),
+                onPressedIconAtEnd: () {},
+              ),
+              const SizedBox(height: ThemeSettings.smallSpacing),
+            ],
+          ),
         const SizedBox(height: ThemeSettings.mediumSpacing),
         const Heading(title: 'Others'),
         const SizedBox(height: ThemeSettings.smallSpacing),
-        const Placeholder(
-          fallbackHeight: 70,
-        ),
-        const SizedBox(height: ThemeSettings.smallSpacing),
-        const Placeholder(
-          fallbackHeight: 70,
+        DeskInteractionCard(
+          title: 'Move desk',
+          iconAtStart: const Icon(Icons.move_up),
+          onPressedCard: () {},
         ),
       ],
     );
@@ -172,143 +159,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Column(
-  //     children: [
-  //       BlocBuilder<DeskBloc, DeskState>(
-  //         buildWhen: (previous, current) => current is UpdateCurrentDeskSuccess,
-  //         builder: (context, state) {
-  //           if (state is Empty) {
-  //             return const Text('Current desk: Empty');
-  //           } else if (state is UpdateCurrentDeskSuccess) {
-  //             return Text('Current desk: ${state.currentDesk}');
-  //           } else {
-  //             return const Text('Unknown state');
-  //           }
-  //         },
-  //       ),
-  //       const SizedBox(width: 10.0),
-  //       //! TEST PART
-  //       ElevatedButton(
-  //         onPressed: () {
-  //           BlocProvider.of<DeskBloc>(context).add(
-  //             DeletedDesk(
-  //                 id: BlocProvider.of<DeskBloc>(context).currentDesk.id),
-  //           );
-
-  //           BlocProvider.of<DeskBloc>(context).add(GotAllDesks());
-  //         },
-  //         child: const Text('Delete Desk'),
-  //       ),
-  //       BlocBuilder<DeskBloc, DeskState>(
-  //         buildWhen: (previous, current) =>
-  //             current is DeleteDeskFetching ||
-  //             current is DeleteDeskSuccess ||
-  //             current is DeleteDeskFailure,
-  //         builder: (context, state) {
-  //           if (state is Empty) {
-  //             return const Text('Empty');
-  //           } else if (state is DeleteDeskFetching) {
-  //             return const CircularProgressIndicator();
-  //           } else if (state is DeleteDeskSuccess) {
-  //             return const Text('Deleting worked fine :)');
-  //           } else if (state is DeleteDeskFailure) {
-  //             return Text(state.message);
-  //           } else {
-  //             return const Text('Unknown state');
-  //           }
-  //         },
-  //       ),
-  //       const SizedBox(height: 20),
-  //       ElevatedButton(
-  //           onPressed: () {
-  //             BlocProvider.of<DeskBloc>(context).add(
-  //               CreatedDesk(
-  //                 desk: Desk(
-  //                   height: 100.1,
-  //                   name: 'This is my desk',
-  //                   presets: const [
-  //                     Preset(
-  //                       id: '0',
-  //                       name: 'preset 1',
-  //                       targetHeight: 88.8,
-  //                     ),
-  //                     Preset(
-  //                       id: '1',
-  //                       name: 'preset 2',
-  //                       targetHeight: 102.1,
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //             );
-
-  //             BlocProvider.of<DeskBloc>(context).add(GotAllDesks());
-  //           },
-  //           child: const Text('Create Desk')),
-  //       const SizedBox(height: 20),
-  //       BlocBuilder<DeskBloc, DeskState>(
-  //         buildWhen: (previous, current) =>
-  //             current is CreateDeskFetching ||
-  //             current is CreateDeskSuccess ||
-  //             current is CreateDeskFailure,
-  //         builder: (context, state) {
-  //           if (state is Empty) {
-  //             return const Text('Empty');
-  //           } else if (state is CreateDeskFetching) {
-  //             return const CircularProgressIndicator();
-  //           } else if (state is CreateDeskSuccess) {
-  //             return const Text('This worked :)');
-  //           } else if (state is CreateDeskFailure) {
-  //             return Text(state.message);
-  //           } else {
-  //             return const Text('Unknown state');
-  //           }
-  //         },
-  //       ),
-  //       const SizedBox(height: 20),
-  //       ElevatedButton(
-  //         onPressed: () =>
-  //             BlocProvider.of<DeskBloc>(context).add(GotAllDesks()),
-  //         child: const Text('Get all desks'),
-  //       ),
-  //       const SizedBox(height: 20),
-  //       BlocBuilder<DeskBloc, DeskState>(
-  //         buildWhen: (previous, current) =>
-  //             current is GetAllDesksFetching ||
-  //             current is GetAllDesksSuccess ||
-  //             current is GetAllDesksFailure,
-  //         builder: (context, state) {
-  //           if (state is Empty) {
-  //             return const Text('Empty');
-  //           } else if (state is GetAllDesksFetching) {
-  //             return const CircularProgressIndicator();
-  //           } else if (state is GetAllDesksSuccess) {
-  //             if (state.desks.isEmpty) {
-  //               _updateCurrentDesk(Desk.empty());
-  //               return const Text('No desks found');
-  //             }
-
-  //             _updateCurrentDesk(state.desks.first);
-  //             return DeskCarouselSlider(
-  //               allDesks: state.desks,
-  //               onDeskSelected: (Desk desk) => _updateCurrentDesk(desk),
-  //             );
-  //           } else if (state is GetAllDesksFailure) {
-  //             return Column(
-  //               children: [
-  //                 const Icon(Icons.error),
-  //                 Text(state.message),
-  //               ],
-  //             );
-  //           } else {
-  //             return const Text('Unknown state');
-  //           }
-  //         },
-  //       ),
-  //     ],
-  //   );
-  // }
 }
