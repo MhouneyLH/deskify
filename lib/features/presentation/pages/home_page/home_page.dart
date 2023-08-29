@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
         _buildCurrentDeskHeading(),
         const SizedBox(height: ThemeSettings.smallSpacing),
         _buildCurrentDeskHeightText(),
-        const SizedBox(height: ThemeSettings.mediumSpacing),
+        const SizedBox(height: ThemeSettings.largeSpacing),
         _buildDeskCarouselSlider(),
         const SizedBox(height: ThemeSettings.mediumSpacing),
         const Heading(title: 'Analytics'),

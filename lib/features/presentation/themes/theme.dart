@@ -9,4 +9,5 @@ class ThemeSettings {
 
   static const double smallSpacing = 5.0;
   static const double mediumSpacing = 10.0;
+  static const double largeSpacing = 20.0;
 }
