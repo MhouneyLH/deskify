@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../domain/entities/desk.dart';
+import '../../../domain/entities/preset.dart';
 import '../../bloc/desk/desk_bloc.dart';
 import '../../themes/theme.dart';
 import 'desk_carousel_slider.dart';
@@ -58,19 +59,7 @@ class _HomePageState extends State<HomePage> {
         const SizedBox(height: ThemeSettings.mediumSpacing),
         const Heading(title: 'Presets'),
         const SizedBox(height: ThemeSettings.smallSpacing),
-        for (int i = 0; i < 3; i++)
-          Column(
-            children: [
-              DeskInteractionCard(
-                title: 'Preset $i',
-                iconAtStart: const Icon(Icons.info),
-                onPressedCard: () {},
-                iconAtEnd: const Icon(Icons.settings),
-                onPressedIconAtEnd: () {},
-              ),
-              const SizedBox(height: ThemeSettings.smallSpacing),
-            ],
-          ),
+        _buildCurrentDeskPresets(),
         const SizedBox(height: ThemeSettings.mediumSpacing),
         const Heading(title: 'Others'),
         const SizedBox(height: ThemeSettings.smallSpacing),
@@ -106,6 +95,38 @@ class _HomePageState extends State<HomePage> {
           return const Text('');
         } else if (state is UpdateCurrentDeskSuccess) {
           return Text('${state.currentDesk.height.toString()} cm');
+        } else {
+          return const Text('Unknown state');
+        }
+      },
+    );
+  }
+
+  Widget _buildCurrentDeskPresets() {
+    return BlocBuilder<DeskBloc, DeskState>(
+      buildWhen: (previous, current) => current is UpdateCurrentDeskSuccess,
+      builder: (context, state) {
+        if (state is Empty) {
+          return const Text('');
+        } else if (state is UpdateCurrentDeskSuccess) {
+          return Column(
+            children: [
+              for (final Preset preset in state.currentDesk.presets)
+                Column(
+                  children: [
+                    DeskInteractionCard(
+                      title: preset.name,
+                      iconAtStart: const Icon(Icons.info),
+                      onPressedCard: () {},
+                      iconAtEnd: const Icon(Icons.settings),
+                      onPressedIconAtEnd: () {},
+                      child: Text('${preset.targetHeight.toString()} cm'),
+                    ),
+                    const SizedBox(height: ThemeSettings.smallSpacing),
+                  ],
+                ),
+            ],
+          );
         } else {
           return const Text('Unknown state');
         }

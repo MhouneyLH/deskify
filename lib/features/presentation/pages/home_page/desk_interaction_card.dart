@@ -36,6 +36,7 @@ class _DeskInteractionCardState extends State<DeskInteractionCard> {
       onPressed: widget.onPressedCard,
       style: _buildButtonStyle(),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
@@ -54,9 +55,10 @@ class _DeskInteractionCardState extends State<DeskInteractionCard> {
                     )
             ],
           ),
-          widget.child == null
-              ? Container()
-              : const SizedBox(height: ThemeSettings.mediumSpacing),
+          Visibility(
+            visible: widget.child != null,
+            child: const SizedBox(height: ThemeSettings.mediumSpacing),
+          ),
           widget.child ?? Container(),
         ],
       ),
