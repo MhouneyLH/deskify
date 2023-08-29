@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/entities/desk.dart';
-import '../../widgets/desk_animation.dart';
+import '../../widgets/widgets.dart';
 
 const int initialIndex = 0;
 
