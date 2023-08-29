@@ -14,7 +14,8 @@ Future main() async {
   await injection_container.init();
 
   // TODO: maybe this should be moved in injection_container.dart???
-  Bloc.observer = injection_container.sl();
+  // actually I dont need it for now
+  // Bloc.observer = injection_container.sl();
 
   runApp(
     MultiBlocProvider(

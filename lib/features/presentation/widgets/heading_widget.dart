@@ -15,8 +15,7 @@ class Heading extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: Theme.of(context).textTheme.displayLarge,
-      textAlign: TextAlign.start,
+      style: Theme.of(context).textTheme.headlineLarge,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
     );
