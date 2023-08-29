@@ -1,8 +1,8 @@
+import 'package:deskify/features/presentation/pages/home_page/desk_interaction_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../domain/entities/desk.dart';
-import '../../../domain/entities/preset.dart';
 import '../../bloc/desk/desk_bloc.dart';
 import '../../themes/theme.dart';
 import 'desk_carousel_slider.dart';
@@ -38,6 +38,37 @@ class _HomePageState extends State<HomePage> {
         const SizedBox(height: ThemeSettings.mediumSpacing),
         const Heading(title: 'Analytics'),
         const SizedBox(height: ThemeSettings.smallSpacing),
+        DeskInteractionCard(
+          title: 'My Height Preset',
+          iconAtStart: const Icon(Icons.info),
+          // iconAtEnd: const Icon(Icons.settings),
+          onPressedCard: () {},
+          onPressedIconAtEnd: () {},
+          child: const Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              LinearProgressIndicator(
+                value: 0.5,
+              ),
+              const SizedBox(height: ThemeSettings.smallSpacing),
+              LinearProgressIndicator(
+                value: 0.5,
+              ),
+              const SizedBox(height: ThemeSettings.smallSpacing),
+              LinearProgressIndicator(
+                value: 0.5,
+              ),
+              const SizedBox(height: ThemeSettings.smallSpacing),
+              LinearProgressIndicator(
+                value: 0.5,
+              ),
+              const SizedBox(height: ThemeSettings.smallSpacing),
+              LinearProgressIndicator(
+                value: 0.5,
+              ),
+            ],
+          ),
+        ),
         const Placeholder(
           fallbackHeight: 70,
         ),

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/utils/constants.dart';
-
 /// A widget that displays a desk with a given height.
 ///
 /// The desk is displayed as a stack of a desk display and two feet.

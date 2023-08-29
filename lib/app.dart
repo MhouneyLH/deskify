@@ -1,5 +1,4 @@
 import 'package:deskify/main.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'features/presentation/pages/add_desk_page/add_desk_page.dart';
