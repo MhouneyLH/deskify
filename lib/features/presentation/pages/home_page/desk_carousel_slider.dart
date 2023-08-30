@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:deskify/core/utils/constants.dart';
+import 'package:deskify/features/presentation/themes/theme.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/entities/desk.dart';
-import '../../widgets/desk_animation.dart';
+import '../../widgets/widgets.dart';
 
 const int initialIndex = 0;
 
@@ -32,34 +34,38 @@ class _DeskCarouselSliderState extends State<DeskCarouselSlider> {
     return Column(
       children: [
         _buildCarouselSlider(),
+        const SizedBox(height: ThemeSettings.mediumSpacing),
         _buildIndicatorBar(),
       ],
     );
   }
 
+  /// Builds a carousel slider that displays all [Desk] entities.
   Widget _buildCarouselSlider() {
     return CarouselSlider(
       items: [
         for (Desk desk in widget.allDesks)
           DeskAnimation(
-            width: 200,
+            width: MediaQuery.of(context).size.width,
             deskHeight: desk.height,
           ),
       ],
       options: CarouselOptions(
-        height: 200.0,
+        height: deskMaximumHeight + DeskAnimation.topOfDeskThickness,
         enableInfiniteScroll: false,
         initialPage: initialIndex,
         onPageChanged: (index, _) {
           setState(() {
             currentIndex = index;
           });
+
           widget.onDeskSelected(widget.allDesks[index]);
         },
       ),
     );
   }
 
+  /// Builds a row of circles that indicate the current page of the carousel.
   Widget _buildIndicatorBar() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,

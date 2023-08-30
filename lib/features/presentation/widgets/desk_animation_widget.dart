@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/utils/constants.dart';
-
 /// A widget that displays a desk with a given height.
 ///
 /// The desk is displayed as a stack of a desk display and two feet.
@@ -15,40 +13,34 @@ class DeskAnimation extends StatefulWidget {
     super.key,
   });
 
+  static const double topOfDeskThickness = 10.0;
+  static const double _footThickness = 10.0;
+
   @override
   State<DeskAnimation> createState() => _DeskAnimationState();
 }
 
 class _DeskAnimationState extends State<DeskAnimation> {
-  late double deskDisplayHeight;
-  final double deskDisplayThickness = 10.0;
-  late Color deskColor;
+  late final Color deskColor = Theme.of(context).colorScheme.tertiary;
 
   @override
   Widget build(BuildContext context) {
-    deskDisplayHeight = widget.deskHeight;
-    deskColor = Theme.of(context).colorScheme.tertiary;
-
-    return SizedBox(
-      width: widget.width,
-      height: deskMaximumHeight + deskDisplayThickness,
-      child: Stack(
-        children: [
-          _buildDesk(),
-          _buildFoot(isLeftFoot: true),
-          _buildFoot(isLeftFoot: false),
-        ],
-      ),
+    return Stack(
+      children: [
+        _buildTopOfDesk(),
+        _buildFoot(isLeftFoot: true),
+        _buildFoot(isLeftFoot: false),
+      ],
     );
   }
 
-  Widget _buildDesk() {
+  Widget _buildTopOfDesk() {
     return Positioned(
       left: 0,
       right: 0,
-      bottom: deskDisplayHeight,
+      bottom: widget.deskHeight,
       child: Container(
-        height: deskDisplayThickness,
+        height: DeskAnimation.topOfDeskThickness,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: deskColor,
@@ -58,15 +50,15 @@ class _DeskAnimationState extends State<DeskAnimation> {
   }
 
   Widget _buildFoot({required bool isLeftFoot}) {
-    final double footMarginToBoundaries = widget.width / 8;
+    final double footMarginToBoundaries = widget.width / 1.5;
 
     return Positioned(
       left: isLeftFoot ? footMarginToBoundaries : null,
       right: isLeftFoot ? null : footMarginToBoundaries,
       bottom: 0,
       child: Container(
-        width: 10,
-        height: deskDisplayHeight,
+        width: DeskAnimation._footThickness,
+        height: widget.deskHeight,
         decoration: BoxDecoration(
           color: deskColor,
           borderRadius: BorderRadius.circular(10.0),
