@@ -37,12 +37,16 @@ class _HomePageState extends State<HomePage> {
         const SizedBox(height: ThemeSettings.largeSpacing),
         _buildDeskCarouselSlider(),
         const SizedBox(height: ThemeSettings.mediumSpacing),
-        const Heading(title: 'Analytics'),
+        const Heading(
+          title: 'Analytics',
+          key: Key('analytics-heading'),
+        ),
         const SizedBox(height: ThemeSettings.smallSpacing),
         DeskInteractionCard(
           title: 'Standing Time',
           iconAtStart: const Icon(Icons.info),
           onPressedCard: () {},
+          key: const Key('analytics-desk-card-standing'),
           child: const LinearProgressIndicator(
             value: 0.7,
           ),
@@ -52,21 +56,29 @@ class _HomePageState extends State<HomePage> {
           title: 'Sitting Time',
           iconAtStart: const Icon(Icons.info),
           onPressedCard: () {},
+          key: const Key('analytics-desk-card-sitting'),
           child: const LinearProgressIndicator(
             value: 0.3,
           ),
         ),
         const SizedBox(height: ThemeSettings.mediumSpacing),
-        const Heading(title: 'Presets'),
+        const Heading(
+          title: 'Presets',
+          key: Key('preset-heading'),
+        ),
         const SizedBox(height: ThemeSettings.smallSpacing),
         _buildCurrentDeskPresets(),
         const SizedBox(height: ThemeSettings.mediumSpacing),
-        const Heading(title: 'Others'),
+        const Heading(
+          title: 'Others',
+          key: Key('others-heading'),
+        ),
         const SizedBox(height: ThemeSettings.smallSpacing),
         DeskInteractionCard(
           title: 'Move desk',
           iconAtStart: const Icon(Icons.move_up),
           onPressedCard: () {},
+          key: const Key('others-desk-card-move'),
         ),
       ],
     );
@@ -77,9 +89,12 @@ class _HomePageState extends State<HomePage> {
       buildWhen: (previous, current) => current is UpdateCurrentDeskSuccess,
       builder: (context, state) {
         if (state is Empty) {
-          return const Text('');
+          return Container();
         } else if (state is UpdateCurrentDeskSuccess) {
-          return Heading(title: state.currentDesk.name);
+          return Heading(
+            title: state.currentDesk.name,
+            key: const Key('current-desk-name'),
+          );
         } else {
           return const Text('Unknown state');
         }
@@ -92,9 +107,12 @@ class _HomePageState extends State<HomePage> {
       buildWhen: (previous, current) => current is UpdateCurrentDeskSuccess,
       builder: (context, state) {
         if (state is Empty) {
-          return const Text('');
+          return Container();
         } else if (state is UpdateCurrentDeskSuccess) {
-          return Text('${state.currentDesk.height.toString()} cm');
+          return Text(
+            '${state.currentDesk.height.toString()} cm',
+            key: const Key('current-desk-height'),
+          );
         } else {
           return const Text('Unknown state');
         }
@@ -107,7 +125,7 @@ class _HomePageState extends State<HomePage> {
       buildWhen: (previous, current) => current is UpdateCurrentDeskSuccess,
       builder: (context, state) {
         if (state is Empty) {
-          return const Text('');
+          return Container();
         } else if (state is UpdateCurrentDeskSuccess) {
           return Column(
             children: [
@@ -120,6 +138,7 @@ class _HomePageState extends State<HomePage> {
                       onPressedCard: () {},
                       iconAtEnd: const Icon(Icons.settings),
                       onPressedIconAtEnd: () {},
+                      key: Key('preset-desk-card-${preset.id}'),
                       child: Text('${preset.targetHeight.toString()} cm'),
                     ),
                     const SizedBox(height: ThemeSettings.smallSpacing),
@@ -142,9 +161,11 @@ class _HomePageState extends State<HomePage> {
           current is GetAllDesksFailure,
       builder: (context, state) {
         if (state is Empty) {
-          return const Text('');
+          return Container();
         } else if (state is GetAllDesksFetching) {
-          return const LoadingIndicator();
+          return const LoadingIndicator(
+            key: Key('all-articles-loading-indicator'),
+          );
         } else if (state is GetAllDesksSuccess) {
           if (state.desks.isEmpty) {
             _updateCurrentDesk(Desk.empty());

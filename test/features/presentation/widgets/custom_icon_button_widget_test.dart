@@ -1,7 +1,6 @@
 import 'package:deskify/features/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 
 void main() {
   late bool onPressedCalled;
