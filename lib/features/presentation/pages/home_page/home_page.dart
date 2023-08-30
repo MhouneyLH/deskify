@@ -144,7 +144,7 @@ class _HomePageState extends State<HomePage> {
         if (state is Empty) {
           return const Text('');
         } else if (state is GetAllDesksFetching) {
-          return const CircularProgressIndicator();
+          return const LoadingIndicator();
         } else if (state is GetAllDesksSuccess) {
           if (state.desks.isEmpty) {
             _updateCurrentDesk(Desk.empty());
