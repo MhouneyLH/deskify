@@ -27,15 +27,18 @@ class _CustomIconButtonState extends State<CustomIconButton> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: widget.onPressed,
-      splashColor: iconColor.withOpacity(0.2),
-      highlightColor: iconColor.withOpacity(0.4),
-      // hopefully we never have an icon at this point that is bigger than 200x200...
-      borderRadius: BorderRadius.circular(200.0),
-      child: Padding(
-        padding: widget.padding,
-        child: widget.icon,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: widget.onPressed,
+        splashColor: iconColor.withOpacity(0.2),
+        highlightColor: iconColor.withOpacity(0.4),
+        // hopefully we never have an icon at this point that is bigger than 200x200...
+        borderRadius: BorderRadius.circular(200.0),
+        child: Padding(
+          padding: widget.padding,
+          child: widget.icon,
+        ),
       ),
     );
   }
