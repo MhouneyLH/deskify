@@ -14,13 +14,14 @@ class DeskAnimation extends StatefulWidget {
   });
 
   static const double topOfDeskThickness = 10.0;
+  static const double _footThickness = 10.0;
 
   @override
   State<DeskAnimation> createState() => _DeskAnimationState();
 }
 
 class _DeskAnimationState extends State<DeskAnimation> {
-  late Color deskColor = Theme.of(context).colorScheme.tertiary;
+  late final Color deskColor = Theme.of(context).colorScheme.tertiary;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +57,7 @@ class _DeskAnimationState extends State<DeskAnimation> {
       right: isLeftFoot ? null : footMarginToBoundaries,
       bottom: 0,
       child: Container(
-        width: 10,
+        width: DeskAnimation._footThickness,
         height: widget.deskHeight,
         decoration: BoxDecoration(
           color: deskColor,

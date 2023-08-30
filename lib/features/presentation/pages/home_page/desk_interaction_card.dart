@@ -25,6 +25,8 @@ class DeskInteractionCard extends StatefulWidget {
     super.key,
   });
 
+  static const _cardPadding = EdgeInsets.all(9.0);
+
   @override
   State<DeskInteractionCard> createState() => _DeskInteractionCardState();
 }
@@ -46,7 +48,10 @@ class _DeskInteractionCardState extends State<DeskInteractionCard> {
                 widget.title,
                 style: Theme.of(context).textTheme.labelLarge,
               ),
-              widget.iconAtEnd == null ? Container() : const Spacer(),
+              Visibility(
+                visible: widget.iconAtEnd != null,
+                child: const Spacer(),
+              ),
               widget.iconAtEnd == null
                   ? Container()
                   : CustomIconButton(
@@ -72,7 +77,7 @@ class _DeskInteractionCardState extends State<DeskInteractionCard> {
           borderRadius: BorderRadius.circular(15.0),
         ),
       ),
-      padding: MaterialStateProperty.all(const EdgeInsets.all(9.0)),
+      padding: MaterialStateProperty.all(DeskInteractionCard._cardPadding),
     );
   }
 }

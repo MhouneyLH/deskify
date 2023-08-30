@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 /// An own [IconButton] that has less padding than the standard [IconButton].
 ///
 /// When we just use [IconButton] then we have a base size of 48.0 x 48.0 as this is standard for Material Design.
-/// For more information see:
+/// For more information see: https://stackoverflow.com/questions/50381157/how-do-i-remove-flutter-iconbutton-big-padding
 ///
 /// We want to have a smaller size for our [IconButton]s, so we use a [InkWell] and a [Icon] (+ an **optional** padding) instead.
 class CustomIconButton extends StatefulWidget {
