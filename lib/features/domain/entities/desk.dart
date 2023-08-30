@@ -24,8 +24,22 @@ class Desk extends Equatable {
     return Desk(
       id: defaultId,
       name: '',
-      height: 0.0,
+      height: deskMinimumHeight,
       presets: const [],
+    );
+  }
+
+  Desk copyWith({
+    Id? id,
+    String? name,
+    double? height,
+    List<Preset>? presets,
+  }) {
+    return Desk(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      height: height ?? this.height,
+      presets: presets ?? this.presets,
     );
   }
 

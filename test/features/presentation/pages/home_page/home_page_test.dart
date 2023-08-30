@@ -11,8 +11,6 @@ import 'package:deskify/features/presentation/bloc/desk/desk_bloc.dart';
 import 'package:deskify/features/presentation/pages/home_page/desk_carousel_slider.dart';
 import 'package:deskify/features/presentation/pages/home_page/desk_interaction_card.dart';
 import 'package:deskify/features/presentation/pages/home_page/home_page.dart';
-import 'package:deskify/features/presentation/widgets/custom_icon_button_widget.dart';
-import 'package:deskify/features/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';

@@ -195,7 +195,7 @@ class _HomePageState extends State<HomePage> {
   void _updateCurrentDesk(Desk desks) {
     BlocProvider.of<DeskBloc>(context).add(
       UpdatedCurrentDesk(
-        // TODO: hier wird gerade wie beim CarouselSLider einfach erstmal das 0.te Element verwendet
+        // TODO: hier wird gerade wie beim CarouselSlider einfach erstmal das 0.te Element verwendet
         //       -> später mal schauen, wie ich das in der DB abbilden kann
         currentDesk: desks,
       ),
