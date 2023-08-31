@@ -4,11 +4,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../core/core.dart';
 import '../../../domain/entities/desk.dart';
-import '../../../domain/usecases/create_desk_usecase.dart';
-import '../../../domain/usecases/delete_desk_usecase.dart';
-import '../../../domain/usecases/get_all_desks_usecase.dart';
-import '../../../domain/usecases/get_desk_by_id_usecase.dart';
-import '../../../domain/usecases/update_desk_usecase.dart';
+import '../../../domain/usecases/usecases.dart';
 
 part 'desk_event.dart';
 part 'desk_state.dart';

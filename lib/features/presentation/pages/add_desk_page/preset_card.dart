@@ -31,17 +31,12 @@ class _PresetCardState extends State<PresetCard> {
         child: Row(
           children: [
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ListTile(
-                    leading: const Icon(Icons.height),
-                    title: Text(widget.preset.name),
-                    subtitle: Text('${widget.preset.targetHeight} cm'),
-                    iconColor: Theme.of(context).colorScheme.primary,
-                    subtitleTextStyle: Theme.of(context).textTheme.labelMedium,
-                  ),
-                ],
+              child: ListTile(
+                leading: const Icon(Icons.height),
+                title: Text(widget.preset.name),
+                subtitle: Text('${widget.preset.targetHeight} cm'),
+                iconColor: Theme.of(context).colorScheme.primary,
+                subtitleTextStyle: Theme.of(context).textTheme.labelMedium,
               ),
             ),
             CustomIconButton(

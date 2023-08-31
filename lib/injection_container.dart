@@ -7,11 +7,7 @@ import 'core/core.dart';
 import 'features/data/data_sources/desk_remote_data_source.dart';
 import 'features/data/repository/desk_repository_impl.dart';
 import 'features/domain/repository/desk_repository.dart';
-import 'features/domain/usecases/create_desk_usecase.dart';
-import 'features/domain/usecases/delete_desk_usecase.dart';
-import 'features/domain/usecases/get_all_desks_usecase.dart';
-import 'features/domain/usecases/get_desk_by_id_usecase.dart';
-import 'features/domain/usecases/update_desk_usecase.dart';
+import 'features/domain/usecases/usecases.dart';
 import 'features/presentation/bloc/app_bloc_observer.dart';
 import 'features/presentation/bloc/desk/desk_bloc.dart';
 

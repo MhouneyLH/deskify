@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:deskify/features/data/models/desk_model.dart';
 import 'package:deskify/features/domain/entities/preset.dart';
 import 'package:deskify/features/domain/repository/desk_repository.dart';
-import 'package:deskify/features/domain/usecases/get_all_desks_usecase.dart';
+import 'package:deskify/features/domain/usecases/desk/get_all_desks_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
