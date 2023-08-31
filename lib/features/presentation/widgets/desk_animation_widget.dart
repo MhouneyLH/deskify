@@ -25,15 +25,12 @@ class _DeskAnimationState extends State<DeskAnimation> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: widget.width,
-      child: Stack(
-        children: [
-          _buildTopOfDesk(),
-          _buildFoot(isLeftFoot: true),
-          _buildFoot(isLeftFoot: false),
-        ],
-      ),
+    return Stack(
+      children: [
+        _buildTopOfDesk(),
+        _buildFoot(isLeftFoot: true),
+        _buildFoot(isLeftFoot: false),
+      ],
     );
   }
 
@@ -53,7 +50,7 @@ class _DeskAnimationState extends State<DeskAnimation> {
   }
 
   Widget _buildFoot({required bool isLeftFoot}) {
-    final double footMarginToBoundaries = widget.width / 1.5;
+    const double footMarginToBoundaries = 20;
 
     return Positioned(
       left: isLeftFoot ? footMarginToBoundaries : null,

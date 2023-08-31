@@ -26,6 +26,7 @@ class _AddDeskPageState extends State<AddDeskPage> {
   void initState() {
     super.initState();
 
+    // TODO: delete later, when add button is working!
     newDesk = newDesk.copyWith(
       presets: const <Preset>[
         Preset(
@@ -56,64 +57,15 @@ class _AddDeskPageState extends State<AddDeskPage> {
           key: Key('general-heading'),
         ),
         const SizedBox(height: ThemeSettings.smallSpacing),
-        TextField(
-          controller: deskNameController,
-          decoration: const InputDecoration(
-            labelText: 'Desk Name',
-          ),
-          key: const Key('desk-name-text-field'),
-          onEditingComplete: () {
-            setState(() {
-              newDesk = newDesk.copyWith(name: deskNameController.text);
-            });
-          },
-        ),
+        _buildDeskNameTextField(),
         const SizedBox(height: ThemeSettings.smallSpacing),
-        TextField(
-          controller: deskHeightController,
-          decoration: const InputDecoration(
-            labelText: 'Desk Height',
-          ),
-          keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          key: const Key('desk-height-text-field'),
-          onEditingComplete: () {
-            setState(() {
-              newDesk = newDesk.copyWith(
-                height: double.parse(deskHeightController.text),
-              );
-            });
-          },
-        ),
+        _buildDeskHeightTextField(),
         const SizedBox(height: ThemeSettings.mediumSpacing),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            SizedBox(
-              height: deskMaximumHeight + DeskAnimation.topOfDeskThickness,
-              width: MediaQuery.of(context).size.width * 0.5,
-              child: DeskAnimation(
-                width: MediaQuery.of(context).size.width * 0.6,
-                deskHeight: newDesk.height,
-                key: const Key('desk-animation'),
-              ),
-            ),
-            // const Spacer(),
-            HeightSlider(
-              deskHeight: newDesk.height,
-              key: const Key('desk-height-slider'),
-              onChanged: (double newHeight) {
-                setState(() {
-                  newDesk = newDesk.copyWith(height: newHeight);
-                  deskHeightController.text = newDesk.height.toStringAsFixed(2);
-                });
-              },
-              onChangeEnd: (double newHeight) {
-                setState(() {
-                  newDesk = newDesk.copyWith(height: newHeight);
-                  deskHeightController.text = newDesk.height.toStringAsFixed(2);
-                });
-              },
-            ),
+            _buildDeskConfigurationAnimation(context),
+            _buildHeightSlider(),
           ],
         ),
         const SizedBox(height: ThemeSettings.mediumSpacing),
@@ -122,56 +74,145 @@ class _AddDeskPageState extends State<AddDeskPage> {
           key: Key('presets-heading'),
         ),
         const SizedBox(height: ThemeSettings.smallSpacing),
-        for (final Preset preset in newDesk.presets)
-          Column(
-            children: [
-              PresetCard(
-                preset: preset,
-                key: Key('preset-card-${preset.name}'),
-              ),
-              const SizedBox(height: ThemeSettings.smallSpacing),
-            ],
-          ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: _getAllConfiguredPresetCards(),
+        ),
         const SizedBox(height: ThemeSettings.smallSpacing),
-        Center(
-          child: IconButton(
-            icon: const Icon(Icons.add),
-            iconSize: 30.0,
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(
-                Theme.of(context).colorScheme.onSecondaryContainer,
-              ),
-              iconColor: MaterialStateProperty.all<Color>(
-                Theme.of(context).colorScheme.primary,
-              ),
-            ),
-            onPressed: () {},
-          ),
-        ),
+        _buildAddPresetButton(context),
         const SizedBox(height: ThemeSettings.largeSpacing * 2),
-        Center(
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.95,
-            child: ElevatedButton(
-              key: const Key('add-desk-button'),
-              onPressed: () {
-                BlocProvider.of<DeskBloc>(context).add(
-                  CreatedDesk(desk: newDesk),
-                );
-
-                _clearInputs();
-              },
-              child: Text(
-                'Add Desk',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-            ),
-          ),
-        ),
+        _buildAddDeskButton(context),
       ],
     );
+  }
+
+  TextField _buildDeskNameTextField() {
+    return TextField(
+      controller: deskNameController,
+      decoration: const InputDecoration(
+        labelText: 'Desk Name',
+      ),
+      key: const Key('desk-name-text-field'),
+      onEditingComplete: () {
+        _updateDeskName();
+      },
+    );
+  }
+
+  TextField _buildDeskHeightTextField() {
+    return TextField(
+      controller: deskHeightController,
+      decoration: const InputDecoration(
+        labelText: 'Desk Height',
+      ),
+      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+      key: const Key('desk-height-text-field'),
+      onEditingComplete: () {
+        _updateDeskHeight();
+      },
+    );
+  }
+
+  SizedBox _buildDeskConfigurationAnimation(BuildContext context) {
+    return SizedBox(
+      height: deskMaximumHeight + DeskAnimation.topOfDeskThickness,
+      width: MediaQuery.of(context).size.width * 0.5,
+      child: DeskAnimation(
+        width: MediaQuery.of(context).size.width * 0.6,
+        deskHeight: newDesk.height,
+        key: const Key('desk-animation'),
+      ),
+    );
+  }
+
+  HeightSlider _buildHeightSlider() {
+    return HeightSlider(
+      deskHeight: newDesk.height,
+      key: const Key('desk-height-slider'),
+      onChanged: (double newHeight) {
+        setState(() {
+          deskHeightController.text = newHeight.toStringAsFixed(2);
+        });
+        _updateDeskHeight();
+      },
+      onChangeEnd: (double newHeight) {
+        setState(() {
+          deskHeightController.text = newHeight.toStringAsFixed(2);
+        });
+        _updateDeskHeight();
+      },
+    );
+  }
+
+  Center _buildAddPresetButton(BuildContext context) {
+    return Center(
+      child: IconButton(
+        icon: const Icon(Icons.add),
+        iconSize: 30.0,
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(
+            Theme.of(context).colorScheme.onSecondaryContainer,
+          ),
+          iconColor: MaterialStateProperty.all<Color>(
+            Theme.of(context).colorScheme.primary,
+          ),
+        ),
+        onPressed: () {},
+      ),
+    );
+  }
+
+  Center _buildAddDeskButton(BuildContext context) {
+    return Center(
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.95,
+        child: ElevatedButton(
+          key: const Key('add-desk-button'),
+          onPressed: () {
+            BlocProvider.of<DeskBloc>(context).add(
+              CreatedDesk(desk: newDesk),
+            );
+
+            _clearInputs();
+          },
+          child: Text(
+            'Add Desk',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<PresetCard> _getAllConfiguredPresetCards() {
+    List<PresetCard> presetCards = [];
+
+    for (final Preset preset in newDesk.presets) {
+      final PresetCard card = PresetCard(
+        preset: preset,
+        key: Key('preset-card-${preset.name}'),
+      );
+
+      presetCards.add(card);
+    }
+
+    return presetCards;
+  }
+
+  void _updateDeskName() {
+    setState(() {
+      newDesk = newDesk.copyWith(name: deskNameController.text);
+    });
+  }
+
+  void _updateDeskHeight() {
+    setState(() {
+      newDesk = newDesk.copyWith(
+        height: double.parse(deskHeightController.text),
+      );
+    });
   }
 
   void _clearInputs() {
