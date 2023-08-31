@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
           return Container();
         } else if (state is UpdateCurrentDeskSuccess) {
           return Text(
-            '${state.currentDesk.height.toString()} cm',
+            '${state.currentDesk.height.toStringAsFixed(2)} cm',
             key: const Key('current-desk-height'),
           );
         } else {
@@ -134,7 +134,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     DeskInteractionCard(
                       title: preset.name,
-                      iconAtStart: const Icon(Icons.info),
+                      iconAtStart: const Icon(Icons.height),
                       onPressedCard: () {},
                       iconAtEnd: const Icon(Icons.settings),
                       onPressedIconAtEnd: () {},

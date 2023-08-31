@@ -46,7 +46,7 @@ class _DeskCarouselSliderState extends State<DeskCarouselSlider> {
       items: [
         for (Desk desk in widget.allDesks)
           DeskAnimation(
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.of(context).size.width * 0.5,
             deskHeight: desk.height,
           ),
       ],

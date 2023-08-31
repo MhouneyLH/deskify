@@ -25,12 +25,15 @@ class _DeskAnimationState extends State<DeskAnimation> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        _buildTopOfDesk(),
-        _buildFoot(isLeftFoot: true),
-        _buildFoot(isLeftFoot: false),
-      ],
+    return SizedBox(
+      width: widget.width,
+      child: Stack(
+        children: [
+          _buildTopOfDesk(),
+          _buildFoot(isLeftFoot: true),
+          _buildFoot(isLeftFoot: false),
+        ],
+      ),
     );
   }
 

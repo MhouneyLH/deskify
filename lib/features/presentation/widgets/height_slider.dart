@@ -6,11 +6,11 @@ import 'package:syncfusion_flutter_sliders/sliders.dart';
 ///
 /// The slider is displayed as a [SfSlider] internally.
 class HeightSlider extends StatefulWidget {
-  double deskHeight;
+  final double deskHeight;
   final Function(double) onChanged;
   final Function(double) onChangeEnd;
 
-  HeightSlider({
+  const HeightSlider({
     required this.deskHeight,
     required this.onChanged,
     required this.onChangeEnd,
