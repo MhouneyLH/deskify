@@ -14,7 +14,7 @@ part 'desk_event.dart';
 part 'desk_state.dart';
 
 /// This class is used to manage the state of the [Desk] entity.
-/// 
+///
 /// It is used to communicate between the presentation and domain layer.
 class DeskBloc extends Bloc<DeskEvent, DeskState> {
   // TODO: not sure, if this should be located here... -> maybe change in the future
@@ -126,9 +126,14 @@ class DeskBloc extends Bloc<DeskEvent, DeskState> {
     Emitter<DeskState> emit,
   ) async {
     if (event is UpdatedCurrentDesk) {
-      currentDesk = event.currentDesk;
+      if (event.currentDesk == Desk.empty()) {
+        emit(const UpdateCurrentDeskFailure(
+          message: 'UpdateCurrentDeskFailure',
+        ));
+        return;
+      }
 
-      // should only be successful
+      currentDesk = event.currentDesk;
       emit(UpdateCurrentDeskSuccess(
         currentDesk: event.currentDesk,
       ));

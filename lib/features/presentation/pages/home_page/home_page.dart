@@ -95,6 +95,8 @@ class _HomePageState extends State<HomePage> {
             title: state.currentDesk.name,
             key: const Key('current-desk-name'),
           );
+        } else if (state is UpdateCurrentDeskFailure) {
+          return Container();
         } else {
           return const Text('Unknown state');
         }
@@ -104,7 +106,9 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildCurrentDeskHeightText() {
     return BlocBuilder<DeskBloc, DeskState>(
-      buildWhen: (previous, current) => current is UpdateCurrentDeskSuccess,
+      buildWhen: (previous, current) =>
+          current is UpdateCurrentDeskSuccess ||
+          current is UpdateCurrentDeskFailure,
       builder: (context, state) {
         if (state is Empty) {
           return Container();
@@ -113,6 +117,8 @@ class _HomePageState extends State<HomePage> {
             '${state.currentDesk.height.toStringAsFixed(2)} cm',
             key: const Key('current-desk-height'),
           );
+        } else if (state is UpdateCurrentDeskFailure) {
+          return Container();
         } else {
           return const Text('Unknown state');
         }
@@ -122,7 +128,9 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildCurrentDeskPresets() {
     return BlocBuilder<DeskBloc, DeskState>(
-      buildWhen: (previous, current) => current is UpdateCurrentDeskSuccess,
+      buildWhen: (previous, current) =>
+          current is UpdateCurrentDeskSuccess ||
+          current is UpdateCurrentDeskFailure,
       builder: (context, state) {
         if (state is Empty) {
           return Container();
@@ -169,7 +177,7 @@ class _HomePageState extends State<HomePage> {
         } else if (state is GetAllDesksSuccess) {
           if (state.desks.isEmpty) {
             _updateCurrentDesk(Desk.empty());
-            return const Text('No desks found');
+            return const Center(child: Text('No desks found :/'));
           }
 
           _updateCurrentDesk(state.desks.first);

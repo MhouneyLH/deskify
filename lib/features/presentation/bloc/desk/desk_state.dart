@@ -94,3 +94,7 @@ final class UpdateCurrentDeskSuccess extends DeskState {
   @override
   List<Object> get props => [currentDesk];
 }
+
+final class UpdateCurrentDeskFailure extends Failure {
+  const UpdateCurrentDeskFailure({required super.message});
+}
