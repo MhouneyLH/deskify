@@ -1,4 +1,4 @@
-import 'package:deskify/features/presentation/widgets/widgets.dart';
+import '../../widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/entities/preset.dart';

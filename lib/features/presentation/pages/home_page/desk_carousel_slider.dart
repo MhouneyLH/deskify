@@ -1,6 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:deskify/core/utils/constants.dart';
-import 'package:deskify/features/presentation/themes/theme.dart';
+import '../../../../core/utils/constants.dart';
+import '../../themes/theme.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/entities/desk.dart';

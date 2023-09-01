@@ -1,5 +1,5 @@
-import 'package:deskify/core/core.dart';
-import 'package:deskify/features/presentation/widgets/widgets.dart';
+import '../../../../core/core.dart';
+import '../../widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

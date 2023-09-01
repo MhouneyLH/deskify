@@ -1,4 +1,3 @@
-import 'package:deskify/features/presentation/pages/home_page/desk_interaction_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -6,8 +5,9 @@ import '../../../domain/entities/desk.dart';
 import '../../../domain/entities/preset.dart';
 import '../../bloc/desk/desk_bloc.dart';
 import '../../themes/theme.dart';
-import 'desk_carousel_slider.dart';
 import '../../widgets/widgets.dart';
+import 'desk_carousel_slider.dart';
+import 'desk_interaction_card.dart';
 
 /// A page on which the user gets an overview of all [Desk] entities and
 /// possibilities to interact with them. (e. g. select a desk, move the desk, tap on a preset, add a preset, etc.)

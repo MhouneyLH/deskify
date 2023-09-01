@@ -1,4 +1,4 @@
-import 'package:deskify/core/core.dart';
+import '../../../core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
