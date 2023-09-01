@@ -1,10 +1,13 @@
 import 'package:dartz/dartz.dart';
+import 'package:deskify/core/core.dart';
 import 'package:deskify/features/domain/entities/desk.dart';
 import 'package:deskify/features/domain/entities/preset.dart';
 import 'package:deskify/features/domain/repository/desk_repository.dart';
 import 'package:deskify/features/domain/usecases/usecases.dart';
 import 'package:deskify/features/presentation/bloc/desk/desk_bloc.dart';
 import 'package:deskify/features/presentation/pages/add_desk_page/add_desk_page.dart';
+import 'package:deskify/features/presentation/pages/add_desk_page/preset_card.dart';
+import 'package:deskify/features/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -19,7 +22,7 @@ void main() {
     mockDeskRepository = MockDeskRepository();
   });
 
-  final Desk desk = Desk(
+  final Desk tDesk = Desk(
     id: '0',
     name: 'test',
     height: 0.0,
@@ -36,18 +39,6 @@ void main() {
       ),
     ],
   );
-
-  void arrangeDeskRepositoryCreateDesk() {
-    when(() => mockDeskRepository.createDesk(desk))
-        .thenAnswer((_) async => const Right(null));
-  }
-
-  void arrangeDeskRepositoryCreateDeskAfter2SecondsWait() {
-    when(() => mockDeskRepository.createDesk(desk)).thenAnswer((_) async {
-      await Future.delayed(const Duration(seconds: 2));
-      return const Right(null);
-    });
-  }
 
   Widget createWidgetUnderTest() {
     return BlocProvider(
@@ -105,6 +96,32 @@ void main() {
       // assert
       expect(find.byKey(const Key('desk-height-slider')), findsOneWidget);
     });
+
+    testWidgets(
+        'Entering text in the desk height TextField changes the value of the slider',
+        (widgetTester) async {
+      // TODO: TEST
+    });
+
+    testWidgets(
+        'Changing the value of the slider, changes the value of the desk height TextField',
+        (widgetTester) async {
+      // arrange
+      await widgetTester.pumpWidget(createWidgetUnderTest());
+      // act
+      await widgetTester.drag(
+          find.byKey(const Key('desk-height-slider')), const Offset(0, -50));
+      await widgetTester.pump();
+      // assert
+      final TextField textField = widgetTester
+          .widget<TextField>(find.byKey(const Key('desk-height-text-field')));
+      final HeightSlider heightSlider = widgetTester
+          .widget<HeightSlider>(find.byKey(const Key('desk-height-slider')));
+
+      expect(textField.controller!.text,
+          heightSlider.deskHeight.toStringAsFixed(2));
+      await widgetTester.pumpAndSettle(const Duration(seconds: 1));
+    });
   });
 
   group('Presets', () {
@@ -114,5 +131,32 @@ void main() {
       // assert
       expect(find.byKey(const Key('presets-heading')), findsOneWidget);
     });
+
+    testWidgets('List of Preset Cards is displayed', (widgetTester) async {
+      // act
+      await widgetTester.pumpWidget(createWidgetUnderTest());
+      // assert
+      expect(find.byType(PresetCard), findsAtLeastNWidgets(2));
+    });
+
+    testWidgets('Add Preset button is displayed', (widgetTester) async {
+      // act
+      await widgetTester.pumpWidget(createWidgetUnderTest());
+      // assert
+      expect(find.byKey(const Key('add-preset-button')), findsOneWidget);
+    });
+  });
+
+  testWidgets('Add Desk button is displayed', (widgetTester) async {
+    // act
+    await widgetTester.pumpWidget(createWidgetUnderTest());
+    // assert
+    expect(find.byKey(const Key('add-desk-button')), findsOneWidget);
+  });
+
+  testWidgets(
+      'After tapping the add desk button, the input of the desk name, the desk height and the presets are cleared',
+      (widgetTester) async {
+    // TODO: TEST
   });
 }

@@ -22,6 +22,10 @@ class AddDeskPage extends StatefulWidget {
 class _AddDeskPageState extends State<AddDeskPage> {
   Desk newDesk = Desk.empty();
 
+  final TextEditingController deskNameController = TextEditingController();
+  late final TextEditingController deskHeightController =
+      TextEditingController(text: newDesk.height.toStringAsFixed(2));
+
   @override
   void initState() {
     super.initState();
@@ -43,18 +47,14 @@ class _AddDeskPageState extends State<AddDeskPage> {
     );
   }
 
-  final TextEditingController deskNameController = TextEditingController();
-  late final TextEditingController deskHeightController =
-      TextEditingController(text: newDesk.height.toStringAsFixed(2));
-
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Heading(
-          title: 'General',
           key: Key('general-heading'),
+          title: 'General',
         ),
         const SizedBox(height: ThemeSettings.smallSpacing),
         _buildDeskNameTextField(),
@@ -70,8 +70,8 @@ class _AddDeskPageState extends State<AddDeskPage> {
         ),
         const SizedBox(height: ThemeSettings.mediumSpacing),
         const Heading(
-          title: 'Presets',
           key: Key('presets-heading'),
+          title: 'Presets',
         ),
         const SizedBox(height: ThemeSettings.smallSpacing),
         Column(
@@ -88,11 +88,11 @@ class _AddDeskPageState extends State<AddDeskPage> {
 
   TextField _buildDeskNameTextField() {
     return TextField(
+      key: const Key('desk-name-text-field'),
       controller: deskNameController,
       decoration: const InputDecoration(
         labelText: 'Desk Name',
       ),
-      key: const Key('desk-name-text-field'),
       onEditingComplete: () {
         _updateDeskName();
       },
@@ -101,12 +101,12 @@ class _AddDeskPageState extends State<AddDeskPage> {
 
   TextField _buildDeskHeightTextField() {
     return TextField(
+      key: const Key('desk-height-text-field'),
       controller: deskHeightController,
       decoration: const InputDecoration(
         labelText: 'Desk Height',
       ),
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
-      key: const Key('desk-height-text-field'),
       onEditingComplete: () {
         _updateDeskHeight();
       },
@@ -118,17 +118,17 @@ class _AddDeskPageState extends State<AddDeskPage> {
       height: deskMaximumHeight + DeskAnimation.topOfDeskThickness,
       width: MediaQuery.of(context).size.width * 0.5,
       child: DeskAnimation(
+        key: const Key('desk-animation'),
         width: MediaQuery.of(context).size.width * 0.6,
         deskHeight: newDesk.height,
-        key: const Key('desk-animation'),
       ),
     );
   }
 
   HeightSlider _buildHeightSlider() {
     return HeightSlider(
-      deskHeight: newDesk.height,
       key: const Key('desk-height-slider'),
+      deskHeight: newDesk.height,
       onChanged: (double newHeight) {
         setState(() {
           deskHeightController.text = newHeight.toStringAsFixed(2);
@@ -147,6 +147,7 @@ class _AddDeskPageState extends State<AddDeskPage> {
   Center _buildAddPresetButton(BuildContext context) {
     return Center(
       child: IconButton(
+        key: const Key('add-preset-button'),
         icon: const Icon(Icons.add),
         iconSize: 30.0,
         style: ButtonStyle(
@@ -173,7 +174,7 @@ class _AddDeskPageState extends State<AddDeskPage> {
               CreatedDesk(desk: newDesk),
             );
 
-            _clearInputs();
+            _clearInput();
           },
           child: Text(
             'Add Desk',
@@ -190,11 +191,7 @@ class _AddDeskPageState extends State<AddDeskPage> {
     List<PresetCard> presetCards = [];
 
     for (final Preset preset in newDesk.presets) {
-      final PresetCard card = PresetCard(
-        preset: preset,
-        key: Key('preset-card-${preset.name}'),
-      );
-
+      final PresetCard card = PresetCard(preset: preset);
       presetCards.add(card);
     }
 
@@ -215,7 +212,7 @@ class _AddDeskPageState extends State<AddDeskPage> {
     });
   }
 
-  void _clearInputs() {
+  void _clearInput() {
     setState(() {
       newDesk = Desk.empty();
 
