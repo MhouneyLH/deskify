@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'dark_theme.dart' as dark;
 import 'light_theme.dart' as light;
 
@@ -10,4 +11,7 @@ class ThemeSettings {
   static const double smallSpacing = 5.0;
   static const double mediumSpacing = 10.0;
   static const double largeSpacing = 20.0;
+
+  static const double smallPadding = 3.0;
+  static const double mediumPadding = 7.0;
 }

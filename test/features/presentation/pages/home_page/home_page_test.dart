@@ -5,8 +5,8 @@ import 'package:deskify/features/domain/repository/desk_repository.dart';
 import 'package:deskify/features/domain/usecases/usecases.dart';
 import 'package:deskify/features/presentation/bloc/desk/desk_bloc.dart';
 import 'package:deskify/features/presentation/pages/home_page/desk_carousel_slider.dart';
-import 'package:deskify/features/presentation/pages/home_page/desk_interaction_card.dart';
 import 'package:deskify/features/presentation/pages/home_page/home_page.dart';
+import 'package:deskify/features/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -131,30 +131,32 @@ void main() {
       expect(find.byKey(const Key('analytics-heading')), findsOneWidget);
     });
 
-    testWidgets('2 DeskInteractionCards are be displayed',
-        (widgetTester) async {
+    testWidgets('2 InteractionCards are be displayed', (widgetTester) async {
       // arrange
       arrangeDeskRepositoryReturns2Desks();
       // act
       await widgetTester.pumpWidget(createWidgetUnderTest());
       await widgetTester.pumpAndSettle();
       // assert
+      final InteractionCard analyticsDeskCardStanding =
+          widgetTester.firstWidget(
+                  find.byKey(const Key('analytics-desk-card-standing')))
+              as InteractionCard;
+      final InteractionCard analyticsDeskCardSitting = widgetTester
+              .firstWidget(find.byKey(const Key('analytics-desk-card-sitting')))
+          as InteractionCard;
+
       expect(find.byKey(const Key('analytics-desk-card-standing')),
           findsOneWidget);
       expect(
           find.byKey(const Key('analytics-desk-card-sitting')), findsOneWidget);
 
-      final DeskInteractionCard analyticsDeskCardStanding =
-          widgetTester.firstWidget(
-                  find.byKey(const Key('analytics-desk-card-standing')))
-              as DeskInteractionCard;
-      final DeskInteractionCard analyticsDeskCardSitting = widgetTester
-              .firstWidget(find.byKey(const Key('analytics-desk-card-sitting')))
-          as DeskInteractionCard;
-
       expect(analyticsDeskCardStanding.child, isA<LinearProgressIndicator>());
       expect(analyticsDeskCardSitting.child, isA<LinearProgressIndicator>());
 
+      expect(analyticsDeskCardStanding.subtitle, isNull);
+      expect(analyticsDeskCardSitting.subtitle, isNull);
+      
       expect(analyticsDeskCardStanding.iconAtEnd, isNull);
       expect(analyticsDeskCardSitting.iconAtEnd, isNull);
     });
@@ -171,29 +173,31 @@ void main() {
       expect(find.byKey(const Key('preset-heading')), findsOneWidget);
     });
 
-    testWidgets('2 DeskInteractionCards are displayed', (widgetTester) async {
+    testWidgets('2 InteractionCards are displayed', (widgetTester) async {
       // arrange
       arrangeDeskRepositoryReturns2Desks();
       // act
       await widgetTester.pumpWidget(createWidgetUnderTest());
       await widgetTester.pumpAndSettle();
       // assert
+      final InteractionCard presetCard0 =
+          widgetTester.firstWidget(find.byKey(const Key('preset-desk-card-0')))
+              as InteractionCard;
+      final InteractionCard presetCard1 =
+          widgetTester.firstWidget(find.byKey(const Key('preset-desk-card-1')))
+              as InteractionCard;
+
       expect(find.byKey(const Key('preset-desk-card-0')), findsOneWidget);
       expect(find.byKey(const Key('preset-desk-card-1')), findsOneWidget);
 
-      final DeskInteractionCard presetCard0 =
-          widgetTester.firstWidget(find.byKey(const Key('preset-desk-card-0')))
-              as DeskInteractionCard;
+      expect(presetCard0.subtitle, isNotNull);
+      expect(presetCard1.subtitle, isNotNull);
 
-      final DeskInteractionCard presetCard1 =
-          widgetTester.firstWidget(find.byKey(const Key('preset-desk-card-1')))
-              as DeskInteractionCard;
+      expect(presetCard0.child, isNull);
+      expect(presetCard1.child, isNull);
 
-      expect(presetCard0.child, isA<Text>());
-      expect(presetCard1.child, isA<Text>());
-
-      expect(presetCard0.iconAtEnd, isA<Icon>());
-      expect(presetCard1.iconAtEnd, isA<Icon>());
+      expect(presetCard0.iconAtEnd, isNotNull);
+      expect(presetCard1.iconAtEnd, isNotNull);
     });
   });
 
@@ -208,7 +212,7 @@ void main() {
       expect(find.byKey(const Key('others-heading')), findsOneWidget);
     });
 
-    testWidgets('1 DeskInteractionCard for others is displayed',
+    testWidgets('1 InteractionCard for others is displayed',
         (widgetTester) async {
       // arrange
       arrangeDeskRepositoryReturns2Desks();
@@ -216,12 +220,12 @@ void main() {
       await widgetTester.pumpWidget(createWidgetUnderTest());
       await widgetTester.pumpAndSettle();
       // assert
+      final InteractionCard othersCardMove = widgetTester.firstWidget(
+          find.byKey(const Key('others-desk-card-move'))) as InteractionCard;
+
       expect(find.byKey(const Key('others-desk-card-move')), findsOneWidget);
 
-      final DeskInteractionCard othersCardMove = widgetTester
-              .firstWidget(find.byKey(const Key('others-desk-card-move')))
-          as DeskInteractionCard;
-
+      expect(othersCardMove.subtitle, isNull);
       expect(othersCardMove.child, isNull);
       expect(othersCardMove.iconAtEnd, isNull);
     });

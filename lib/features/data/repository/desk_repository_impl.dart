@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
+
 import '../../../core/core.dart';
 import '../../domain/entities/desk.dart';
 import '../../domain/repository/desk_repository.dart';
-
 import '../data_sources/desk_remote_data_source.dart';
 import '../models/desk_model.dart';
 

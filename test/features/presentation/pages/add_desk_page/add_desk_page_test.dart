@@ -5,7 +5,6 @@ import 'package:deskify/features/domain/repository/desk_repository.dart';
 import 'package:deskify/features/domain/usecases/usecases.dart';
 import 'package:deskify/features/presentation/bloc/desk/desk_bloc.dart';
 import 'package:deskify/features/presentation/pages/add_desk_page/add_desk_page.dart';
-import 'package:deskify/features/presentation/pages/add_desk_page/preset_card.dart';
 import 'package:deskify/features/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,9 +48,8 @@ void main() {
         deleteDeskUsecase: DeleteDeskUsecase(repository: mockDeskRepository),
       ),
       child: const MaterialApp(
-        // TODO: idk, why this material here is needed -> otherwise it does not work correctly
-        home: Material(
-          child: SingleChildScrollView(
+        home: Scaffold(
+          body: SingleChildScrollView(
             child: AddDeskPage(),
           ),
         ),
@@ -192,11 +190,11 @@ void main() {
       expect(find.byKey(const Key('presets-heading')), findsOneWidget);
     });
 
-    testWidgets('List of Preset Cards is displayed', (widgetTester) async {
+    testWidgets('List of Preset InteractionCards is displayed', (widgetTester) async {
       // act
       await widgetTester.pumpWidget(createWidgetUnderTest());
       // assert
-      expect(find.byType(PresetCard), findsAtLeastNWidgets(2));
+      expect(find.byType(InteractionCard), findsAtLeastNWidgets(2));
     });
 
     testWidgets('Add Preset button is displayed', (widgetTester) async {

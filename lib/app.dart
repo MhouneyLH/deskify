@@ -1,9 +1,9 @@
-import 'main.dart';
 import 'package:flutter/material.dart';
 
 import 'features/presentation/pages/add_desk_page/add_desk_page.dart';
 import 'features/presentation/pages/home_page/home_page.dart';
 import 'features/presentation/pages/settings_page/settings_page.dart';
+import 'main.dart';
 
 /// An app shell to display the different pages of the app.
 ///
