@@ -1,3 +1,4 @@
+import '../themes/theme.dart';
 import 'package:flutter/material.dart';
 
 /// An own [IconButton] that has less padding than the standard [IconButton].
@@ -14,7 +15,7 @@ class CustomIconButton extends StatefulWidget {
   const CustomIconButton({
     required this.icon,
     required this.onPressed,
-    this.padding = EdgeInsets.zero,
+    this.padding = const EdgeInsets.all(ThemeSettings.smallPadding),
     super.key,
   });
 

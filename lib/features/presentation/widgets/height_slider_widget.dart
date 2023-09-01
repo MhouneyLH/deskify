@@ -1,6 +1,7 @@
-import '../../../core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
+
+import '../../../core/core.dart';
 
 /// A widget that displays a slider to change the height of the desk.
 ///
