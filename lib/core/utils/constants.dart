@@ -6,3 +6,5 @@ const String deskCollectionName = 'desks';
 
 const double deskMaximumHeight = 119.0;
 const double deskMinimumHeight = 72.0;
+
+const String deskHeightMetric = 'cm';

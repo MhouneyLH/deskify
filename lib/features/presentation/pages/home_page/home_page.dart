@@ -1,4 +1,3 @@
-import 'package:deskify/features/presentation/pages/home_page/desk_interaction_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -6,8 +5,9 @@ import '../../../domain/entities/desk.dart';
 import '../../../domain/entities/preset.dart';
 import '../../bloc/desk/desk_bloc.dart';
 import '../../themes/theme.dart';
-import 'desk_carousel_slider.dart';
 import '../../widgets/widgets.dart';
+import 'desk_carousel_slider.dart';
+import 'desk_interaction_card.dart';
 
 /// A page on which the user gets an overview of all [Desk] entities and
 /// possibilities to interact with them. (e. g. select a desk, move the desk, tap on a preset, add a preset, etc.)
@@ -95,6 +95,8 @@ class _HomePageState extends State<HomePage> {
             title: state.currentDesk.name,
             key: const Key('current-desk-name'),
           );
+        } else if (state is UpdateCurrentDeskFailure) {
+          return Container();
         } else {
           return const Text('Unknown state');
         }
@@ -104,15 +106,19 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildCurrentDeskHeightText() {
     return BlocBuilder<DeskBloc, DeskState>(
-      buildWhen: (previous, current) => current is UpdateCurrentDeskSuccess,
+      buildWhen: (previous, current) =>
+          current is UpdateCurrentDeskSuccess ||
+          current is UpdateCurrentDeskFailure,
       builder: (context, state) {
         if (state is Empty) {
           return Container();
         } else if (state is UpdateCurrentDeskSuccess) {
           return Text(
-            '${state.currentDesk.height.toString()} cm',
+            '${state.currentDesk.height.toStringAsFixed(2)} cm',
             key: const Key('current-desk-height'),
           );
+        } else if (state is UpdateCurrentDeskFailure) {
+          return Container();
         } else {
           return const Text('Unknown state');
         }
@@ -122,7 +128,9 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildCurrentDeskPresets() {
     return BlocBuilder<DeskBloc, DeskState>(
-      buildWhen: (previous, current) => current is UpdateCurrentDeskSuccess,
+      buildWhen: (previous, current) =>
+          current is UpdateCurrentDeskSuccess ||
+          current is UpdateCurrentDeskFailure,
       builder: (context, state) {
         if (state is Empty) {
           return Container();
@@ -134,7 +142,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     DeskInteractionCard(
                       title: preset.name,
-                      iconAtStart: const Icon(Icons.info),
+                      iconAtStart: const Icon(Icons.height),
                       onPressedCard: () {},
                       iconAtEnd: const Icon(Icons.settings),
                       onPressedIconAtEnd: () {},
@@ -169,7 +177,7 @@ class _HomePageState extends State<HomePage> {
         } else if (state is GetAllDesksSuccess) {
           if (state.desks.isEmpty) {
             _updateCurrentDesk(Desk.empty());
-            return const Text('No desks found');
+            return const Center(child: Text('No desks found :/'));
           }
 
           _updateCurrentDesk(state.desks.first);
@@ -195,7 +203,7 @@ class _HomePageState extends State<HomePage> {
   void _updateCurrentDesk(Desk desks) {
     BlocProvider.of<DeskBloc>(context).add(
       UpdatedCurrentDesk(
-        // TODO: hier wird gerade wie beim CarouselSLider einfach erstmal das 0.te Element verwendet
+        // TODO: hier wird gerade wie beim CarouselSlider einfach erstmal das 0.te Element verwendet
         //       -> später mal schauen, wie ich das in der DB abbilden kann
         currentDesk: desks,
       ),

@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:deskify/features/domain/repository/desk_repository.dart';
-import 'package:deskify/features/domain/usecases/delete_desk_usecase.dart';
+import 'package:deskify/features/domain/usecases/desk/delete_desk_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

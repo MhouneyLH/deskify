@@ -50,7 +50,7 @@ class _DeskAnimationState extends State<DeskAnimation> {
   }
 
   Widget _buildFoot({required bool isLeftFoot}) {
-    final double footMarginToBoundaries = widget.width / 1.5;
+    const double footMarginToBoundaries = 20;
 
     return Positioned(
       left: isLeftFoot ? footMarginToBoundaries : null,

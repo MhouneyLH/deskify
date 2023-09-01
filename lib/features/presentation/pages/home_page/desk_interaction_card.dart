@@ -1,6 +1,7 @@
-import 'package:deskify/features/presentation/themes/theme.dart';
-import 'package:deskify/features/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+
+import '../../themes/theme.dart';
+import '../../widgets/widgets.dart';
 
 /// A card like Button with which the user can interact.
 ///

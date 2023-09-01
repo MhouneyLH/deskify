@@ -1,6 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:deskify/core/utils/constants.dart';
-import 'package:deskify/features/presentation/themes/theme.dart';
+import '../../../../core/utils/constants.dart';
+import '../../themes/theme.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/entities/desk.dart';
@@ -45,9 +45,12 @@ class _DeskCarouselSliderState extends State<DeskCarouselSlider> {
     return CarouselSlider(
       items: [
         for (Desk desk in widget.allDesks)
-          DeskAnimation(
-            width: MediaQuery.of(context).size.width,
-            deskHeight: desk.height,
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.5,
+            child: DeskAnimation(
+              width: MediaQuery.of(context).size.width * 0.5,
+              deskHeight: desk.height,
+            ),
           ),
       ],
       options: CarouselOptions(

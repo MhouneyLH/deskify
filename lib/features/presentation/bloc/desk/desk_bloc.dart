@@ -4,17 +4,13 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../core/core.dart';
 import '../../../domain/entities/desk.dart';
-import '../../../domain/usecases/create_desk_usecase.dart';
-import '../../../domain/usecases/delete_desk_usecase.dart';
-import '../../../domain/usecases/get_all_desks_usecase.dart';
-import '../../../domain/usecases/get_desk_by_id_usecase.dart';
-import '../../../domain/usecases/update_desk_usecase.dart';
+import '../../../domain/usecases/usecases.dart';
 
 part 'desk_event.dart';
 part 'desk_state.dart';
 
 /// This class is used to manage the state of the [Desk] entity.
-/// 
+///
 /// It is used to communicate between the presentation and domain layer.
 class DeskBloc extends Bloc<DeskEvent, DeskState> {
   // TODO: not sure, if this should be located here... -> maybe change in the future
@@ -126,9 +122,14 @@ class DeskBloc extends Bloc<DeskEvent, DeskState> {
     Emitter<DeskState> emit,
   ) async {
     if (event is UpdatedCurrentDesk) {
-      currentDesk = event.currentDesk;
+      if (event.currentDesk == Desk.empty()) {
+        emit(const UpdateCurrentDeskFailure(
+          message: 'UpdateCurrentDeskFailure',
+        ));
+        return;
+      }
 
-      // should only be successful
+      currentDesk = event.currentDesk;
       emit(UpdateCurrentDeskSuccess(
         currentDesk: event.currentDesk,
       ));

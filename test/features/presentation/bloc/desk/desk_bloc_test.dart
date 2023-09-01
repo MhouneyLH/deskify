@@ -1,12 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:deskify/core/core.dart';
 import 'package:deskify/features/data/models/desk_model.dart';
+import 'package:deskify/features/domain/entities/desk.dart';
 import 'package:deskify/features/domain/entities/preset.dart';
-import 'package:deskify/features/domain/usecases/create_desk_usecase.dart';
-import 'package:deskify/features/domain/usecases/delete_desk_usecase.dart';
-import 'package:deskify/features/domain/usecases/get_all_desks_usecase.dart';
-import 'package:deskify/features/domain/usecases/get_desk_by_id_usecase.dart';
-import 'package:deskify/features/domain/usecases/update_desk_usecase.dart';
+import 'package:deskify/features/domain/usecases/usecases.dart';
 import 'package:deskify/features/presentation/bloc/desk/desk_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -336,7 +333,6 @@ void main() {
   });
 
   group('updateCurrentDesk', () {
-    // TODO: in future add more stuff in here -> for now, it only can be successful
     test(
       'should emit [UpdateCurrentDeskSuccess] when updated successfully',
       () async {
@@ -347,6 +343,19 @@ void main() {
         expectLater(sut.stream, emitsInOrder(expected));
         // act
         sut.add(UpdatedCurrentDesk(currentDesk: tDeskModel));
+      },
+    );
+
+    test(
+      'should emit [UpdateCurrentDeskFailure] when updating was unsuccessful',
+      () async {
+        // assert
+        final expected = [
+          const UpdateCurrentDeskFailure(message: 'UpdateCurrentDeskFailure'),
+        ];
+        expectLater(sut.stream, emitsInOrder(expected));
+        // act
+        sut.add(UpdatedCurrentDesk(currentDesk: Desk.empty()));
       },
     );
   });

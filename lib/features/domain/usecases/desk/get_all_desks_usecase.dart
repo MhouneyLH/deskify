@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 
-import '../../../core/core.dart';
-import '../entities/desk.dart';
-import '../repository/desk_repository.dart';
+import '../../../../core/core.dart';
+import '../../entities/desk.dart';
+import '../../repository/desk_repository.dart';
 
 class GetAllDesksUsecase implements Usecase<void, NoParams> {
   final DeskRepository repository;
