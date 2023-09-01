@@ -7,7 +7,6 @@ import '../../../domain/entities/preset.dart';
 import '../../bloc/desk/desk_bloc.dart';
 import '../../themes/theme.dart';
 import '../../widgets/widgets.dart';
-import 'preset_card.dart';
 
 /// A page on which a [Desk] entity can be added.
 ///
@@ -76,7 +75,7 @@ class _AddDeskPageState extends State<AddDeskPage> {
         const SizedBox(height: ThemeSettings.smallSpacing),
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: _getAllConfiguredPresetCards(),
+          children: _getAllConfiguredInteractionCards(),
         ),
         const SizedBox(height: ThemeSettings.smallSpacing),
         _buildAddPresetButton(context),
@@ -195,15 +194,23 @@ class _AddDeskPageState extends State<AddDeskPage> {
     );
   }
 
-  List<PresetCard> _getAllConfiguredPresetCards() {
-    List<PresetCard> presetCards = [];
+  List<InteractionCard> _getAllConfiguredInteractionCards() {
+    List<InteractionCard> interactionCards = [];
 
     for (final Preset preset in newDesk.presets) {
-      final PresetCard card = PresetCard(preset: preset);
-      presetCards.add(card);
+      final InteractionCard card = InteractionCard(
+        key: Key('preset-card-${preset.id}'),
+        title: preset.name,
+        subtitle: '${preset.targetHeight.toStringAsFixed(2)} $deskHeightMetric',
+        iconAtStart: const Icon(Icons.height),
+        iconAtEnd: const Icon(Icons.edit),
+        onPressedIconAtEnd: () {},
+      );
+
+      interactionCards.add(card);
     }
 
-    return presetCards;
+    return interactionCards;
   }
 
   void _updateDeskName() {
