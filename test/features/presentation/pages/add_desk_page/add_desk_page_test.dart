@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart';
 import 'package:deskify/core/core.dart';
 import 'package:deskify/features/domain/entities/desk.dart';
 import 'package:deskify/features/domain/entities/preset.dart';
@@ -50,9 +49,9 @@ void main() {
         deleteDeskUsecase: DeleteDeskUsecase(repository: mockDeskRepository),
       ),
       child: const MaterialApp(
-        home: SingleChildScrollView(
-          // TODO: idk, why this material here is needed -> otherwise it does not work correctly
-          child: Material(
+        // TODO: idk, why this material here is needed -> otherwise it does not work correctly
+        home: Material(
+          child: SingleChildScrollView(
             child: AddDeskPage(),
           ),
         ),
@@ -100,7 +99,68 @@ void main() {
     testWidgets(
         'Entering text in the desk height TextField changes the value of the slider',
         (widgetTester) async {
-      // TODO: TEST
+      // arrange
+      await widgetTester.pumpWidget(createWidgetUnderTest());
+      // act
+      await widgetTester.enterText(
+          find.byKey(const Key('desk-height-text-field')),
+          deskMaximumHeight.toStringAsFixed(2));
+      await widgetTester.pump();
+      // assert
+      final HeightSlider slider = widgetTester
+          .widget<HeightSlider>(find.byKey(const Key('desk-height-slider')));
+
+      expect(slider.deskHeight, deskMaximumHeight);
+    });
+
+    testWidgets(
+        'Entering an invalid text (e. g. "," instead of ".") in the desk height TextField should change the value of the slider to deskMinimumHeight',
+        (widgetTester) async {
+      // arrange
+      await widgetTester.pumpWidget(createWidgetUnderTest());
+      // act
+      await widgetTester.enterText(
+          find.byKey(const Key('desk-height-text-field')), '80,0');
+      await widgetTester.pump();
+      // assert
+      final HeightSlider slider = widgetTester
+          .widget<HeightSlider>(find.byKey(const Key('desk-height-slider')));
+
+      expect(slider.deskHeight, deskMinimumHeight);
+    });
+
+    testWidgets(
+        'Entering a too high text value (> deskHeightMaximum) in the desk height TextField should change the value of the slider to deskMaximumHeight',
+        (widgetTester) async {
+      // arrange
+      await widgetTester.pumpWidget(createWidgetUnderTest());
+      // act
+      await widgetTester.enterText(
+          find.byKey(const Key('desk-height-text-field')),
+          (deskMaximumHeight + 1).toStringAsFixed(2));
+      await widgetTester.pump();
+      // assert
+      final HeightSlider slider = widgetTester
+          .widget<HeightSlider>(find.byKey(const Key('desk-height-slider')));
+
+      expect(slider.deskHeight, deskMaximumHeight);
+    });
+
+    testWidgets(
+        'Entering a too low text value (< deskMinimumHeight) in the desk height TextField should change the value of the slider to deskMinimumHeight',
+        (widgetTester) async {
+      // arrange
+      await widgetTester.pumpWidget(createWidgetUnderTest());
+      // act
+      await widgetTester.enterText(
+          find.byKey(const Key('desk-height-text-field')),
+          (deskMinimumHeight - 1).toStringAsFixed(2));
+      await widgetTester.pump();
+      // assert
+      final HeightSlider slider = widgetTester
+          .widget<HeightSlider>(find.byKey(const Key('desk-height-slider')));
+
+      expect(slider.deskHeight, deskMinimumHeight);
     });
 
     testWidgets(

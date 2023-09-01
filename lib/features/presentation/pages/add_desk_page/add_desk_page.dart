@@ -107,8 +107,16 @@ class _AddDeskPageState extends State<AddDeskPage> {
         labelText: 'Desk Height',
       ),
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
-      onEditingComplete: () {
-        _updateDeskHeight();
+      onChanged: (newHeight) {
+        double parsedHeight = double.tryParse(newHeight) ?? deskMinimumHeight;
+
+        if (parsedHeight < deskMinimumHeight) {
+          parsedHeight = deskMinimumHeight;
+        } else if (parsedHeight > deskMaximumHeight) {
+          parsedHeight = deskMaximumHeight;
+        }
+
+        _updateDeskHeight(parsedHeight);
       },
     );
   }
@@ -133,13 +141,13 @@ class _AddDeskPageState extends State<AddDeskPage> {
         setState(() {
           deskHeightController.text = newHeight.toStringAsFixed(2);
         });
-        _updateDeskHeight();
+        _updateDeskHeight(newHeight);
       },
       onChangeEnd: (double newHeight) {
         setState(() {
           deskHeightController.text = newHeight.toStringAsFixed(2);
         });
-        _updateDeskHeight();
+        _updateDeskHeight(newHeight);
       },
     );
   }
@@ -204,10 +212,10 @@ class _AddDeskPageState extends State<AddDeskPage> {
     });
   }
 
-  void _updateDeskHeight() {
+  void _updateDeskHeight(double newHeight) {
     setState(() {
       newDesk = newDesk.copyWith(
-        height: double.parse(deskHeightController.text),
+        height: newHeight,
       );
     });
   }
