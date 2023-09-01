@@ -38,47 +38,47 @@ class _HomePageState extends State<HomePage> {
         _buildDeskCarouselSlider(),
         const SizedBox(height: ThemeSettings.mediumSpacing),
         const Heading(
-          title: 'Analytics',
           key: Key('analytics-heading'),
+          title: 'Analytics',
         ),
         const SizedBox(height: ThemeSettings.smallSpacing),
         DeskInteractionCard(
+          key: const Key('analytics-desk-card-standing'),
           title: 'Standing Time',
           iconAtStart: const Icon(Icons.info),
           onPressedCard: () {},
-          key: const Key('analytics-desk-card-standing'),
           child: const LinearProgressIndicator(
             value: 0.7,
           ),
         ),
         const SizedBox(height: ThemeSettings.smallSpacing),
         DeskInteractionCard(
+          key: const Key('analytics-desk-card-sitting'),
           title: 'Sitting Time',
           iconAtStart: const Icon(Icons.info),
           onPressedCard: () {},
-          key: const Key('analytics-desk-card-sitting'),
           child: const LinearProgressIndicator(
             value: 0.3,
           ),
         ),
         const SizedBox(height: ThemeSettings.mediumSpacing),
         const Heading(
-          title: 'Presets',
           key: Key('preset-heading'),
+          title: 'Presets',
         ),
         const SizedBox(height: ThemeSettings.smallSpacing),
         _buildCurrentDeskPresets(),
         const SizedBox(height: ThemeSettings.mediumSpacing),
         const Heading(
-          title: 'Others',
           key: Key('others-heading'),
+          title: 'Others',
         ),
         const SizedBox(height: ThemeSettings.smallSpacing),
         DeskInteractionCard(
+          key: const Key('others-desk-card-move'),
           title: 'Move desk',
           iconAtStart: const Icon(Icons.move_up),
           onPressedCard: () {},
-          key: const Key('others-desk-card-move'),
         ),
       ],
     );
@@ -92,8 +92,8 @@ class _HomePageState extends State<HomePage> {
           return Container();
         } else if (state is UpdateCurrentDeskSuccess) {
           return Heading(
-            title: state.currentDesk.name,
             key: const Key('current-desk-name'),
+            title: state.currentDesk.name,
           );
         } else if (state is UpdateCurrentDeskFailure) {
           return Container();
@@ -135,24 +135,20 @@ class _HomePageState extends State<HomePage> {
         if (state is Empty) {
           return Container();
         } else if (state is UpdateCurrentDeskSuccess) {
-          return Column(
-            children: [
-              for (final Preset preset in state.currentDesk.presets)
-                Column(
-                  children: [
-                    DeskInteractionCard(
-                      title: preset.name,
-                      iconAtStart: const Icon(Icons.height),
-                      onPressedCard: () {},
-                      iconAtEnd: const Icon(Icons.settings),
-                      onPressedIconAtEnd: () {},
-                      key: Key('preset-desk-card-${preset.id}'),
-                      child: Text('${preset.targetHeight.toString()} cm'),
-                    ),
-                    const SizedBox(height: ThemeSettings.smallSpacing),
-                  ],
-                ),
-            ],
+          final List<DeskInteractionCard> cards =
+              _getAllPresetDeskInteractionCards(state.currentDesk.presets);
+
+          return ListView.separated(
+            key: const Key('preset-desk-card-list'),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            separatorBuilder: (context, index) {
+              return const SizedBox(height: ThemeSettings.smallSpacing);
+            },
+            itemCount: cards.length,
+            itemBuilder: (_, index) {
+              return cards[index];
+            },
           );
         } else {
           return const Text('Unknown state');
@@ -172,7 +168,7 @@ class _HomePageState extends State<HomePage> {
           return Container();
         } else if (state is GetAllDesksFetching) {
           return const LoadingIndicator(
-            key: Key('all-articles-loading-indicator'),
+            key: Key('all-desks-loading-indicator'),
           );
         } else if (state is GetAllDesksSuccess) {
           if (state.desks.isEmpty) {
@@ -180,14 +176,18 @@ class _HomePageState extends State<HomePage> {
             return const Center(child: Text('No desks found :/'));
           }
 
+          // TODO: hier wird gerade wie beim CarouselSlider einfach erstmal das 0.te Element verwendet
+          //       -> später mal schauen, wie ich das in der DB abbilden kann
           _updateCurrentDesk(state.desks.first);
 
           return DeskCarouselSlider(
+            key: const Key('desk-carousel-slider'),
             allDesks: state.desks,
             onDeskSelected: (Desk desk) => _updateCurrentDesk(desk),
           );
         } else if (state is GetAllDesksFailure) {
           return Column(
+            key: const Key('all-desks-failure-column'),
             children: [
               const Icon(Icons.error),
               Text(state.message),
@@ -200,12 +200,31 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _updateCurrentDesk(Desk desks) {
+  List<DeskInteractionCard> _getAllPresetDeskInteractionCards(
+      List<Preset> presetList) {
+    List<DeskInteractionCard> presetCards = [];
+
+    for (final Preset preset in presetList) {
+      final DeskInteractionCard card = DeskInteractionCard(
+        key: Key('preset-desk-card-${preset.id}'),
+        title: preset.name,
+        iconAtStart: const Icon(Icons.height),
+        onPressedCard: () {},
+        iconAtEnd: const Icon(Icons.settings),
+        onPressedIconAtEnd: () {},
+        child: Text('${preset.targetHeight.toString()} cm'),
+      );
+
+      presetCards.add(card);
+    }
+
+    return presetCards;
+  }
+
+  void _updateCurrentDesk(Desk desk) {
     BlocProvider.of<DeskBloc>(context).add(
       UpdatedCurrentDesk(
-        // TODO: hier wird gerade wie beim CarouselSlider einfach erstmal das 0.te Element verwendet
-        //       -> später mal schauen, wie ich das in der DB abbilden kann
-        currentDesk: desks,
+        currentDesk: desk,
       ),
     );
   }

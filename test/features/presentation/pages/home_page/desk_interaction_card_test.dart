@@ -61,7 +61,7 @@ void main() {
           },
           child: const Text(
             'test',
-            key: Key('child-key'),
+            key: Key('child'),
           ),
         ),
       );
@@ -83,7 +83,7 @@ void main() {
       expect(find.byType(Text), findsNWidgets(2));
       // idk why 4 -> 2 for the Text widgets and 2 for the SizedBox widgets (RenderConstraint Boxes for the texts)
       expect(find.byType(SizedBox), findsNWidgets(4));
-      expect(find.byKey(const Key('child-key')), findsOneWidget);
+      expect(find.byKey(const Key('child')), findsOneWidget);
       // expect(find.byType(CustomIconButton), findsNothing);
     });
 
@@ -129,7 +129,7 @@ void main() {
       expect(find.byType(Icon), findsNWidgets(2));
       expect(find.byType(Text), findsOneWidget);
       expect(find.byType(Spacer), findsOneWidget);
-      expect(find.byKey(const Key('child-key')), findsNothing);
+      expect(find.byKey(const Key('child')), findsNothing);
     });
 
     testWidgets('onPressedCard is executed on tap', (widgetTester) async {
@@ -168,7 +168,7 @@ void main() {
           },
           child: const Text(
             'test',
-            key: Key('child-key'),
+            key: Key('child'),
           ),
         ),
       );
@@ -189,7 +189,7 @@ void main() {
       expect(find.byType(Icon), findsNWidgets(2));
       // only here there are 2 Text widgets -> in future work with keys or something else
       expect(find.byType(Text), findsNWidgets(2));
-      expect(find.byKey(const Key('child-key')), findsOneWidget);
+      expect(find.byKey(const Key('child')), findsOneWidget);
     });
 
     testWidgets('onPressedCard is executed on tap', (widgetTester) async {
