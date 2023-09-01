@@ -82,8 +82,8 @@ void main() {
       await widgetTester.pumpWidget(createWidgetUnderTest());
       await widgetTester.pump(const Duration(milliseconds: 500));
       // assert
-      expect(find.byKey(const Key('all-articles-loading-indicator')),
-          findsOneWidget);
+      expect(
+          find.byKey(const Key('all-desks-loading-indicator')), findsOneWidget);
       await widgetTester.pumpAndSettle();
     },
   );
