@@ -1,9 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import '../../../../core/utils/constants.dart';
-import '../../themes/theme.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/utils/constants.dart';
 import '../../../domain/entities/desk.dart';
+import '../../themes/theme.dart';
 import '../../widgets/widgets.dart';
 
 const int initialIndex = 0;

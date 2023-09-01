@@ -1,9 +1,11 @@
-import 'package:deskify/features/presentation/widgets/widgets.dart';
+import 'widgets.dart';
 import 'package:flutter/material.dart';
 
 import '../themes/theme.dart';
 
 /// A card like Button with which the user can interact.
+///
+/// If you don't want the ripple effect, you just don't have to set the [onPressedCard] property.
 ///
 /// There are 2 widgets that can be displayed optionally:
 /// - an icon at the end of the card (e. g. used for a settings [IconButton])

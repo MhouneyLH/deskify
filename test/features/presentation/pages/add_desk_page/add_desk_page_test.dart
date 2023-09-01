@@ -49,9 +49,8 @@ void main() {
         deleteDeskUsecase: DeleteDeskUsecase(repository: mockDeskRepository),
       ),
       child: const MaterialApp(
-        // TODO: idk, why this material here is needed -> otherwise it does not work correctly
-        home: Material(
-          child: SingleChildScrollView(
+        home: Scaffold(
+          body: SingleChildScrollView(
             child: AddDeskPage(),
           ),
         ),
