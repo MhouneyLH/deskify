@@ -19,8 +19,8 @@ class DeskBloc extends Bloc<DeskEvent, DeskState> {
   final CreateDeskUsecase createDeskUsecase;
   final GetAllDesksUsecase getAllDesksUsecase;
   final GetDeskByIdUsecase getDeskByIdUsecase;
-  final UpdateDeskUsecase updateDeskUsecase;
   final DeleteDeskUsecase deleteDeskUsecase;
+  final UpdateDeskUsecase updateDeskUsecase;
 
   DeskBloc({
     required this.createDeskUsecase,

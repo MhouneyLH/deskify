@@ -1,5 +1,5 @@
 import 'package:deskify/core/core.dart';
-import 'package:deskify/features/presentation/widgets/height_slider.dart';
+import 'package:deskify/features/presentation/widgets/height_slider_widget.dart';
 import 'package:deskify/features/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

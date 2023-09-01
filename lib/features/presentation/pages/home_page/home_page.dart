@@ -7,7 +7,6 @@ import '../../bloc/desk/desk_bloc.dart';
 import '../../themes/theme.dart';
 import '../../widgets/widgets.dart';
 import 'desk_carousel_slider.dart';
-import 'desk_interaction_card.dart';
 
 /// A page on which the user gets an overview of all [Desk] entities and
 /// possibilities to interact with them. (e. g. select a desk, move the desk, tap on a preset, add a preset, etc.)
@@ -42,17 +41,17 @@ class _HomePageState extends State<HomePage> {
           title: 'Analytics',
         ),
         const SizedBox(height: ThemeSettings.smallSpacing),
-        DeskInteractionCard(
+        InteractionCard(
           key: const Key('analytics-desk-card-standing'),
           title: 'Standing Time',
           iconAtStart: const Icon(Icons.info),
           onPressedCard: () {},
           child: const LinearProgressIndicator(
-            value: 0.7,
+            value: 1.0,
           ),
         ),
         const SizedBox(height: ThemeSettings.smallSpacing),
-        DeskInteractionCard(
+        InteractionCard(
           key: const Key('analytics-desk-card-sitting'),
           title: 'Sitting Time',
           iconAtStart: const Icon(Icons.info),
@@ -74,7 +73,7 @@ class _HomePageState extends State<HomePage> {
           title: 'Others',
         ),
         const SizedBox(height: ThemeSettings.smallSpacing),
-        DeskInteractionCard(
+        InteractionCard(
           key: const Key('others-desk-card-move'),
           title: 'Move desk',
           iconAtStart: const Icon(Icons.move_up),
@@ -135,7 +134,7 @@ class _HomePageState extends State<HomePage> {
         if (state is Empty) {
           return Container();
         } else if (state is UpdateCurrentDeskSuccess) {
-          final List<DeskInteractionCard> cards =
+          final List<InteractionCard> cards =
               _getAllPresetDeskInteractionCards(state.currentDesk.presets);
 
           return ListView.separated(
@@ -200,19 +199,19 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  List<DeskInteractionCard> _getAllPresetDeskInteractionCards(
+  List<InteractionCard> _getAllPresetDeskInteractionCards(
       List<Preset> presetList) {
-    List<DeskInteractionCard> presetCards = [];
+    List<InteractionCard> presetCards = [];
 
     for (final Preset preset in presetList) {
-      final DeskInteractionCard card = DeskInteractionCard(
+      final InteractionCard card = InteractionCard(
         key: Key('preset-desk-card-${preset.id}'),
         title: preset.name,
+        subtitle: '${preset.targetHeight.toString()} cm',
         iconAtStart: const Icon(Icons.height),
-        onPressedCard: () {},
         iconAtEnd: const Icon(Icons.settings),
+        onPressedCard: () {},
         onPressedIconAtEnd: () {},
-        child: Text('${preset.targetHeight.toString()} cm'),
       );
 
       presetCards.add(card);
