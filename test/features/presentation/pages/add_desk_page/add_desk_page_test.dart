@@ -3,6 +3,8 @@ import 'package:deskify/features/domain/repository/desk_repository.dart';
 import 'package:deskify/features/domain/usecases/usecases.dart';
 import 'package:deskify/features/presentation/bloc/desk/desk_bloc.dart';
 import 'package:deskify/features/presentation/pages/add_desk_page/add_desk_page.dart';
+import 'package:deskify/features/presentation/router/app_router.dart';
+import 'package:deskify/features/presentation/subpages/subpages.dart';
 import 'package:deskify/features/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,9 +15,11 @@ class MockDeskRepository extends Mock implements DeskRepository {}
 
 void main() {
   late MockDeskRepository mockDeskRepository;
+  late AppRouter appRouter;
 
   setUp(() {
     mockDeskRepository = MockDeskRepository();
+    appRouter = AppRouter();
   });
 
   Widget createWidgetUnderTest() {
@@ -27,8 +31,9 @@ void main() {
         updateDeskUsecase: UpdateDeskUsecase(repository: mockDeskRepository),
         deleteDeskUsecase: DeleteDeskUsecase(repository: mockDeskRepository),
       ),
-      child: const MaterialApp(
-        home: Scaffold(
+      child: MaterialApp(
+        onGenerateRoute: (settings) => appRouter.onGenerateRoute(settings),
+        home: const Scaffold(
           body: SingleChildScrollView(
             child: AddDeskPage(),
           ),
@@ -170,11 +175,30 @@ void main() {
       expect(find.byKey(const Key('presets-heading')), findsOneWidget);
     });
 
-    testWidgets('List of Preset InteractionCards is displayed', (widgetTester) async {
+    testWidgets('List of Preset InteractionCards is displayed',
+        (widgetTester) async {
       // act
       await widgetTester.pumpWidget(createWidgetUnderTest());
       // assert
       expect(find.byType(InteractionCard), findsAtLeastNWidgets(2));
+    });
+
+    testWidgets(
+        'Tapping on the icon at the end of an element of the Preset Interaction Card List, navigates to PresetPage',
+        (widgetTester) async {
+      // arrange
+      await widgetTester.pumpWidget(createWidgetUnderTest());
+      // act
+      final InteractionCard addPresetButton = widgetTester
+          .widget<InteractionCard>(find.byKey(const Key('preset-card-0')));
+
+      // this is a workaround for the actual tap
+      // the normal .tap() method does not work correctly as it seems
+      // the tap cannot be executed, because the button is not visible, but actually it is...
+      addPresetButton.onPressedIconAtEnd!();
+      await widgetTester.pumpAndSettle();
+      // assert
+      expect(find.byType(PresetPage), findsOneWidget);
     });
 
     testWidgets('Add Preset button is displayed', (widgetTester) async {
@@ -182,6 +206,23 @@ void main() {
       await widgetTester.pumpWidget(createWidgetUnderTest());
       // assert
       expect(find.byKey(const Key('add-preset-button')), findsOneWidget);
+    });
+
+    testWidgets('Tapping on the AddPresetButton, navigates to PresetPage',
+        (widgetTester) async {
+      // arrange
+      await widgetTester.pumpWidget(createWidgetUnderTest());
+      // act
+      final IconButton addPresetButton = widgetTester
+          .widget<IconButton>(find.byKey(const Key('add-preset-button')));
+
+      // this is a workaround for the actual tap
+      // the normal .tap() method does not work correctly as it seems
+      // the tap cannot be executed, because the button is not visible, but actually it is...
+      addPresetButton.onPressed!();
+      await widgetTester.pumpAndSettle();
+      // assert
+      expect(find.byType(PresetPage), findsOneWidget);
     });
   });
 

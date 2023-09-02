@@ -6,6 +6,8 @@ import 'package:deskify/features/domain/usecases/usecases.dart';
 import 'package:deskify/features/presentation/bloc/desk/desk_bloc.dart';
 import 'package:deskify/features/presentation/pages/home_page/desk_carousel_slider.dart';
 import 'package:deskify/features/presentation/pages/home_page/home_page.dart';
+import 'package:deskify/features/presentation/router/app_router.dart';
+import 'package:deskify/features/presentation/subpages/subpages.dart';
 import 'package:deskify/features/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,9 +18,11 @@ class MockDeskRepository extends Mock implements DeskRepository {}
 
 void main() {
   late MockDeskRepository mockDeskRepository;
+  late AppRouter appRouter;
 
   setUp(() {
     mockDeskRepository = MockDeskRepository();
+    appRouter = AppRouter();
   });
 
   final Desk desk = Desk(
@@ -65,9 +69,12 @@ void main() {
         updateDeskUsecase: UpdateDeskUsecase(repository: mockDeskRepository),
         deleteDeskUsecase: DeleteDeskUsecase(repository: mockDeskRepository),
       ),
-      child: const MaterialApp(
-        home: SingleChildScrollView(
-          child: HomePage(),
+      child: MaterialApp(
+        onGenerateRoute: (settings) => appRouter.onGenerateRoute(settings),
+        home: const Scaffold(
+          body: SingleChildScrollView(
+            child: HomePage(),
+          ),
         ),
       ),
     );
@@ -156,9 +163,28 @@ void main() {
 
       expect(analyticsDeskCardStanding.subtitle, isNull);
       expect(analyticsDeskCardSitting.subtitle, isNull);
-      
+
       expect(analyticsDeskCardStanding.iconAtEnd, isNull);
       expect(analyticsDeskCardSitting.iconAtEnd, isNull);
+    });
+
+    testWidgets('Tapping on the card, navigates to AnalyticsPage',
+        (widgetTester) async {
+      // arrange
+      arrangeDeskRepositoryReturns2Desks();
+      await widgetTester.pumpWidget(createWidgetUnderTest());
+      await widgetTester.pumpAndSettle();
+      // act
+      final InteractionCard card = widgetTester.widget<InteractionCard>(
+          find.byKey(const Key('analytics-desk-card-standing')));
+
+      // this is a workaround for the actual tap
+      // the normal .tap() method does not work correctly as it seems
+      // the tap cannot be executed, because the button is not visible, but actually it is...
+      card.onPressedCard!();
+      await widgetTester.pumpAndSettle();
+      // assert
+      expect(find.byType(AnalyticsPage), findsOneWidget);
     });
   });
 
@@ -180,12 +206,10 @@ void main() {
       await widgetTester.pumpWidget(createWidgetUnderTest());
       await widgetTester.pumpAndSettle();
       // assert
-      final InteractionCard presetCard0 =
-          widgetTester.firstWidget(find.byKey(const Key('preset-desk-card-0')))
-              as InteractionCard;
-      final InteractionCard presetCard1 =
-          widgetTester.firstWidget(find.byKey(const Key('preset-desk-card-1')))
-              as InteractionCard;
+      final InteractionCard presetCard0 = widgetTester
+          .widget<InteractionCard>(find.byKey(const Key('preset-desk-card-0')));
+      final InteractionCard presetCard1 = widgetTester
+          .widget<InteractionCard>(find.byKey(const Key('preset-desk-card-1')));
 
       expect(find.byKey(const Key('preset-desk-card-0')), findsOneWidget);
       expect(find.byKey(const Key('preset-desk-card-1')), findsOneWidget);
@@ -198,6 +222,26 @@ void main() {
 
       expect(presetCard0.iconAtEnd, isNotNull);
       expect(presetCard1.iconAtEnd, isNotNull);
+    });
+
+    testWidgets(
+        'Tapping on the icon at the end on an element in the list, navigates to PresetPage',
+        (widgetTester) async {
+      // arrange
+      arrangeDeskRepositoryReturns2Desks();
+      await widgetTester.pumpWidget(createWidgetUnderTest());
+      await widgetTester.pumpAndSettle();
+      // act
+      final InteractionCard card = widgetTester
+          .widget<InteractionCard>(find.byKey(const Key('preset-desk-card-0')));
+
+      // this is a workaround for the actual tap
+      // the normal .tap() method does not work correctly as it seems
+      // the tap cannot be executed, because the button is not visible, but actually it is...
+      card.onPressedIconAtEnd!();
+      await widgetTester.pumpAndSettle();
+      // assert
+      expect(find.byType(PresetPage), findsOneWidget);
     });
   });
 
@@ -228,6 +272,25 @@ void main() {
       expect(othersCardMove.subtitle, isNull);
       expect(othersCardMove.child, isNull);
       expect(othersCardMove.iconAtEnd, isNull);
+    });
+
+    testWidgets('Tapping on the card, navigates to MoveDeskPage',
+        (widgetTester) async {
+      // arrange
+      arrangeDeskRepositoryReturns2Desks();
+      await widgetTester.pumpWidget(createWidgetUnderTest());
+      await widgetTester.pumpAndSettle();
+      // act
+      final InteractionCard card = widgetTester.widget<InteractionCard>(
+          find.byKey(const Key('others-desk-card-move')));
+
+      // this is a workaround for the actual tap
+      // the normal .tap() method does not work correctly as it seems
+      // the tap cannot be executed, because the button is not visible, but actually it is...
+      card.onPressedCard!();
+      await widgetTester.pumpAndSettle();
+      // assert
+      expect(find.byType(MoveDeskPage), findsOneWidget);
     });
   });
 }
