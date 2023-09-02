@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'app.dart';
 import 'features/presentation/bloc/desk/desk_bloc.dart';
+import 'features/presentation/router/app_router.dart';
 import 'features/presentation/themes/theme.dart';
 import 'injection_container.dart' as injection_container;
 
@@ -13,23 +14,26 @@ Future main() async {
   await Firebase.initializeApp();
   await injection_container.init();
 
-  // TODO: maybe this should be moved in injection_container.dart???
-  // actually I dont need it for now
-  // Bloc.observer = injection_container.sl();
-
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => injection_container.sl<DeskBloc>()),
       ],
-      child: const MainApp(),
+      child: MainApp(
+        appRouter: injection_container.sl(),
+      ),
     ),
   );
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  final AppRouter appRouter;
 
+  const MainApp({
+    required this.appRouter,
+    super.key,
+  });
+  
   static const String title = 'Deskify';
 
   @override
@@ -40,6 +44,7 @@ class MainApp extends StatelessWidget {
       theme: ThemeSettings.lightTheme,
       darkTheme: ThemeSettings.darkTheme,
       home: const App(),
+      onGenerateRoute: (settings) => appRouter.onGenerateRoute(settings),
     );
   }
 }

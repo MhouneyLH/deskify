@@ -1,6 +1,4 @@
 import 'package:deskify/core/core.dart';
-import 'package:deskify/features/domain/entities/desk.dart';
-import 'package:deskify/features/domain/entities/preset.dart';
 import 'package:deskify/features/domain/repository/desk_repository.dart';
 import 'package:deskify/features/domain/usecases/usecases.dart';
 import 'package:deskify/features/presentation/bloc/desk/desk_bloc.dart';
@@ -19,24 +17,6 @@ void main() {
   setUp(() {
     mockDeskRepository = MockDeskRepository();
   });
-
-  final Desk tDesk = Desk(
-    id: '0',
-    name: 'test',
-    height: 0.0,
-    presets: const <Preset>[
-      Preset(
-        id: '0',
-        name: 'test',
-        targetHeight: 0.0,
-      ),
-      Preset(
-        id: '1',
-        name: 'test',
-        targetHeight: 1.0,
-      ),
-    ],
-  );
 
   Widget createWidgetUnderTest() {
     return BlocProvider(
