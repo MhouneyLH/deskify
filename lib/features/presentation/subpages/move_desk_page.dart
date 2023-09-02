@@ -10,6 +10,11 @@ class MoveDeskPage extends StatefulWidget {
 class _MoveDeskPageState extends State<MoveDeskPage> {
   @override
   Widget build(BuildContext context) {
-    return const Text('Move Desk Page');
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Move Desk Page'),
+      ),
+      body: const Placeholder(),
+    );
   }
 }

@@ -10,6 +10,11 @@ class PresetPage extends StatefulWidget {
 class _PresetPageState extends State<PresetPage> {
   @override
   Widget build(BuildContext context) {
-    return const Text('Preset Page');
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Preset Page'),
+      ),
+      body: const Placeholder(),
+    );
   }
 }

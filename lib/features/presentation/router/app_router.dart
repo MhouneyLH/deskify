@@ -6,21 +6,31 @@ import 'package:flutter/material.dart';
 /// The actual pages, which can be clicked in the BottomNavigationBar, are
 /// defined in the [App] class.
 class AppRouter {
+  static const String homeStandingAnalyticsPath = '/home/standing_analytics';
+  static const String homeSittingAnalyticsPath = '/home/sitting_analytics';
+  static const String homeAddPresetPath = '/home/add_preset';
+  static const String homeEditPresetPath = '/home/edit_preset';
+  static const String homeMoveDeskPath = '/home/move_desk';
+  static const String addDeskAddPresetPath = '/add_desk/add_preset';
+  static const String addDeskEditPresetPath = '/add_desk/edit_preset';
+
   Route? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case '/home/standing_analytics':
+      //! HomePage
+      case homeStandingAnalyticsPath:
         return MaterialPageRoute(builder: (_) => const AnalyticsPage());
-      case '/home/sitting_analytics':
+      case homeSittingAnalyticsPath:
         return MaterialPageRoute(builder: (_) => const AnalyticsPage());
-      case '/home/add_preset':
+      case homeAddPresetPath:
         return MaterialPageRoute(builder: (_) => const PresetPage());
-      case '/home/edit_preset':
+      case homeEditPresetPath:
         return MaterialPageRoute(builder: (_) => const PresetPage());
-      case '/home/move_desk':
+      case homeMoveDeskPath:
         return MaterialPageRoute(builder: (_) => const MoveDeskPage());
-      case '/add_desk/add_preset':
+      //! AddDeskPage
+      case addDeskAddPresetPath:
         return MaterialPageRoute(builder: (_) => const PresetPage());
-      case '/add_desk/edit_preset':
+      case addDeskEditPresetPath:
         return MaterialPageRoute(builder: (_) => const PresetPage());
       default:
         return null;

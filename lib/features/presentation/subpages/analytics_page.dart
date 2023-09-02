@@ -10,6 +10,11 @@ class AnalyticsPage extends StatefulWidget {
 class _AnalyticsPageState extends State<AnalyticsPage> {
   @override
   Widget build(BuildContext context) {
-    return const Text('Analytics Page');
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Analytics Page'),
+      ),
+      body: const Placeholder(),
+    );
   }
 }
