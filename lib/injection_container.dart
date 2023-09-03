@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
@@ -8,8 +7,8 @@ import 'features/data/data_sources/desk_remote_data_source.dart';
 import 'features/data/repository/desk_repository_impl.dart';
 import 'features/domain/repository/desk_repository.dart';
 import 'features/domain/usecases/usecases.dart';
-import 'features/presentation/bloc/app_bloc_observer.dart';
 import 'features/presentation/bloc/desk/desk_bloc.dart';
+import 'features/presentation/router/app_router.dart';
 
 // sl = service locator
 // using sl() is short for sl.call()
@@ -19,7 +18,10 @@ final sl = GetIt.instance;
 Future<void> init() async {
   //! Features
   // Bloc
-  sl.registerLazySingleton<BlocObserver>(() => AppBlocObserver());
+  // actually I dont need it for now
+  // Bloc.observer = injection_container.sl();
+  // sl.registerLazySingleton<BlocObserver>(() => AppBlocObserver());
+
   sl.registerFactory(() => DeskBloc(
         createDeskUsecase: sl(),
         getAllDesksUsecase: sl(),
@@ -48,6 +50,9 @@ Future<void> init() async {
   //! Core
   sl.registerLazySingleton<NetworkInfo>(
       () => NetworkInfoImpl(connectionChecker: sl()));
+
+  // routing
+  sl.registerLazySingleton(() => AppRouter());
 
   //! External
   sl.registerLazySingleton(() => InternetConnectionChecker());

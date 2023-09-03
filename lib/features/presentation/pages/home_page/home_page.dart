@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/entities/desk.dart';
 import '../../../domain/entities/preset.dart';
 import '../../bloc/desk/desk_bloc.dart';
+import '../../router/app_router.dart';
 import '../../themes/theme.dart';
 import '../../widgets/widgets.dart';
 import 'desk_carousel_slider.dart';
@@ -45,7 +46,10 @@ class _HomePageState extends State<HomePage> {
           key: const Key('analytics-desk-card-standing'),
           title: 'Standing Time',
           iconAtStart: const Icon(Icons.info),
-          onPressedCard: () {},
+          onPressedCard: () {
+            Navigator.of(context)
+                .pushNamed(AppRouter.homeStandingAnalyticsPath);
+          },
           child: const LinearProgressIndicator(
             value: 1.0,
           ),
@@ -55,7 +59,9 @@ class _HomePageState extends State<HomePage> {
           key: const Key('analytics-desk-card-sitting'),
           title: 'Sitting Time',
           iconAtStart: const Icon(Icons.info),
-          onPressedCard: () {},
+          onPressedCard: () {
+            Navigator.of(context).pushNamed(AppRouter.homeSittingAnalyticsPath);
+          },
           child: const LinearProgressIndicator(
             value: 0.3,
           ),
@@ -77,7 +83,9 @@ class _HomePageState extends State<HomePage> {
           key: const Key('others-desk-card-move'),
           title: 'Move desk',
           iconAtStart: const Icon(Icons.move_up),
-          onPressedCard: () {},
+          onPressedCard: () {
+            Navigator.of(context).pushNamed(AppRouter.homeMoveDeskPath);
+          },
         ),
       ],
     );
@@ -211,7 +219,9 @@ class _HomePageState extends State<HomePage> {
         iconAtStart: const Icon(Icons.height),
         iconAtEnd: const Icon(Icons.settings),
         onPressedCard: () {},
-        onPressedIconAtEnd: () {},
+        onPressedIconAtEnd: () {
+          Navigator.of(context).pushNamed(AppRouter.homeEditPresetPath);
+        },
       );
 
       presetCards.add(card);

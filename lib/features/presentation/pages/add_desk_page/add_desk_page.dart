@@ -1,3 +1,4 @@
+import 'package:deskify/features/presentation/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -165,7 +166,9 @@ class _AddDeskPageState extends State<AddDeskPage> {
             Theme.of(context).colorScheme.primary,
           ),
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pushNamed(AppRouter.addDeskAddPresetPath);
+        },
       ),
     );
   }
@@ -204,7 +207,9 @@ class _AddDeskPageState extends State<AddDeskPage> {
         subtitle: '${preset.targetHeight.toStringAsFixed(2)} $deskHeightMetric',
         iconAtStart: const Icon(Icons.height),
         iconAtEnd: const Icon(Icons.edit),
-        onPressedIconAtEnd: () {},
+        onPressedIconAtEnd: () {
+          Navigator.of(context).pushNamed(AppRouter.addDeskEditPresetPath);
+        },
       );
 
       interactionCards.add(card);
