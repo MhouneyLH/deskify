@@ -34,6 +34,14 @@ class _AppState extends State<App> {
       label: 'Add',
     ),
     BottomNavigationBarItem(
+      icon: Icon(Icons.add),
+      label: 'Add',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.add),
+      label: 'Add',
+    ),
+    BottomNavigationBarItem(
       icon: Icon(Icons.settings),
       label: 'Settings',
     ),
